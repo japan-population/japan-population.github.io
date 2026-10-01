@@ -13,7 +13,11 @@ export const eventModelSchema = z.object({
   seasonalBase: z.number().finite().nonnegative(), trendFactor: z.number().finite().nonnegative(),
 });
 export const eventSetSchema = z.object({ birth: eventModelSchema, death: eventModelSchema, marriage: eventModelSchema, divorce: eventModelSchema });
-export const vitalSchema = z.object({ source: sourceSchema, months: z.record(monthSchema, eventSetSchema) });
+export const yearTotalSchema = z.object({ officialCount: z.number().int().nonnegative(), estimatedBeforeMonth: z.number().finite().nonnegative(), officialThrough: monthSchema.nullable() });
+export type YearTotal = z.infer<typeof yearTotalSchema>;
+export type DisplayPeriod = 'day' | 'month' | 'year';
+export const vitalYearSchema = z.object({ birth: yearTotalSchema, death: yearTotalSchema, marriage: yearTotalSchema, divorce: yearTotalSchema });
+export const vitalSchema = z.object({ source: sourceSchema, months: z.record(monthSchema, eventSetSchema), yearToDate: z.record(monthSchema, vitalYearSchema).optional() });
 export const populationSchema = z.object({
   base: z.number().int().positive(), baseDate: z.iso.datetime({ offset: true }),
   yearAgo: z.number().int().positive(), yearAgoDate: z.iso.datetime({ offset: true }),
@@ -28,7 +32,8 @@ export const breakdownSchema = z.object({ source: sourceSchema, groups: z.object
 });
 export const MIGRATIONS = ['domesticIn', 'domesticOut', 'internationalIn', 'internationalOut'] as const;
 export const migrationSetSchema = z.object({ domesticIn: eventModelSchema, domesticOut: eventModelSchema, internationalIn: eventModelSchema, internationalOut: eventModelSchema });
-export const migrationSchema = z.object({ domesticSource: sourceSchema, internationalSource: sourceSchema, months: z.record(monthSchema, migrationSetSchema) });
+export const migrationYearSchema = z.object({ domesticIn: yearTotalSchema, domesticOut: yearTotalSchema, internationalIn: yearTotalSchema, internationalOut: yearTotalSchema });
+export const migrationSchema = z.object({ domesticSource: sourceSchema, internationalSource: sourceSchema, months: z.record(monthSchema, migrationSetSchema), yearToDate: z.record(monthSchema, migrationYearSchema).optional() });
 export const referenceSchema = z.object({ officialBase: z.number().int().positive(), officialBaseDate: z.iso.datetime({ offset: true }), source: sourceSchema, vitalSource: sourceSchema, domesticSource: sourceSchema, internationalSource: sourceSchema, months: z.record(monthSchema, z.object({ baseValue: z.number().positive(), ratePerSecond: z.number().finite() })) });
 export type Breakdown = z.infer<typeof breakdownSchema>;
 export type Migration = z.infer<typeof migrationSchema>;

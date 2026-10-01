@@ -1,14 +1,25 @@
 import { z } from 'zod';
-import { EVENTS, MIGRATIONS, populationGroups, manifestSchema, nationalSchema, prefecturesSchema, sourceSchema, monthSchema } from '../src/types/statistics';
+import { type YearTotal, EVENTS, MIGRATIONS, populationGroups, manifestSchema, nationalSchema, prefecturesSchema, sourceSchema, monthSchema } from '../src/types/statistics';
 import { addMonths, monthStart, secondsInMonth } from '../src/lib/time';
 import { PREFECTURES } from '../src/lib/prefectures';
 import type { Dataset } from './dataset';
 const counts = z.object({ birth: z.number().int().nonnegative(), death: z.number().int().nonnegative(), marriage: z.number().int().nonnegative(), divorce: z.number().int().nonnegative() });
+function validateYear(year: Record<string, YearTotal> | undefined, month: string, latest: string, keys: readonly string[]) {
+  if (!year) throw new Error('年累計の月が欠けています');
+  const through = latest < `${month.slice(0, 4)}-01` || month.endsWith('-01') ? null : latest < month ? latest : addMonths(month, -1);
+  for (const key of keys) {
+    const value = year[key];
+    if (!value || value.officialThrough !== through) throw new Error('年累計の公表済み期間が不正です');
+    if (!through && value.officialCount !== 0) throw new Error('公表値のない年に原値が混在しています');
+    if (month.endsWith('-01') && value.estimatedBeforeMonth !== 0) throw new Error('年累計が元日にリセットされていません');
+  }
+}
 export function validateDataset(data: Dataset): void {
   manifestSchema.parse(data.manifest); nationalSchema.parse(data.national);
   prefecturesSchema.parse({ generationId: data.manifest.generationId, prefectures: data.prefectures });
   if (data.national.generationId !== data.manifest.generationId) throw new Error('JSONの世代が一致しません');
   for (const vital of [data.national.vital, ...Object.values(data.prefectures).map(p => p.vital)]) {
+    if (vital.yearToDate) for (const month of data.manifest.forecastMonths) validateYear(vital.yearToDate[month], month, vital.source.sourcePeriod, EVENTS);
     if (vital.source.sourcePeriod !== data.manifest.vital.latestMonth) throw new Error('人口動態の基準月が一致しません');
     for (const month of data.manifest.forecastMonths) for (const key of EVENTS) {
       const model = vital.months[month]?.[key];
@@ -35,6 +46,7 @@ export function validateDataset(data: Dataset): void {
     for (const region of [data.national, ...Object.values(data.prefectures)]) {
       const migration = region.migration;
       if (!migration) throw new Error('人口移動の地域が欠けています');
+      if (migration.yearToDate) for (const month of data.manifest.forecastMonths) validateYear(migration.yearToDate[month], month, migration.domesticSource.sourcePeriod, MIGRATIONS);
       sources.push(migration.domesticSource, migration.internationalSource);
       if (migration.domesticSource.sourcePeriod !== migration.internationalSource.sourcePeriod) throw new Error('国内外移動の基準月が一致しません');
       for (const m of data.manifest.forecastMonths) for (const kind of MIGRATIONS) {
