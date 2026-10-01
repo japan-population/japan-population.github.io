@@ -19,8 +19,25 @@ export const populationSchema = z.object({
   yearAgo: z.number().int().positive(), yearAgoDate: z.iso.datetime({ offset: true }),
   ratePerSecond: z.number().finite(), source: sourceSchema,
 });
-export const nationalSchema = z.object({ generationId: z.string(), population: populationSchema, vital: vitalSchema });
-export const prefectureSchema = z.object({ code: z.string().regex(/^(0[1-9]|[1-3]\d|4[0-7])$/), name: z.string(), vital: vitalSchema });
+export const populationGroups = ['total', 'japanese', 'foreign'] as const;
+export const breakdownSchema = z.object({ source: sourceSchema, groups: z.object({ total: populationSchema, japanese: populationSchema, foreign: populationSchema }), rows: z.array(z.object({ group: z.enum(populationGroups), sex: z.enum(['男女計', '男', '女']), age: z.string(), value: z.number().int().nonnegative() })) }).superRefine((v, ctx) => {
+  const keys = new Set(v.rows.map(r => `${r.group}/${r.sex}/${r.age}`));
+  const ages = ['総数', ...Array.from({ length: 21 }, (_, i) => i === 20 ? '100歳以上' : `${i * 5}～${i * 5 + 4}歳`)];
+  if (keys.size !== 198 || v.rows.length !== 198) ctx.addIssue({ code: 'custom', message: '人口内訳の欠損・重複' });
+  for (const group of populationGroups) for (const sex of ['男女計', '男', '女']) for (const age of ages) if (!keys.has(`${group}/${sex}/${age}`)) ctx.addIssue({ code: 'custom', message: '人口内訳の分類が不完全です' });
+});
+export const MIGRATIONS = ['domesticIn', 'domesticOut', 'internationalIn', 'internationalOut'] as const;
+export const migrationSetSchema = z.object({ domesticIn: eventModelSchema, domesticOut: eventModelSchema, internationalIn: eventModelSchema, internationalOut: eventModelSchema });
+export const migrationSchema = z.object({ domesticSource: sourceSchema, internationalSource: sourceSchema, months: z.record(monthSchema, migrationSetSchema) });
+export const referenceSchema = z.object({ officialBase: z.number().int().positive(), officialBaseDate: z.iso.datetime({ offset: true }), source: sourceSchema, vitalSource: sourceSchema, domesticSource: sourceSchema, internationalSource: sourceSchema, months: z.record(monthSchema, z.object({ baseValue: z.number().positive(), ratePerSecond: z.number().finite() })) });
+export type Breakdown = z.infer<typeof breakdownSchema>;
+export type Migration = z.infer<typeof migrationSchema>;
+export type MigrationKind = typeof MIGRATIONS[number];
+export type MigrationCounts = Record<MigrationKind, number>;
+export type MigrationObservation = { month: string; regions: Record<string, MigrationCounts> };
+export type ReferencePopulation = z.infer<typeof referenceSchema>;
+export const nationalSchema = z.object({ generationId: z.string(), population: populationSchema, vital: vitalSchema, breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
+export const prefectureSchema = z.object({ code: z.string().regex(/^(0[1-9]|[1-3]\d|4[0-7])$/), name: z.string(), vital: vitalSchema, population: referenceSchema.optional(), migration: migrationSchema.optional() });
 export const prefecturesSchema = z.object({ generationId: z.string(), prefectures: z.record(z.string(), prefectureSchema) }).superRefine((v, ctx) => {
   if (Object.keys(v.prefectures).length !== 47) ctx.addIssue({ code: 'custom', message: 'Exactly 47 prefectures required' });
   for (const p of PREFECTURES) if (v.prefectures[p.code]?.code !== p.code || v.prefectures[p.code]?.name !== p.name) ctx.addIssue({ code: 'custom', message: `Invalid prefecture ${p.code}` });
