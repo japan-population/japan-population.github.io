@@ -4,6 +4,11 @@ import { dirname, resolve } from 'node:path';
 import { PREFECTURES } from '../src/lib/prefectures';
 import { addMonths, monthKey } from '../src/lib/time';
 import { type PopulationObservation, type VitalObservation, type DashboardData } from '../src/types/statistics';
+import { yearModel } from './models/year-model';
+import { EVENTS, MIGRATIONS } from '../src/types/statistics';
+import type { Breakdown } from '../src/types/statistics';
+import type { MigrationHistory } from './sources/migration';
+import { migrationModel, referenceModel } from './models/reference-model';
 import { populationModel } from './models/population-model';
 import { eventModel } from './models/event-model';
 import { validateDataset, validateChange } from './validation';
@@ -16,17 +21,36 @@ export function semanticJSON(value: unknown): string {
     return v;
   });
 }
-export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number): Dataset {
+export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation> }): Dataset {
   const current = monthKey(now);
   const months = [0, 1, 2].map(n => addMonths(current, n));
   const sorted = [...vital].sort((a, b) => a.month.localeCompare(b.month));
   const latest = sorted.at(-1);
   if (!latest || vital.length < 60) throw new Error('最低60か月の人口動態履歴が必要です');
   for (let i = 1; i < sorted.length; i++) if (sorted[i].month !== addMonths(sorted[i - 1].month, 1)) throw new Error('人口動態履歴に欠損または重複があります');
-  const makeVital = (region: string) => ({ source: latest.source, months: Object.fromEntries(months.map(m => [m, eventModel(sorted, region, m)])) });
+  const makeVital = (region: string) => ({ source: latest.source,
+    months: Object.fromEntries(months.map(m => [m, eventModel(sorted, region, m)])),
+    yearToDate: Object.fromEntries(months.map(m => [m, yearModel(EVENTS, m, latest.month,
+      month => sorted.find(r => r.month === month)?.regions[region],
+      month => { const models = eventModel(sorted, region, month); return Object.fromEntries(EVENTS.map(k => [k, models[k].estimatedMonthCount])) as Record<typeof EVENTS[number], number>; })])),
+  });
   const national = { generationId: '', population: populationModel(population), vital: makeVital('00') };
   const prefectures = Object.fromEntries(PREFECTURES.map(p => [p.code, { ...p, vital: makeVital(p.code) }]));
   const result: Dataset = { manifest: { schemaVersion: 1, generationId: '', generatedAt: new Date(now).toISOString(), mode, population: { latestFinalMonth: national.population.source.sourcePeriod }, vital: { latestMonth: latest.month }, forecastMonths: months, historyStart: sorted[0].month }, national, prefectures, history: { population, vital: sorted } };
+  if (extra) {
+    result.national.breakdown = extra.breakdown;
+    if (extra.breakdown.groups.total.base !== result.national.population.base || extra.breakdown.groups.total.baseDate !== result.national.population.baseDate) throw new Error('人口内訳と総人口が一致しません');
+    const makeMigration = (code: string) => ({ domesticSource: extra.migration.domesticSource, internationalSource: extra.migration.internationalSource, months: Object.fromEntries(months.map(m => [m, migrationModel(extra.migration, code, m)])),
+      yearToDate: Object.fromEntries(months.map(m => [m, yearModel(MIGRATIONS, m, extra.migration.domesticSource.sourcePeriod,
+        month => extra.migration.rows.find(r => r.month === month)?.regions[code],
+        month => { const models = migrationModel(extra.migration, code, month); return Object.fromEntries(MIGRATIONS.map(k => [k, models[k].estimatedMonthCount])) as Record<typeof MIGRATIONS[number], number>; })])),
+    });
+    result.national.migration = makeMigration('00');
+    for (const p of Object.values(result.prefectures)) {
+      p.migration = makeMigration(p.code);
+      p.population = referenceModel(extra.bases[p.code], vital, extra.migration, p.code, months);
+    }
+  }
   const id = createHash('sha256').update(semanticJSON(result)).digest('hex').slice(0, 16);
   result.manifest.generationId = id;
   result.national.generationId = id;

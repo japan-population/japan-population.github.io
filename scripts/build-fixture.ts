@@ -2,6 +2,9 @@ import { resolve } from 'node:path';
 import { PREFECTURES } from '../src/lib/prefectures';
 import { addMonths, monthKey } from '../src/lib/time';
 import { EVENTS, type PopulationObservation, type Source, type VitalObservation, type MonthlyEvents } from '../src/types/statistics';
+import { populationModel } from './models/population-model';
+import type { Breakdown } from '../src/types/statistics';
+import type { MigrationHistory } from './sources/migration';
 import { buildDataset, publishDataset } from './dataset';
 export function fixture(now = Date.now()) {
   const latest = addMonths(monthKey(now), -6);
@@ -18,7 +21,17 @@ export function fixture(now = Date.now()) {
     PREFECTURES.forEach((p, j) => { regions[p.code] = Object.fromEntries(EVENTS.map((key, k) => [key, Math.round(national[k] * weights[j] / total)])) as MonthlyEvents; });
     return { month, regions, source: source(month, '人口動態統計（デモ）') };
   });
-  return buildDataset(population, vital, 'fixture', now);
+  const groups = Object.fromEntries(['total', 'japanese', 'foreign'].map((g, i) => [g, populationModel(population.map(r => ({ ...r, value: Math.round(r.value * [1, .97, .03][i]) })))])) as Breakdown['groups'];
+  const rows: Breakdown['rows'] = [];
+  for (const group of ['total', 'japanese', 'foreign'] as const) for (const sex of ['男女計', '男', '女'] as const) {
+    const fraction = sex === '男' ? .485 : sex === '女' ? .515 : 1;
+    rows.push({ group, sex, age: '総数', value: Math.round(groups[group].base * fraction) });
+    for (let i = 0; i < 21; i++) rows.push({ group, sex, age: i === 20 ? '100歳以上' : `${i * 5}～${i * 5 + 4}歳`, value: Math.round(groups[group].base * fraction / 21 * (1 + .35 * Math.sin(i))) });
+  }
+  const migration: MigrationHistory = { domesticSource: source(latest, '国内人口移動（デモ）'), internationalSource: source(latest, '国際人口移動（デモ）'), rows: vital.map(r => ({ month: r.month, regions: Object.fromEntries(Object.entries(r.regions).map(([code, v]) => [code, { domesticIn: v.birth * 3, domesticOut: v.birth * 3, internationalIn: v.marriage, internationalOut: v.divorce }])) })) };
+  const baseMonth = `${Number(latest.slice(0, 4)) - 1}-10`;
+  const bases = Object.fromEntries(PREFECTURES.map(p => [p.code, { month: baseMonth, value: p.code === '13' ? 14000000 : 2000000, source: source(baseMonth, '都道府県人口（デモ）') }]));
+  return buildDataset(population, vital, 'fixture', now, { breakdown: { groups, rows, source: source(latest, '人口内訳（デモ）') }, migration, bases });
 }
 if (process.argv[1] && resolve(process.argv[1]) === resolve('scripts/build-fixture.ts')) {
   // Fixture writes are explicit and cannot silently replace official data.
