@@ -30,6 +30,20 @@ export function validateDataset(data: Dataset): void {
       if (!model || Math.abs(model.ratePerSecond * secondsInMonth(month) - model.estimatedMonthCount) > 0.0001) throw new Error('月別速度が不正です');
     }
   }
+  if (data.national.eventsByGroup) for (const group of populationGroups) {
+    const series = data.national.eventsByGroup[group];
+    for (const key of ['birth', 'death', 'inflow', 'outflow', ...(group === 'japanese' ? ['marriage', 'divorce'] : [])]) {
+      if (!series[key as keyof typeof series]) throw new Error('国籍別人口動態が欠けています');
+    }
+    for (const event of Object.values(series)) {
+      if (data.manifest.mode === 'official' && event.source.status === 'fixture') throw new Error('国籍別人口動態にfixtureが混在しています');
+      for (const month of data.manifest.forecastMonths) {
+        const model = event.months[month];
+        if (!model || Math.abs(model.ratePerSecond * secondsInMonth(month) - model.estimatedMonthCount) > .0001) throw new Error('国籍別人口動態の月別速度が不正です');
+        validateYear({event: event.yearToDate[month]}, month, event.source.sourcePeriod, ['event']);
+      }
+    }
+  }
   const hasExtended = Boolean(data.national.breakdown || data.national.migration || Object.values(data.prefectures).some(p => p.population || p.migration));
   if (hasExtended) {
     const breakdown = data.national.breakdown;
@@ -103,6 +117,15 @@ export function validateChange(old: Dataset, next: Dataset): void {
   if (next.manifest.population.latestFinalMonth < old.manifest.population.latestFinalMonth || next.manifest.vital.latestMonth < old.manifest.vital.latestMonth) throw new Error('統計の基準月が後退しています');
   const check = (a: number, b: number, label: string) => { if (a === 0 ? b !== 0 : Math.abs(b - a) / a >= .2) throw new Error(`前回比20%以上の変化: ${label}`); };
   check(old.national.population.base, next.national.population.base, '全国人口');
+  if (old.national.eventsByGroup && next.national.eventsByGroup) for (const group of populationGroups) {
+    for (const [key,event] of Object.entries(next.national.eventsByGroup[group])) {
+      const before = old.national.eventsByGroup[group][key as keyof typeof old.national.eventsByGroup[typeof group]];
+      if (!before) continue;
+      if (event.source.sourcePeriod < before.source.sourcePeriod) throw new Error('国籍別人口動態の基準月が後退しています');
+      for (const [month,model] of Object.entries(event.months)) if (before.months[month]) check(before.months[month].estimatedMonthCount,model.estimatedMonthCount,`${group}/${key}/${month}`);
+    }
+  }
+
   for (const g of populationGroups) if (old.national.breakdown && next.national.breakdown) check(old.national.breakdown.groups[g].base, next.national.breakdown.groups[g].base, g);
   for (const [code, region] of [['00', next.national], ...Object.entries(next.prefectures)] as const) {
     const before = code === '00' ? old.national : old.prefectures[code];

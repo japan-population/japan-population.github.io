@@ -4,8 +4,11 @@ import { dirname, resolve } from 'node:path';
 import { PREFECTURES } from '../src/lib/prefectures';
 import { addMonths, monthKey } from '../src/lib/time';
 import { type PopulationObservation, type VitalObservation, type DashboardData } from '../src/types/statistics';
+import { groupEvents } from './models/group-events';
+import type { BirthDeathRow } from './sources/national-events';
+import type { PopulationGroup } from '../src/types/statistics';
 import { yearModel } from './models/year-model';
-import { EVENTS, MIGRATIONS } from '../src/types/statistics';
+import { EVENTS, MIGRATIONS, mapRegionsSchema } from '../src/types/statistics';
 import type { Breakdown } from '../src/types/statistics';
 import type { MigrationHistory } from './sources/migration';
 import { migrationModel, referenceModel } from './models/reference-model';
@@ -21,7 +24,7 @@ export function semanticJSON(value: unknown): string {
     return v;
   });
 }
-export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation> }): Dataset {
+export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
   const current = monthKey(now);
   const months = [0, 1, 2].map(n => addMonths(current, n));
   const sorted = [...vital].sort((a, b) => a.month.localeCompare(b.month));
@@ -46,7 +49,13 @@ export function buildDataset(population: PopulationObservation[], vital: VitalOb
         month => { const models = migrationModel(extra.migration, code, month, true); return Object.fromEntries(MIGRATIONS.map(k => [k, models[k].estimatedMonthCount])) as Record<typeof MIGRATIONS[number], number>; })])),
     });
     result.national.migration = makeMigration('00');
+    if (extra.nationalEvents && extra.migrationsByGroup) result.national.eventsByGroup = groupEvents(result.national.vital, extra.nationalEvents, extra.migrationsByGroup, months);
     for (const p of Object.values(result.prefectures)) {
+      if (extra.japaneseBases) {
+        const total = extra.bases[p.code], japanese = extra.japaneseBases[p.code];
+        if (!japanese || japanese.month !== total.month || japanese.value > total.value) throw new Error('地域人口の国籍別データが不整合です');
+        p.officialPopulation = {total:{value:total.value,source:total.source},japanese:{value:japanese.value,source:japanese.source},foreign:{value:total.value-japanese.value,source:{...total.source,scope:'公表された総人口から日本人人口を差し引いた参考値。双方の公表単位は千人。'},derived:true}};
+      }
       p.migration = makeMigration(p.code);
       p.population = referenceModel(extra.bases[p.code], vital, extra.migration, p.code, months);
     }
@@ -66,6 +75,10 @@ export async function readDataset(directory: string): Promise<Dataset> {
   const result = { manifest, national, prefectures: p.prefectures, history: { population: n.population, vital: h.vital.map(row => ({ ...row, regions: { ...row.regions, '00': n.vital.find(v => v.month === row.month)!.regions['00'] } })) } } as Dataset;
   if ([p.generationId, n.generationId, h.generationId].some(id => id !== result.manifest.generationId)) throw new Error('JSONの世代が一致しません');
   validateDataset(result);
+  try {
+    const regions = mapRegionsSchema.parse(await read('regions.json'));
+    if (regions.generationId !== result.manifest.generationId) throw new Error('地域JSONの世代が一致しません');
+  } catch (error) { if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error; }
   return result;
 }
 export async function publishDataset(data: Dataset, directory = resolve('public/data')): Promise<boolean> {
@@ -80,6 +93,7 @@ export async function publishDataset(data: Dataset, directory = resolve('public/
   const id = data.manifest.generationId;
   const files: Record<string, unknown> = {
     'manifest.json': data.manifest, 'national.json': data.national,
+    'regions.json': mapRegionsSchema.parse({generationId:id,prefectures:Object.fromEntries(Object.values(data.prefectures).map(p=>[p.code,{code:p.code,name:p.name,officialPopulation:p.officialPopulation??(p.population?{total:{value:p.population.officialBase,source:p.population.source}}:undefined)}]))}),
     'prefectures.json': { generationId: id, prefectures: data.prefectures },
     'history/national.json': { generationId: id, population: data.history.population, vital: data.history.vital.map(row => ({ ...row, regions: { '00': row.regions['00'] } })) },
     'history/prefectures.json': { generationId: id, vital: data.history.vital.map(row => ({ ...row, regions: Object.fromEntries(Object.entries(row.regions).filter(([key]) => key !== '00')) })) },

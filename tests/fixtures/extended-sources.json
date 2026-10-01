@@ -15,12 +15,33 @@
       "file": "population-reference-list.html",
       "url": "https://www.e-stat.go.jp/stat-search/files?layout=dataset&toukei=00200524&tstat=000000090001&tclass1=000001011678&query=全国人口の推移&limit=100",
       "transformation": "最新2件のarticle要素を抽出。"
+    },
+    {
+      "file": "exact-sex-list.html",
+      "url": "https://www.e-stat.go.jp/stat-search/database?layout=dataset&toukei=00200524&query=男女別人口の計算表&limit=100",
+      "transformation": "最新5件のarticleを抽出。月次と年次の公表精度確認用。"
     }
   ],
   "apiTables": [
-    { "id": "0003443840", "purpose": "全国の人口区分・男女・5歳階級", "unit": "千人" },
-    { "id": "0003448232", "purpose": "各年10月1日の都道府県人口", "unit": "千人" },
-    { "id": "0003420473", "purpose": "都道府県間の転入・転出", "unit": "人" },
-    { "id": "0003423635", "purpose": "国外転入・転出", "unit": "人" }
+    {
+      "id": "0003443840",
+      "purpose": "全国の人口区分・男女・5歳階級",
+      "unit": "千人"
+    },
+    {
+      "id": "0003448232",
+      "purpose": "各年10月1日の都道府県人口",
+      "unit": "千人"
+    },
+    {
+      "id": "0003420473",
+      "purpose": "都道府県間の転入・転出",
+      "unit": "人"
+    },
+    {
+      "id": "0003423635",
+      "purpose": "国外転入・転出",
+      "unit": "人"
+    }
   ]
 }

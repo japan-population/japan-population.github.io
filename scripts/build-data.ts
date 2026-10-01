@@ -1,4 +1,4 @@
-import { fetchExactSex } from './sources/exact-sex';
+import { fetchNationalEvents } from './sources/national-events';
 import { fetchExactPopulation } from './sources/exact-population';
 import { populationModel } from './models/population-model';
 import { populationGroups } from '../src/types/statistics';
@@ -15,7 +15,6 @@ try {
   console.log(`人口推計: ${population.length}か月を検証`);
   const vital = await fetchVital(now);
   const breakdown = await fetchBreakdown(appId, now);
-  breakdown.exactSex = await fetchExactSex(appId, now);
   const exact = await fetchExactPopulation(now);
   for (const group of populationGroups) {
     const precise = populationModel(exact[group]);
@@ -27,7 +26,11 @@ try {
   population = population.map(r => exactByMonth.get(r.month) ?? r);
   const bases = await fetchPrefectureBases(appId, now);
   const migration = await fetchMigration(appId, now);
-  const data = buildDataset(population, vital, 'official', now, { breakdown, bases, migration });
+  const japaneseBases = await fetchPrefectureBases(appId, now, 'japanese');
+  const japaneseMigration = await fetchMigration(appId, now, 'japanese');
+  const foreignMigration = await fetchMigration(appId, now, 'foreign');
+  const nationalEvents = await fetchNationalEvents(now);
+  const data = buildDataset(population, vital, 'official', now, { breakdown, bases, migration, japaneseBases, nationalEvents, migrationsByGroup: {total:migration,japanese:japaneseMigration,foreign:foreignMigration} });
   console.log(await publishDataset(data) ? 'すべての検証に成功し、JSONを更新しました。' : '統計・推計モデルの変更はありません。');
 } catch (error) {
   // Only local controlled errors are printed. Zod diagnostics can include source input; avoid dumping them.

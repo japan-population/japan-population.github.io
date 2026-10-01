@@ -31,7 +31,11 @@ export function fixture(now = Date.now()) {
   const migration: MigrationHistory = { domesticSource: source(latest, '国内人口移動（デモ）'), internationalSource: source(latest, '国際人口移動（デモ）'), rows: vital.map(r => ({ month: r.month, regions: Object.fromEntries(Object.entries(r.regions).map(([code, v]) => [code, { domesticIn: v.birth * 3, domesticOut: v.birth * 3, internationalIn: v.marriage, internationalOut: v.divorce }])) })) };
   const baseMonth = `${Number(latest.slice(0, 4)) - 1}-10`;
   const bases = Object.fromEntries(PREFECTURES.map(p => [p.code, { month: baseMonth, value: p.code === '13' ? 14000000 : 2000000, source: source(baseMonth, '都道府県人口（デモ）') }]));
-  return buildDataset(population, vital, 'fixture', now, { breakdown: { groups, rows, source: source(latest, '人口内訳（デモ）'), exactSex: { source: source(baseMonth, '男女別原値（デモ）'), groups: { total: { total: 120000003, male: 59000001, female: 61000002 }, japanese: { total: 116000000, male: 57000000, female: 59000000 }, foreign: { total: 4000003, male: 2000001, female: 2000002 } } } }, migration, bases });
+  const japaneseBases = Object.fromEntries(Object.entries(bases).map(([code,b])=>[code,{...b,value:Math.round(b.value*.97)}]));
+  const nationalEvents = vital.map(r=>{ const total={birth:r.regions['00'].birth,death:r.regions['00'].death}; const japanese={birth:Math.round(total.birth*.97),death:Math.round(total.death*.97)};return {month:r.month,source:r.source,values:{total,japanese,foreign:{birth:total.birth-japanese.birth,death:total.death-japanese.death}}}; });
+  const scaled = (factor:number) => ({...migration,rows:migration.rows.map(r=>({...r,regions:Object.fromEntries(Object.entries(r.regions).map(([code,counts])=>[code,Object.fromEntries(Object.entries(counts).map(([key,n])=>[key,Math.round(n*factor)])) as typeof counts]))}))});
+  const migrationsByGroup={total:migration,japanese:scaled(.4),foreign:scaled(.6)};
+  return buildDataset(population, vital, 'fixture', now, { breakdown: { groups, rows, source: source(latest, '人口内訳（デモ）'), exactSex: { source: source(baseMonth, '男女別原値（デモ）'), groups: { total: { total: 120000003, male: 59000001, female: 61000002 }, japanese: { total: 116000000, male: 57000000, female: 59000000 }, foreign: { total: 4000003, male: 2000001, female: 2000002 } } } }, migration, bases, japaneseBases, nationalEvents, migrationsByGroup });
 }
 if (process.argv[1] && resolve(process.argv[1]) === resolve('scripts/build-fixture.ts')) {
   // Fixture writes are explicit and cannot silently replace official data.

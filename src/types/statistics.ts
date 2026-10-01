@@ -15,6 +15,7 @@ export const eventModelSchema = z.object({
 export const eventSetSchema = z.object({ birth: eventModelSchema, death: eventModelSchema, marriage: eventModelSchema, divorce: eventModelSchema });
 export const yearTotalSchema = z.object({ officialCount: z.number().int().nonnegative(), estimatedBeforeMonth: z.number().finite().nonnegative(), officialThrough: monthSchema.nullable(), estimatedYearCount: z.number().finite().nonnegative().optional(), averagePerDay: z.number().finite().nonnegative().optional() });
 export type YearTotal = z.infer<typeof yearTotalSchema>;
+export type PopulationGroup = 'total' | 'japanese' | 'foreign';
 export type DisplayPeriod = 'day' | 'month' | 'year';
 export const vitalYearSchema = z.object({ birth: yearTotalSchema, death: yearTotalSchema, marriage: yearTotalSchema, divorce: yearTotalSchema });
 export const vitalSchema = z.object({ source: sourceSchema, months: z.record(monthSchema, eventSetSchema), yearToDate: z.record(monthSchema, vitalYearSchema).optional() });
@@ -44,8 +45,13 @@ export type MigrationKind = typeof MIGRATIONS[number];
 export type MigrationCounts = Record<MigrationKind, number>;
 export type MigrationObservation = { month: string; regions: Record<string, MigrationCounts> };
 export type ReferencePopulation = z.infer<typeof referenceSchema>;
-export const nationalSchema = z.object({ generationId: z.string(), population: populationSchema, vital: vitalSchema, breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
-export const prefectureSchema = z.object({ code: z.string().regex(/^(0[1-9]|[1-3]\d|4[0-7])$/), name: z.string(), vital: vitalSchema, population: referenceSchema.optional(), migration: migrationSchema.optional() });
+export const eventSeriesSchema = z.object({ source: sourceSchema, months: z.record(monthSchema, eventModelSchema), yearToDate: z.record(monthSchema, yearTotalSchema) });
+export type EventSeries = z.infer<typeof eventSeriesSchema>;
+export const groupedEventsSchema = z.record(z.enum(populationGroups), z.object({ birth: eventSeriesSchema.optional(), death: eventSeriesSchema.optional(), marriage: eventSeriesSchema.optional(), divorce: eventSeriesSchema.optional(), inflow: eventSeriesSchema.optional(), outflow: eventSeriesSchema.optional() }));
+export type GroupedEvents = z.infer<typeof groupedEventsSchema>;
+export const officialRegionSchema = z.object({ value: z.number().int().nonnegative(), source: sourceSchema, derived: z.boolean().optional() });
+export const nationalSchema = z.object({ generationId: z.string(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
+export const prefectureSchema = z.object({ code: z.string().regex(/^(0[1-9]|[1-3]\d|4[0-7])$/), name: z.string(), officialPopulation: z.record(z.enum(populationGroups), officialRegionSchema).optional(), vital: vitalSchema, population: referenceSchema.optional(), migration: migrationSchema.optional() });
 export const prefecturesSchema = z.object({ generationId: z.string(), prefectures: z.record(z.string(), prefectureSchema) }).superRefine((v, ctx) => {
   if (Object.keys(v.prefectures).length !== 47) ctx.addIssue({ code: 'custom', message: 'Exactly 47 prefectures required' });
   for (const p of PREFECTURES) if (v.prefectures[p.code]?.code !== p.code || v.prefectures[p.code]?.name !== p.name) ctx.addIssue({ code: 'custom', message: `Invalid prefecture ${p.code}` });
@@ -63,3 +69,10 @@ export type DashboardData = { manifest: Manifest; national: National; prefecture
 export type MonthlyEvents = Record<EventKind, number>;
 export type VitalObservation = { month: string; regions: Record<string, MonthlyEvents>; source: Source };
 export type PopulationObservation = { month: string; value: number; source: Source };
+
+const mapRegionSchema = prefectureSchema.pick({code:true,name:true}).extend({officialPopulation:z.partialRecord(z.enum(populationGroups),officialRegionSchema).optional()});
+export const mapRegionsSchema = z.object({generationId:z.string(),prefectures:z.record(z.string(),mapRegionSchema)}).superRefine((v,ctx)=>{
+  if(Object.keys(v.prefectures).length!==47)ctx.addIssue({code:'custom',message:'47 prefectures required'});
+  for(const p of PREFECTURES)if(v.prefectures[p.code]?.code!==p.code||v.prefectures[p.code]?.name!==p.name)ctx.addIssue({code:'custom',message:'Invalid region'});
+});
+export type SiteData = {manifest:Manifest;national:National;prefectures:z.infer<typeof mapRegionsSchema>['prefectures']};

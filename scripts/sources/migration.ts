@@ -33,7 +33,7 @@ export function normalizeMigration(domestic: Table, international: Table): Migra
   for (const row of rows.values()) for (const code of ['00', ...PREFECTURES.map(p => p.code)]) for (const kind of Object.keys(labels)) if (!seen.has(`${row.month}/${code}/${kind}`)) throw new Error(`人口移動に欠損: ${row.month}/${code}/${kind}`);
   return { rows: [...rows.values()].sort((a, b) => a.month.localeCompare(b.month)), domesticSource: sources[0], internationalSource: sources[1] };
 }
-export async function fetchMigration(appId: string, now: number) {
+export async function fetchMigration(appId: string, now: number, group: 'total' | 'japanese' | 'foreign' = 'total') {
   const tables: Table[] = [];
   for (const [id, keys, nationality] of [['0003420473', ['domesticIn', 'domesticOut'], '移動者'], ['0003423635', ['internationalIn', 'internationalOut'], '総数']] as const) {
     tables.push(await fetchTable(id, appId, now, '住民基本台帳人口移動報告', classes => {
@@ -42,7 +42,7 @@ export async function fetchMigration(appId: string, now: number) {
       filters[parameter(tab['@id'])] = keys.map(k => codeFor(tab, labels[k])).join(',');
       // Both nationality and sex can be labelled 総数: identify by their other categories.
       const sex = dimension(classes, '男'); filters[parameter(sex['@id'])] = codeFor(sex, '総数');
-      const nat = dimension(classes, nationality === '移動者' ? '日本人移動者' : '日本人'); filters[parameter(nat['@id'])] = codeFor(nat, nationality);
+      const nat = dimension(classes, nationality === '移動者' ? '日本人移動者' : '日本人'); filters[parameter(nat['@id'])] = codeFor(nat, group === 'total' ? nationality : nationality === '移動者' ? group === 'japanese' ? '日本人移動者' : '外国人移動者' : group === 'japanese' ? '日本人' : '外国人');
       const area = classes.find(c => c['@id'] === 'area')!;
       filters.cdArea = arrayOf(area.CLASS).filter(c => /^(00|0[1-9]|[1-3]\d|4[0-7])000$/.test(c['@code'])).map(c => c['@code']).join(',');
       const time = classes.find(c => c['@id'] === 'time')!;
@@ -50,5 +50,7 @@ export async function fetchMigration(appId: string, now: number) {
       return filters;
     }));
   }
-  return normalizeMigration(tables[0], tables[1]);
+  const result = normalizeMigration(tables[0], tables[1]);
+  if (group !== 'total') for (const key of ['domesticSource','internationalSource'] as const) result[key].scope = result[key].scope.replace('日本人・外国人を含む', group === 'japanese' ? '日本人の' : '外国人の');
+  return result;
 }
