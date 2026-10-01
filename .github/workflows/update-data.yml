@@ -1,0 +1,61 @@
+name: Update statistics
+on:
+  schedule:
+    - cron: '0 18 * * *' # 03:00 JST
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: update-statistics
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+      ref: ${{ steps.commit.outputs.ref }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - uses: actions/cache@v4
+        with:
+          path: .cache/vital
+          key: vital-csv-v1-${{ github.run_id }}
+          restore-keys: vital-csv-v1-
+      - run: npm test
+      - name: Fetch, normalize, model and validate before replacing JSON
+        run: npm run update-data
+        env:
+          ESTAT_APP_ID: ${{ secrets.ESTAT_APP_ID }}
+      - run: npm run validate-data
+      - run: npm run build
+      - name: Commit changed data
+        id: commit
+        shell: bash
+        run: |
+          if [ -z "$(git status --porcelain -- public/data)" ]; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/data
+          git commit -m 'data: update official statistics and forecasts'
+          git push origin HEAD:main
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+          echo "ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+  deploy:
+    needs: update
+    if: needs.update.outputs.changed == 'true'
+    uses: ./.github/workflows/deploy.yml
+    with:
+      ref: ${{ needs.update.outputs.ref }}
