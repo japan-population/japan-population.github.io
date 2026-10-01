@@ -41,10 +41,10 @@ export async function fetchBreakdown(appId: string, now: number) {
   });
   return normalizeBreakdown(table);
 }
-export async function fetchPrefectureBases(appId: string, now: number): Promise<Record<string, PopulationObservation>> {
+export async function fetchPrefectureBases(appId: string, now: number, group: 'total' | 'japanese' = 'total'): Promise<Record<string, PopulationObservation>> {
   const table = await fetchTable('0003448232', appId, now, '人口推計', classes => {
     const filters: Record<string, string> = {};
-    for (const label of ['人口', '男女計', '総人口']) { const d = dimension(classes, label); filters[parameter(d['@id'])] = codeFor(d, label); }
+    for (const label of ['人口', '男女計', group === 'total' ? '総人口' : '日本人人口']) { const d = dimension(classes, label); filters[parameter(d['@id'])] = codeFor(d, label); }
     const time = classes.find(c => c['@id'] === 'time')!;
     filters.cdTime = [...arrayOf(time.CLASS)].sort((a, b) => period(a['@name']).localeCompare(period(b['@name']))).at(-1)!['@code'];
     const areas = classes.find(c => c['@id'] === 'area')!;
@@ -55,7 +55,7 @@ export async function fetchPrefectureBases(appId: string, now: number): Promise<
   for (const v of table.values) {
     const code = v['@area'].slice(0, 2); const month = period(labelFor(table, 'time', v));
     if (result[code]) throw new Error('都道府県人口が重複しています');
-    result[code] = { month, value: numeric(v, table.classes, false), source: { ...table.source, sourcePeriod: month, scope: '各年10月1日現在の都道府県総人口・男女計。' } };
+    result[code] = { month, value: numeric(v, table.classes, false), source: { ...table.source, sourcePeriod: month, scope: `各年10月1日現在の都道府県${group === 'total' ? '総人口' : '日本人人口'}・男女計。公表単位：千人。` } };
   }
   if (Object.keys(result).length !== 47) throw new Error('都道府県人口が47件ありません');
   return result;

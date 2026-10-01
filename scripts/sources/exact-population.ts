@@ -5,7 +5,7 @@ import { addMonths } from '../../src/lib/time';
 import { populationGroups, type PopulationObservation, type Source } from '../../src/types/statistics';
 export const EXACT_LIST = 'https://www.e-stat.go.jp/stat-search/files?layout=dataset&toukei=00200524&tstat=000000090001&tclass1=000001011678&query=%E5%85%A8%E5%9B%BD%E4%BA%BA%E5%8F%A3%E3%81%AE%E6%8E%A8%E7%A7%BB&limit=100';
 export type ExactHistory = Record<typeof populationGroups[number], PopulationObservation[]>;
-export function discoverExactPopulation(html: string): { url: string; publishedAt: string } {
+export function discoverExactPopulationFiles(html: string): { url: string; publishedAt: string }[] {
   const $ = load(html);
   const files: { url: string; publishedAt: string }[] = [];
   $('article.stat-resource_list-item-dataset').each((_, e) => {
@@ -16,10 +16,10 @@ export function discoverExactPopulation(html: string): { url: string; publishedA
     if (!link || !publishedAt) throw new Error('人口参考表のダウンロード情報が変わりました');
     files.push({ url: new URL(link, 'https://www.e-stat.go.jp').href, publishedAt });
   });
-  const latest = files.sort((a,b) => b.publishedAt.localeCompare(a.publishedAt))[0];
-  if (!latest) throw new Error('全国人口の参考表が見つかりません');
-  return latest;
+  if (!files.length) throw new Error('全国人口の参考表が見つかりません');
+  return files.sort((a,b) => b.publishedAt.localeCompare(a.publishedAt));
 }
+export function discoverExactPopulation(html: string) { return discoverExactPopulationFiles(html)[0]; }
 export async function normalizeExactPopulation(bytes: Uint8Array, source: Omit<Source, 'sourcePeriod'>): Promise<ExactHistory> {
   const book = new ExcelJS.Workbook();
   await book.xlsx.load(bytes as unknown as Parameters<typeof book.xlsx.load>[0]);
