@@ -9,6 +9,10 @@ function validateYear(year: Record<string, YearTotal> | undefined, month: string
   const through = latest < `${month.slice(0, 4)}-01` || month.endsWith('-01') ? null : latest < month ? latest : addMonths(month, -1);
   for (const key of keys) {
     const value = year[key];
+    if (value?.estimatedYearCount !== undefined) {
+      const days = (monthStart(`${Number(month.slice(0, 4)) + 1}-01`) - monthStart(`${month.slice(0, 4)}-01`)) / 86400000;
+      if (value.averagePerDay === undefined || Math.abs(value.averagePerDay * days - value.estimatedYearCount) > .0001 || value.estimatedYearCount < value.officialCount + value.estimatedBeforeMonth) throw new Error('年間予測または年間平均が不正です');
+    }
     if (!value || value.officialThrough !== through) throw new Error('年累計の公表済み期間が不正です');
     if (!through && value.officialCount !== 0) throw new Error('公表値のない年に原値が混在しています');
     if (month.endsWith('-01') && value.estimatedBeforeMonth !== 0) throw new Error('年累計が元日にリセットされていません');
@@ -31,6 +35,7 @@ export function validateDataset(data: Dataset): void {
     const breakdown = data.national.breakdown;
     if (!breakdown || !data.national.migration) throw new Error('拡張統計が不完全です');
     const sources = [breakdown.source];
+    if (breakdown.exactSex) sources.push(breakdown.exactSex.source);
     if (breakdown.groups.total.base !== data.national.population.base || breakdown.groups.total.baseDate !== data.national.population.baseDate) throw new Error('総人口と人口内訳の基準が一致しません');
     const ageLabels = ['総数', ...Array.from({ length: 21 }, (_, i) => i === 20 ? '100歳以上' : `${i * 5}～${i * 5 + 4}歳`)];
     const keys = new Set(breakdown.rows.map(r => `${r.group}/${r.sex}/${r.age}`));

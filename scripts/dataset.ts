@@ -32,7 +32,7 @@ export function buildDataset(population: PopulationObservation[], vital: VitalOb
     months: Object.fromEntries(months.map(m => [m, eventModel(sorted, region, m)])),
     yearToDate: Object.fromEntries(months.map(m => [m, yearModel(EVENTS, m, latest.month,
       month => sorted.find(r => r.month === month)?.regions[region],
-      month => { const models = eventModel(sorted, region, month); return Object.fromEntries(EVENTS.map(k => [k, models[k].estimatedMonthCount])) as Record<typeof EVENTS[number], number>; })])),
+      month => { const models = eventModel(sorted, region, month, true); return Object.fromEntries(EVENTS.map(k => [k, models[k].estimatedMonthCount])) as Record<typeof EVENTS[number], number>; })])),
   });
   const national = { generationId: '', population: populationModel(population), vital: makeVital('00') };
   const prefectures = Object.fromEntries(PREFECTURES.map(p => [p.code, { ...p, vital: makeVital(p.code) }]));
@@ -43,7 +43,7 @@ export function buildDataset(population: PopulationObservation[], vital: VitalOb
     const makeMigration = (code: string) => ({ domesticSource: extra.migration.domesticSource, internationalSource: extra.migration.internationalSource, months: Object.fromEntries(months.map(m => [m, migrationModel(extra.migration, code, m)])),
       yearToDate: Object.fromEntries(months.map(m => [m, yearModel(MIGRATIONS, m, extra.migration.domesticSource.sourcePeriod,
         month => extra.migration.rows.find(r => r.month === month)?.regions[code],
-        month => { const models = migrationModel(extra.migration, code, month); return Object.fromEntries(MIGRATIONS.map(k => [k, models[k].estimatedMonthCount])) as Record<typeof MIGRATIONS[number], number>; })])),
+        month => { const models = migrationModel(extra.migration, code, month, true); return Object.fromEntries(MIGRATIONS.map(k => [k, models[k].estimatedMonthCount])) as Record<typeof MIGRATIONS[number], number>; })])),
     });
     result.national.migration = makeMigration('00');
     for (const p of Object.values(result.prefectures)) {

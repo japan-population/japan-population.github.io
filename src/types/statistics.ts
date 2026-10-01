@@ -13,7 +13,7 @@ export const eventModelSchema = z.object({
   seasonalBase: z.number().finite().nonnegative(), trendFactor: z.number().finite().nonnegative(),
 });
 export const eventSetSchema = z.object({ birth: eventModelSchema, death: eventModelSchema, marriage: eventModelSchema, divorce: eventModelSchema });
-export const yearTotalSchema = z.object({ officialCount: z.number().int().nonnegative(), estimatedBeforeMonth: z.number().finite().nonnegative(), officialThrough: monthSchema.nullable() });
+export const yearTotalSchema = z.object({ officialCount: z.number().int().nonnegative(), estimatedBeforeMonth: z.number().finite().nonnegative(), officialThrough: monthSchema.nullable(), estimatedYearCount: z.number().finite().nonnegative().optional(), averagePerDay: z.number().finite().nonnegative().optional() });
 export type YearTotal = z.infer<typeof yearTotalSchema>;
 export type DisplayPeriod = 'day' | 'month' | 'year';
 export const vitalYearSchema = z.object({ birth: yearTotalSchema, death: yearTotalSchema, marriage: yearTotalSchema, divorce: yearTotalSchema });
@@ -24,7 +24,10 @@ export const populationSchema = z.object({
   ratePerSecond: z.number().finite(), source: sourceSchema,
 });
 export const populationGroups = ['total', 'japanese', 'foreign'] as const;
-export const breakdownSchema = z.object({ source: sourceSchema, groups: z.object({ total: populationSchema, japanese: populationSchema, foreign: populationSchema }), rows: z.array(z.object({ group: z.enum(populationGroups), sex: z.enum(['男女計', '男', '女']), age: z.string(), value: z.number().int().nonnegative() })) }).superRefine((v, ctx) => {
+const sexCountsSchema = z.object({ total: z.number().int().positive(), male: z.number().int().positive(), female: z.number().int().positive() }).refine(v => v.total === v.male + v.female, '男女の合計が不一致');
+export const exactSexSchema = z.object({ source: sourceSchema, groups: z.object({ total: sexCountsSchema, japanese: sexCountsSchema, foreign: sexCountsSchema }) }).refine(v => (['total','male','female'] as const).every(k => v.groups.total[k] === v.groups.japanese[k] + v.groups.foreign[k]), '国籍別の合計が不一致');
+export type ExactSex = z.infer<typeof exactSexSchema>;
+export const breakdownSchema = z.object({ exactSex: exactSexSchema.optional(), source: sourceSchema, groups: z.object({ total: populationSchema, japanese: populationSchema, foreign: populationSchema }), rows: z.array(z.object({ group: z.enum(populationGroups), sex: z.enum(['男女計', '男', '女']), age: z.string(), value: z.number().int().nonnegative() })) }).superRefine((v, ctx) => {
   const keys = new Set(v.rows.map(r => `${r.group}/${r.sex}/${r.age}`));
   const ages = ['総数', ...Array.from({ length: 21 }, (_, i) => i === 20 ? '100歳以上' : `${i * 5}～${i * 5 + 4}歳`)];
   if (keys.size !== 198 || v.rows.length !== 198) ctx.addIssue({ code: 'custom', message: '人口内訳の欠損・重複' });

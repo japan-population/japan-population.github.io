@@ -6,7 +6,7 @@ import { secondsInMonth } from '../src/lib/time';
 const model = (month: string) => ({ estimatedMonthCount: 3100, ratePerSecond: 3100 / secondsInMonth(month), seasonalBase: 3100, trendFactor: 1 });
 it('公表済み4か月＋未公表5か月＋10月の経過分を合算', () => {
   const annual = yearModel(['birth'], '2026-10', '2026-04', () => ({ birth: 1000 }), () => ({ birth: 2000 })).birth;
-  expect(annual).toEqual({ officialCount: 4000, estimatedBeforeMonth: 10000, officialThrough: '2026-04' });
+  expect(annual).toMatchObject({ officialCount: 4000, estimatedBeforeMonth: 10000, officialThrough: '2026-04' });
   const now = Date.parse('2026-10-16T12:00:00+09:00');
   expect(estimatePeriod(model('2026-10'), '2026-10', now, 'year', annual)).toBe(15550);
   expect(estimatePeriod(model('2026-10'), '2026-10', now, 'day')).toBe(50);
@@ -16,8 +16,8 @@ it('新たな公表月は推計分を原値に置換し、二重計上しない'
   expect(annual.officialCount).toBe(5000); expect(annual.estimatedBeforeMonth).toBe(8000);
 });
 it('JST元日で0に戻り、前年の公表月を累計に含めない', () => {
-  const annual = yearModel(['birth'], '2027-01', '2026-06', () => { throw Error('前年は取得しない'); }, () => { throw Error('終了月なし'); }).birth;
-  expect(annual).toEqual({ officialCount: 0, estimatedBeforeMonth: 0, officialThrough: null });
+  const annual = yearModel(['birth'], '2027-01', '2026-06', () => { throw Error('前年は取得しない'); }, () => ({ birth: 100 })).birth;
+  expect(annual).toMatchObject({ officialCount: 0, estimatedBeforeMonth: 0, officialThrough: null });
   expect(estimatePeriod(model('2027-01'), '2027-01', Date.parse('2026-12-31T15:00:00Z'), 'year', annual)).toBe(0);
   expect(estimatePeriod(model('2027-01'), '2027-01', Date.parse('2026-12-31T14:59:59Z'), 'year', annual)).toBeNull();
 });
@@ -36,4 +36,19 @@ it('全国・47県の出生と人口移動に年累計を生成し、未来モ�
     expect(region.vital.yearToDate?.['2027-01'].birth.officialCount).toBe(0);
     expect(region.migration?.yearToDate?.['2027-01'].domesticIn.estimatedBeforeMonth).toBe(0);
   }
+});
+
+it('今年全体の予測は公式4か月と未公表8か月の合計、平均は365日で割る', () => {
+  const annual = yearModel(['birth'], '2026-10', '2026-04', () => ({ birth: 1000 }), () => ({ birth: 2000 })).birth;
+  expect(annual.estimatedYearCount).toBe(20000);
+  expect(annual.averagePerDay).toBeCloseTo(20000 / 365);
+});
+it('うるう年の年間平均は366日で割る', () => {
+  const annual = yearModel(['birth'], '2024-03', '2024-01', () => ({ birth: 31 }), () => ({ birth: 30 })).birth;
+  expect(annual.estimatedYearCount).toBe(361);
+  expect(annual.averagePerDay).toBeCloseTo(361 / 366);
+});
+it('年初でも公表済みの同月3年分で12月まで予測できる', () => {
+  const data = fixture(Date.parse('2026-01-01T00:00:00+09:00'));
+  expect(data.national.vital.yearToDate!['2026-01'].birth.estimatedYearCount).toBeGreaterThan(0);
 });
