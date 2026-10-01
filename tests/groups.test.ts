@@ -7,19 +7,20 @@ import { normalizeNationalEvents } from '../scripts/sources/national-events';
 import map from '../src/assets/japan-map.json';
 const now = Date.parse('2026-10-01T12:00:00+09:00');
 describe('国籍別人口動態と地図', () => {
-  it('区分別の出生・移動を使い、未対応の婚姻を流用しない', () => {
+  it('区分別の出生・移動を使い、総人口の婚姻は日本人系列を明示的に使う', () => {
     const n = fixture(now).national;
     const total = nationalIndicators(n,'total'), japanese = nationalIndicators(n,'japanese'), foreign = nationalIndicators(n,'foreign');
     for (const key of ['birth','death','inflow','outflow'] as const) {
       expect(total[key]!.months['2026-10'].estimatedMonthCount).toBeGreaterThan(japanese[key]!.months['2026-10'].estimatedMonthCount);
       expect(foreign[key]!.months['2026-10'].estimatedMonthCount).toBeGreaterThan(0);
     }
-    expect(total.marriage).toBeUndefined(); expect(foreign.divorce).toBeUndefined(); expect(japanese.marriage).toBeDefined();
+    expect(total.marriage).toEqual(japanese.marriage); expect(total.divorce).toEqual(japanese.divorce); expect(foreign.divorce).toBeUndefined(); expect(japanese.marriage).toBeDefined();
   });
   it('旧JSONでも日本人の人口動態を総数・外国人には表示しない', () => {
     const n = fixture(now).national; delete n.eventsByGroup;
     expect(nationalIndicators(n,'total').birth).toBeUndefined();
     expect(nationalIndicators(n,'foreign')).toEqual({});
+    expect(nationalIndicators(n,'total').marriage).toEqual(nationalIndicators(n,'japanese').marriage);
     expect(nationalIndicators(n,'japanese').birth).toBeDefined();
   });
   it('国籍別の欠損と不正な年間平均を検出する', () => {
