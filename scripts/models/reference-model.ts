@@ -2,10 +2,10 @@ import { EVENTS, MIGRATIONS, type Migration, type MigrationCounts, type Populati
 import { addMonths, monthStart, secondsInMonth } from '../../src/lib/time';
 import { eventModel } from './event-model';
 import type { MigrationHistory } from '../sources/migration';
-export function migrationModel(history: MigrationHistory, code: string, month: string): Migration['months'][string] {
+export function migrationModel(history: MigrationHistory, code: string, month: string, allowOlderSeason = false): Migration['months'][string] {
   // Reuse the same checked seasonal model for the four movement series.
   const rows: VitalObservation[] = history.rows.map(r => ({ month: r.month, source: { ...history.domesticSource, sourcePeriod: r.month }, regions: { [code]: Object.fromEntries(EVENTS.map((key, i) => [key, r.regions[code]?.[MIGRATIONS[i]]])) as VitalObservation['regions'][string] } }));
-  const model = eventModel(rows, code, month);
+  const model = eventModel(rows, code, month, allowOlderSeason);
   return Object.fromEntries(MIGRATIONS.map((key, i) => [key, model[EVENTS[i]]])) as Migration['months'][string];
 }
 export function referenceModel(base: PopulationObservation, vital: VitalObservation[], migration: MigrationHistory, code: string, forecastMonths: string[]): ReferencePopulation {

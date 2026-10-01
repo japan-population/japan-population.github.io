@@ -1,3 +1,4 @@
+import { fetchExactSex } from './sources/exact-sex';
 import { fetchExactPopulation } from './sources/exact-population';
 import { populationModel } from './models/population-model';
 import { populationGroups } from '../src/types/statistics';
@@ -14,6 +15,7 @@ try {
   console.log(`人口推計: ${population.length}か月を検証`);
   const vital = await fetchVital(now);
   const breakdown = await fetchBreakdown(appId, now);
+  breakdown.exactSex = await fetchExactSex(appId, now);
   const exact = await fetchExactPopulation(now);
   for (const group of populationGroups) {
     const precise = populationModel(exact[group]);
