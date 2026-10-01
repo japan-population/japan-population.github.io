@@ -1,0 +1,72 @@
+import { createHash } from 'node:crypto';
+import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { dirname, resolve } from 'node:path';
+import { PREFECTURES } from '../src/lib/prefectures';
+import { addMonths, monthKey } from '../src/lib/time';
+import { type PopulationObservation, type VitalObservation, type DashboardData } from '../src/types/statistics';
+import { populationModel } from './models/population-model';
+import { eventModel } from './models/event-model';
+import { validateDataset, validateChange } from './validation';
+export type Dataset = DashboardData & { history: { population: PopulationObservation[]; vital: VitalObservation[] } };
+// Retrieval timestamps alone must not create a daily data commit.
+export function semanticJSON(value: unknown): string {
+  return JSON.stringify(value, (key, v: unknown) => {
+    if (['retrievedAt', 'generatedAt', 'generationId'].includes(key)) return undefined;
+    if (v && typeof v === 'object' && !Array.isArray(v)) return Object.fromEntries(Object.entries(v).sort(([a], [b]) => a.localeCompare(b)));
+    return v;
+  });
+}
+export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number): Dataset {
+  const current = monthKey(now);
+  const months = [0, 1, 2].map(n => addMonths(current, n));
+  const sorted = [...vital].sort((a, b) => a.month.localeCompare(b.month));
+  const latest = sorted.at(-1);
+  if (!latest || vital.length < 60) throw new Error('最低60か月の人口動態履歴が必要です');
+  for (let i = 1; i < sorted.length; i++) if (sorted[i].month !== addMonths(sorted[i - 1].month, 1)) throw new Error('人口動態履歴に欠損または重複があります');
+  const makeVital = (region: string) => ({ source: latest.source, months: Object.fromEntries(months.map(m => [m, eventModel(sorted, region, m)])) });
+  const national = { generationId: '', population: populationModel(population), vital: makeVital('00') };
+  const prefectures = Object.fromEntries(PREFECTURES.map(p => [p.code, { ...p, vital: makeVital(p.code) }]));
+  const result: Dataset = { manifest: { schemaVersion: 1, generationId: '', generatedAt: new Date(now).toISOString(), mode, population: { latestFinalMonth: national.population.source.sourcePeriod }, vital: { latestMonth: latest.month }, forecastMonths: months, historyStart: sorted[0].month }, national, prefectures, history: { population, vital: sorted } };
+  const id = createHash('sha256').update(semanticJSON(result)).digest('hex').slice(0, 16);
+  result.manifest.generationId = id;
+  result.national.generationId = id;
+  validateDataset(result);
+  return result;
+}
+export async function readDataset(directory: string): Promise<Dataset> {
+  const read = async (file: string) => JSON.parse(await readFile(resolve(directory, file), 'utf8')) as unknown;
+  const [manifest, national, pref, hn, hp] = await Promise.all(['manifest.json', 'national.json', 'prefectures.json', 'history/national.json', 'history/prefectures.json'].map(read));
+  const p = pref as { generationId: string; prefectures: Dataset['prefectures'] };
+  const n = hn as { generationId: string; population: PopulationObservation[]; vital: VitalObservation[] };
+  const h = hp as { generationId: string; vital: VitalObservation[] };
+  const result = { manifest, national, prefectures: p.prefectures, history: { population: n.population, vital: h.vital.map(row => ({ ...row, regions: { ...row.regions, '00': n.vital.find(v => v.month === row.month)!.regions['00'] } })) } } as Dataset;
+  if ([p.generationId, n.generationId, h.generationId].some(id => id !== result.manifest.generationId)) throw new Error('JSONの世代が一致しません');
+  validateDataset(result);
+  return result;
+}
+export async function publishDataset(data: Dataset, directory = resolve('public/data')): Promise<boolean> {
+  validateDataset(data);
+  let previous: Dataset | undefined;
+  try { previous = await readDataset(directory); } catch (e) { if ((e as NodeJS.ErrnoException).code !== 'ENOENT') throw e; }
+  if (previous && semanticJSON(previous) === semanticJSON(data)) return false;
+  if (previous) validateChange(previous, data);
+  const stage = resolve(dirname(directory), `.data-stage-${process.pid}`);
+  const backup = resolve(dirname(directory), `.data-backup-${process.pid}`);
+  await mkdir(resolve(stage, 'history'), { recursive: true });
+  const id = data.manifest.generationId;
+  const files: Record<string, unknown> = {
+    'manifest.json': data.manifest, 'national.json': data.national,
+    'prefectures.json': { generationId: id, prefectures: data.prefectures },
+    'history/national.json': { generationId: id, population: data.history.population, vital: data.history.vital.map(row => ({ ...row, regions: { '00': row.regions['00'] } })) },
+    'history/prefectures.json': { generationId: id, vital: data.history.vital.map(row => ({ ...row, regions: Object.fromEntries(Object.entries(row.regions).filter(([key]) => key !== '00')) })) },
+  };
+  try {
+    for (const [file, value] of Object.entries(files)) await writeFile(resolve(stage, file), JSON.stringify(value) + '\n');
+    await readDataset(stage);
+    let moved = false;
+    try { await rename(directory, backup); moved = true; } catch (e) { if ((e as NodeJS.ErrnoException).code !== 'ENOENT') throw e; }
+    try { await rename(stage, directory); } catch (e) { if (moved) await rename(backup, directory); throw e; }
+    if (moved) await rm(backup, { recursive: true });
+  } finally { await rm(stage, { recursive: true, force: true }); }
+  return true;
+}

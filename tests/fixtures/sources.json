@@ -1,0 +1,44 @@
+{
+  "publisher": "厚生労働省",
+  "statistics": "人口動態統計 月報（概数）",
+  "retrievedOn": "2026-10-01",
+  "csvTransformation": "Shift_JISからUTF-8へ変換",
+  "files": [
+    {
+      "file": "vital-sample.csv",
+      "period": "2025-04",
+      "publishedAt": "2025-09-05",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=1&statInfId=000040309968"
+    },
+    {
+      "file": "vital-dec-correct.csv",
+      "period": "2025-12",
+      "publishedAt": "2026-06-03",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=1&statInfId=000040458716"
+    },
+    {
+      "file": "vital-2020-11.csv",
+      "period": "2020-11",
+      "publishedAt": "2021-04-06",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032070158&fileKind=1"
+    },
+    {
+      "file": "vital-2020-12.csv",
+      "period": "2020-12",
+      "publishedAt": "2021-06-25",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032100073&fileKind=1"
+    },
+    {
+      "file": "vital-list-2021.html",
+      "period": "2021-12",
+      "url": "https://www.e-stat.go.jp/stat-search/files?layout=dataset&cycle=1&year=20210&toukei=00450011&tstat=000001028897&tclass1=000001053058&tclass2=000001053060&tclass3val=0&query=人口動態総覧&limit=100",
+      "transformation": "12月の件数・率のarticle要素を抽出し、不要な解説要素を除去"
+    },
+    {
+      "file": "vital-list-2025.html",
+      "period": "2025-12",
+      "url": "https://www.e-stat.go.jp/stat-search/files?layout=dataset&cycle=1&year=20250&toukei=00450011&tstat=000001028897&tclass1=000001053058&tclass2=000001053060&tclass3val=0&query=人口動態総覧&limit=100",
+      "transformation": "12月の件数・率のarticle要素を抽出し、不要な解説要素を除去"
+    }
+  ]
+}
