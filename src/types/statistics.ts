@@ -65,6 +65,7 @@ export const CENSUS_YEARS = Array.from({length:11},(_,i)=>1920+i*10);
 const censusGroupSchema=z.object({
   population:z.number().int().positive(),male:z.number().int().nonnegative(),female:z.number().int().nonnegative(),
   source:sourceSchema,rows:breakdownSchema.shape.rows,
+  derivation:z.object({method:z.literal('total-minus-foreign'),sources:z.tuple([sourceSchema,sourceSchema])}).optional(),
   coverage:z.enum(['full','summary']).optional(),referenceNote:z.string().min(1).optional(),precision:z.union([z.literal(1),z.literal(1000)]).optional(),
 }).superRefine((v,ctx)=>{
   if(v.precision===1000&&(v.coverage!=='summary'||!v.referenceNote||[v.population,v.male,v.female].some(n=>n%1000!==0)))ctx.addIssue({code:'custom',message:'公表概数の精度・注記が不正です'});
@@ -94,6 +95,10 @@ export const officialArchiveSchema=z.object({censuses:z.array(censusSnapshotSche
   if(new Set(v.annual.map(a=>a.year)).size!==v.annual.length||CENSUS_YEARS.some(y=>!v.annual.some(a=>a.year===y)))ctx.addIssue({code:'custom',message:'年間人口動態に欠損・重複があります'});
   for(const c of v.censuses)for(const [g,p]of Object.entries(c.groups))if(p.source.sourcePeriod!==`${c.year}-10`||p.rows.some(r=>r.group!==g))ctx.addIssue({code:'custom',message:'国勢調査の年・国籍が不一致です'});
   for(const c of v.censuses)if(c.nationalities&&(c.nationalities.source.sourcePeriod!==`${c.year}-10`||c.nationalities.total!==c.groups.foreign?.population||c.nationalities.populationTotal!==c.groups.total?.population))ctx.addIssue({code:'custom',message:'過去国籍内訳の基準年・人口が不一致です'});
+  for(const c of v.censuses){
+    const p=c.groups.japanese,t=c.groups.total,f=c.groups.foreign;
+    if(p?.derivation&&(!t||!f||c.year>1990||p.precision!==1||!p.referenceNote||p.derivation.sources.some(s=>s.sourcePeriod!==`${c.year}-10`)||(['population','male','female'] as const).some(k=>p[k]!==t[k]-f[k])))ctx.addIssue({code:'custom',message:'日本人参考推計の算式・出典が不一致です'});
+  }
   for(const a of v.annual)if(a.source.sourcePeriod!==`${a.year}-12`)ctx.addIssue({code:'custom',message:'年間人口動態の基準年が不一致です'});
 });
 export type OfficialArchive=z.infer<typeof officialArchiveSchema>;

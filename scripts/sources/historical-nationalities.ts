@@ -1,27 +1,17 @@
-import {load} from 'cheerio';
 import {arrayOf} from './estat';
 import {fetchTable,dimension,parameter,codeFor,labelFor,clean,type Table} from './table';
-import {download} from './http';
 import {CENSUS_YEARS,nationalitiesSchema,type CensusSnapshot,type Nationalities} from '../../src/types/statistics';
 export const HISTORICAL_FOREIGN_TABLE='0003414213';
-export const JAPANESE_REFERENCE_URL='https://www.ipss.go.jp/syoushika/tohkei/Data/Popular2025/T10-05.files/sheet001.htm';
-export function normalizeJapaneseReference(html:string,now:number){
-  const $=load(html),result=new Map<number,NonNullable<CensusSnapshot['groups']['japanese']>>();
-  if(!$.text().includes('日本人(1,000人)')||!$.text().includes('1950～70年は沖縄県を含まない'))throw new Error('日本人人口の参考資料の定義が変わりました');
-  $('tr').each((_,tr)=>{
-    const cells=$(tr).find('td').map((_,td)=>$(td).text().trim()).get(),year=Number(cells[0]);
-    if(!CENSUS_YEARS.includes(year)||year>=2000)return;
-    if(result.has(year))throw new Error('参考人口の年が重複しています');
-    const counts=cells.slice(2,5).map(v=>{if(!/^\d[\d,]*$/.test(v))throw new Error('参考人口の値が不正です');return Number(v.replaceAll(',',''))*1000;});
-    if(counts.length!==3)throw new Error('参考人口の列が欠けています');
-    const note=`千人単位の公表値。${year<=1940?'当時の内地人の人口。':''}${year===1940?'国勢調査に基づく補正人口。':''}${year>=1950&&year<=1970?'沖縄県を含みません。総人口とは対象地域が異なります。':''}${[1950,1980,1990].includes(year)?'国籍不詳を除きます。':''}`;
-    result.set(year,{population:counts[0],male:counts[1],female:counts[2],rows:[],coverage:'summary',precision:1000,referenceNote:note,
-      source:{publisher:'国立社会保障・人口問題研究所',statistics:'人口統計資料集2025',table:'表10-5 性，日本人・外国人別人口',sourcePeriod:`${year}-10`,publishedAt:'2025-01-31',retrievedAt:new Date(now).toISOString(),url:JAPANESE_REFERENCE_URL,status:'final',scope:note+'各年10月1日現在。日本人人口を総人口と外国人人口の差から算出していません。男女別は個別に丸められているため合計が一致しない場合があります。'}});
-  });
-  if(result.size!==8)throw new Error('1920～1990年の日本人人口が欠けています');
-  return result;
+export function deriveHistoricalJapanese(snapshot:CensusSnapshot){
+  const total=snapshot.groups.total,foreign=snapshot.groups.foreign;
+  if(!total||!foreign)throw new Error('参考推計に必要な総人口・外国人人口がありません');
+  const population=total.population-foreign.population,male=total.male-foreign.male,female=total.female-foreign.female;
+  if(population<=0||male<0||female<0||male+female!==population)throw new Error('日本人参考推計の差引値が不正です');
+  return {population,male,female,rows:[],coverage:'summary' as const,precision:1 as const,
+    referenceNote:'総人口から外国人人口を差し引いた値。国籍不詳を含みます。',
+    source:total.source,derivation:{method:'total-minus-foreign' as const,sources:[total.source,foreign.source] as [typeof total.source,typeof foreign.source]}};
 }
-export function addHistoricalNationalities(censuses:CensusSnapshot[],table:Table,japanese:ReturnType<typeof normalizeJapaneseReference>,latest:Nationalities){
+export function addHistoricalNationalities(censuses:CensusSnapshot[],table:Table,latest:Nationalities){
   const nat=dimension(table.classes,'韓国，朝鮮')['@id'],sex=dimension(table.classes,'男')['@id'];
   for(const snapshot of censuses){
     const year=snapshot.year;
@@ -39,7 +29,7 @@ export function addHistoricalNationalities(censuses:CensusSnapshot[],table:Table
     const source={...table.source,sourcePeriod:`${year}-10`,scope:'各年10月1日現在。1920～1940年は当時の内地の外地人と外国人を含む歴史的区分です。1990～2000年は外国人に関する特別集計。1920年のイギリスはインド・カナダ・オーストラリア籍を含みます。1950・1960年の一部国籍分類は沖縄県を含まず、年により分類範囲が異なります。国籍内訳は公表された個別国籍を掲載し、その他・内訳未詳は外国人総数との差引です。原表の「その他」は年により個別国籍と重複または内訳不足があるため、そのまま合算しません。国籍不詳を総人口との差から外国人へ割り当てていません。'};
     if(snapshot.groups.foreign&&snapshot.groups.foreign.population!==total)throw new Error('過去外国人人口の出典間で不一致です');
     snapshot.groups.foreign??={population:total,male,female,source,rows:[],coverage:'summary'};
-    snapshot.groups.japanese??=japanese.get(year);
+    if(year<=1990)snapshot.groups.japanese=deriveHistoricalJapanese(snapshot);
     if(!snapshot.groups.japanese)throw new Error('日本人人口が欠けています');
     const items=arrayOf(table.classes.find(c=>c['@id']===nat)!.CLASS)
       .filter(c=>!['総数(国籍)','その他'].includes(clean(c['@name']))&&values.has(`${clean(c['@name'])}/総数(男女別)`))
@@ -77,6 +67,5 @@ export async function fetchHistoricalNationalities(censuses:CensusSnapshot[],app
     const sex=dimension(classes,'男'),age=dimension(classes,'0～4歳'),area=dimension(classes,'全国');
     return {[parameter(sex['@id'])]:codeFor(sex,'総数'),[parameter(age['@id'])]:codeFor(age,'総数'),[parameter(area['@id'])]:codeFor(area,'全国')};
   });
-  const japanese=normalizeJapaneseReference(new TextDecoder('shift_jis').decode(await download(new URL(JAPANESE_REFERENCE_URL))),now);
-  return addHistoricalNationalities(censuses,table,japanese,normalize2020Nationalities(latest));
+  return addHistoricalNationalities(censuses,table,normalize2020Nationalities(latest));
 }
