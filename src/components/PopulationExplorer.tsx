@@ -1,3 +1,4 @@
+import {PopulationTrendChart} from './PopulationTrendChart';
 import {useState} from 'react';
 import {NationalityBreakdown} from './NationalityBreakdown';
 import {AnnualVital} from './AnnualVital';
@@ -27,6 +28,7 @@ export function PopulationExplorer({national,group,demo}:{national:National;grou
       <div className="timeline-labels">{options.map((year,i)=><button type="button" key={year} aria-pressed={selection===year} aria-label={year==='latest'?'最新確定値を表示':`${year}年の国勢調査を表示`} onClick={()=>setSelection(year)} className={i%2===1&&year!=='latest'?'minor-year':undefined}>{year==='latest'?'最新':year}</button>)}</div>
     </div>
     </div>
+    {national.populationTrend&&<PopulationTrendChart data={national.populationTrend} selection={selection}/>}
     <div className="official-summary">
       <div><span>{demo?'デモの基準人口':selection==='latest'?'最新公式確定値':view.derivation?'参考推計':view.referenceNote?'参考値（公表概数）':'国勢調査人口'}</span><strong>{view.population!==undefined?`${view.referenceNote&&!view.derivation?'約 ':''}${number(view.population)}`:'—'} <small>人</small>{share!==undefined&&<> <small aria-label="総人口に占める割合">{share}%</small></>}</strong></div>
       {(['male','female'] as const).map((sex,i)=><div key={sex}><span>{i===0?'男性':'女性'}</span><strong>{view[sex]!==undefined?(view[sex]/10000).toLocaleString('ja-JP',{minimumFractionDigits:1,maximumFractionDigits:1}):'—'} <small>万人</small></strong></div>)}
