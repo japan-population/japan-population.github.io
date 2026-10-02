@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { type YearTotal, EVENTS, MIGRATIONS, populationGroups, manifestSchema, nationalSchema, prefecturesSchema, sourceSchema, monthSchema } from '../src/types/statistics';
+import { type YearTotal, EVENTS, MIGRATIONS, populationGroups, manifestSchema, nationalSchema, prefecturesSchema, sourceSchema, monthSchema, type Source } from '../src/types/statistics';
 import { addMonths, monthStart, secondsInMonth } from '../src/lib/time';
 import { PREFECTURES } from '../src/lib/prefectures';
 import type { Dataset } from './dataset';
@@ -56,43 +56,49 @@ export function validateDataset(data: Dataset): void {
   const hasExtended = Boolean(data.national.breakdown || data.national.migration || Object.values(data.prefectures).some(p => p.population || p.migration));
   if (hasExtended) {
     const breakdown = data.national.breakdown;
-    if (!breakdown || !data.national.migration) throw new Error('拡張統計が不完全です');
-    const sources = [breakdown.source];
-    if (breakdown.exactSex) sources.push(breakdown.exactSex.source);
-    if (breakdown.groups.total.base !== data.national.population.base || breakdown.groups.total.baseDate !== data.national.population.baseDate) throw new Error('総人口と人口内訳の基準が一致しません');
-    const ageLabels = ['総数', ...Array.from({ length: 21 }, (_, i) => i === 20 ? '100歳以上' : `${i * 5}～${i * 5 + 4}歳`)];
-    const keys = new Set(breakdown.rows.map(r => `${r.group}/${r.sex}/${r.age}`));
-    if (keys.size !== 198 || breakdown.rows.length !== 198) throw new Error('人口内訳の欠損・重複');
-    for (const g of populationGroups) {
-      const model = breakdown.groups[g];
-      sources.push(model.source);
-      if (model.source.sourcePeriod !== breakdown.source.sourcePeriod || model.baseDate !== data.national.population.baseDate || model.yearAgoDate !== data.national.population.yearAgoDate) throw new Error('人口内訳の基準月が一致しません');
-      const rate = (model.base - model.yearAgo) / ((Date.parse(model.baseDate) - Date.parse(model.yearAgoDate)) / 1000);
-      if (Math.abs(rate - model.ratePerSecond) > 1e-12) throw new Error('人口内訳の速度が不正です');
-      for (const sex of ['男女計', '男', '女']) for (const age of ageLabels) if (!keys.has(`${g}/${sex}/${age}`)) throw new Error('人口内訳の分類が不完全です');
-    }
-    for (const region of [data.national, ...Object.values(data.prefectures)]) {
-      const migration = region.migration;
-      if (!migration) throw new Error('人口移動の地域が欠けています');
-      if (migration.yearToDate) for (const month of data.manifest.forecastMonths) validateYear(migration.yearToDate[month], month, migration.domesticSource.sourcePeriod, MIGRATIONS);
-      sources.push(migration.domesticSource, migration.internationalSource);
-      if (migration.domesticSource.sourcePeriod !== migration.internationalSource.sourcePeriod) throw new Error('国内外移動の基準月が一致しません');
-      for (const m of data.manifest.forecastMonths) for (const kind of MIGRATIONS) {
-        const model = migration.months[m]?.[kind];
-        if (!model || Math.abs(model.ratePerSecond * secondsInMonth(m) - model.estimatedMonthCount) > .0001) throw new Error('人口移動の月別速度が不正です');
+    const sources: Source[] = [];
+    if (breakdown) {
+      sources.push(breakdown.source);
+      if (breakdown.exactSex) sources.push(breakdown.exactSex.source);
+      if (breakdown.groups.total.base !== data.national.population.base || breakdown.groups.total.baseDate !== data.national.population.baseDate) throw new Error('総人口と人口内訳の基準が一致しません');
+      const ageLabels = ['総数', ...Array.from({ length: 21 }, (_, i) => i === 20 ? '100歳以上' : `${i * 5}～${i * 5 + 4}歳`)];
+      const keys = new Set(breakdown.rows.map(r => `${r.group}/${r.sex}/${r.age}`));
+      if (keys.size !== 198 || breakdown.rows.length !== 198) throw new Error('人口内訳の欠損・重複');
+      for (const g of populationGroups) {
+        const model = breakdown.groups[g];
+        sources.push(model.source);
+        if (model.source.sourcePeriod !== breakdown.source.sourcePeriod || model.baseDate !== data.national.population.baseDate || model.yearAgoDate !== data.national.population.yearAgoDate) throw new Error('人口内訳の基準月が一致しません');
+        const rate = (model.base - model.yearAgo) / ((Date.parse(model.baseDate) - Date.parse(model.yearAgoDate)) / 1000);
+        if (Math.abs(rate - model.ratePerSecond) > 1e-12) throw new Error('人口内訳の速度が不正です');
+        for (const sex of ['男女計', '男', '女']) for (const age of ageLabels) if (!keys.has(`${g}/${sex}/${age}`)) throw new Error('人口内訳の分類が不完全です');
       }
     }
-    for (const prefecture of Object.values(data.prefectures)) {
-      const model = prefecture.population;
-      if (!model) throw new Error('都道府県参考人口が欠けています');
-      sources.push(model.source, model.vitalSource, model.domesticSource, model.internationalSource);
-      if (Date.parse(model.officialBaseDate) !== monthStart(model.source.sourcePeriod)) throw new Error('参考人口の公式基準日が不正です');
-      if (model.vitalSource.sourcePeriod !== prefecture.vital.source.sourcePeriod || model.domesticSource.sourcePeriod !== prefecture.migration!.domesticSource.sourcePeriod || model.internationalSource.sourcePeriod !== prefecture.migration!.internationalSource.sourcePeriod) throw new Error('参考人口の出典月が不一致です');
-      for (const m of data.manifest.forecastMonths) {
-        const current = model.months[m];
-        if (!current) throw new Error('参考人口の月が欠けています');
-        const next = model.months[addMonths(m, 1)];
-        if (next && Math.abs(next.baseValue - current.baseValue - current.ratePerSecond * secondsInMonth(m)) > .001) throw new Error('参考人口が月境界で不連続です');
+    // Former prefecture estimates are optional independently of national age data.
+    if (data.national.migration || Object.values(data.prefectures).some(p=>p.migration||p.population)) {
+      if (!breakdown || !data.national.migration) throw new Error('拡張統計が不完全です');
+      for (const region of [data.national, ...Object.values(data.prefectures)]) {
+        const migration = region.migration;
+        if (!migration) throw new Error('人口移動の地域が欠けています');
+        if (migration.yearToDate) for (const month of data.manifest.forecastMonths) validateYear(migration.yearToDate[month], month, migration.domesticSource.sourcePeriod, MIGRATIONS);
+        sources.push(migration.domesticSource, migration.internationalSource);
+        if (migration.domesticSource.sourcePeriod !== migration.internationalSource.sourcePeriod) throw new Error('国内外移動の基準月が一致しません');
+        for (const m of data.manifest.forecastMonths) for (const kind of MIGRATIONS) {
+          const model = migration.months[m]?.[kind];
+          if (!model || Math.abs(model.ratePerSecond * secondsInMonth(m) - model.estimatedMonthCount) > .0001) throw new Error('人口移動の月別速度が不正です');
+        }
+      }
+      for (const prefecture of Object.values(data.prefectures)) {
+        const model = prefecture.population;
+        if (!model) throw new Error('都道府県参考人口が欠けています');
+        sources.push(model.source, model.vitalSource, model.domesticSource, model.internationalSource);
+        if (Date.parse(model.officialBaseDate) !== monthStart(model.source.sourcePeriod)) throw new Error('参考人口の公式基準日が不正です');
+        if (model.vitalSource.sourcePeriod !== prefecture.vital.source.sourcePeriod || model.domesticSource.sourcePeriod !== prefecture.migration!.domesticSource.sourcePeriod || model.internationalSource.sourcePeriod !== prefecture.migration!.internationalSource.sourcePeriod) throw new Error('参考人口の出典月が不一致です');
+        for (const m of data.manifest.forecastMonths) {
+          const current = model.months[m];
+          if (!current) throw new Error('参考人口の月が欠けています');
+          const next = model.months[addMonths(m, 1)];
+          if (next && Math.abs(next.baseValue - current.baseValue - current.ratePerSecond * secondsInMonth(m)) > .001) throw new Error('参考人口が月境界で不連続です');
+        }
       }
     }
     if (data.manifest.mode === 'official' && sources.some(s => s.status === 'fixture')) throw new Error('拡張統計にfixtureが混在しています');
@@ -121,7 +127,13 @@ export function validateDataset(data: Dataset): void {
     if (sources.some(s => s.status === 'fixture')) throw new Error('実データにfixtureが混在しています');
   }
 }
+// Legacy snapshots may be read for repair, but must not be published again.
+export function validatePublication(data: Dataset): void {
+  if (!data.national.breakdown) throw new Error('公開用データに国籍別人口・男女年齢別内訳がありません');
+  validateDataset(data);
+}
 export function validateChange(old: Dataset, next: Dataset): void {
+  if (old.national.breakdown && !next.national.breakdown) throw new Error('人口内訳の削除を拒否しました');
   if (old.manifest.mode !== next.manifest.mode) return;
   if (next.manifest.population.latestFinalMonth < old.manifest.population.latestFinalMonth || next.manifest.vital.latestMonth < old.manifest.vital.latestMonth) throw new Error('統計の基準月が後退しています');
   const check = (a: number, b: number, label: string) => { if (a === 0 ? b !== 0 : Math.abs(b - a) / a >= .2) throw new Error(`前回比20%以上の変化: ${label}`); };

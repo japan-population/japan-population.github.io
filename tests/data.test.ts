@@ -26,3 +26,25 @@ describe('data integrity', () => {
     expect((await readDataset(path)).prefectures['13'].name).toBe('東京都');
   });
 });
+it('内訳のない旧JSONは読み取り可能でも公開不可、既存JSONを保持する',async()=>{
+ const {validatePublication}=await import('../scripts/validation');
+ const old=fixture(now),missing=structuredClone(old);
+ delete missing.national.breakdown;delete missing.national.migration;
+ for(const p of Object.values(missing.prefectures)){delete p.population;delete p.migration;}
+ expect(()=>validateDataset(missing)).not.toThrow();
+ expect(()=>validatePublication(missing)).toThrow('国籍別人口');
+ expect(()=>validateChange(old,missing)).toThrow('人口内訳の削除');
+ const root=await mkdtemp(join(tmpdir(),'population-publication-'));dirs.push(root);
+ const path=join(root,'data');await publishDataset(old,path);
+ const before=await readFile(join(path,'national.json'),'utf8');
+ await expect(publishDataset(missing,path)).rejects.toThrow('国籍別人口');
+ expect(await readFile(join(path,'national.json'),'utf8')).toBe(before);
+});
+it('全国の人口内訳を、廃止済み都道府県参考推計の有無に依存させない',async()=>{
+ const {validatePublication}=await import('../scripts/validation');
+ const d=fixture(now);delete d.national.migration;
+ for(const p of Object.values(d.prefectures)){delete p.population;delete p.migration;}
+ expect(()=>validatePublication(d)).not.toThrow();
+ d.national.breakdown!.rows.pop();
+ expect(()=>validatePublication(d)).toThrow('欠損');
+});
