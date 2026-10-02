@@ -1,3 +1,4 @@
+import type { OfficialRegions } from './sources/census-regions';
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
@@ -24,7 +25,7 @@ export function semanticJSON(value: unknown): string {
     return v;
   });
 }
-export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
+export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; officialRegions?: OfficialRegions; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
   const current = monthKey(now);
   const months = [0, 1, 2].map(n => addMonths(current, n));
   const sorted = [...vital].sort((a, b) => a.month.localeCompare(b.month));
@@ -56,6 +57,8 @@ export function buildDataset(population: PopulationObservation[], vital: VitalOb
         if (!japanese || japanese.month !== total.month || japanese.value > total.value) throw new Error('地域人口の国籍別データが不整合です');
         p.officialPopulation = {total:{value:total.value,source:total.source},japanese:{value:japanese.value,source:japanese.source},foreign:{value:total.value-japanese.value,source:{...total.source,scope:'公表された総人口から日本人人口を差し引いた参考値。双方の公表単位は千人。'},derived:true}};
       }
+      const official = extra.officialRegions?.[p.code];
+      if (official && (!p.officialPopulation || official.total.source.sourcePeriod >= p.officialPopulation.total.source.sourcePeriod)) p.officialPopulation = official;
       p.migration = makeMigration(p.code);
       p.population = referenceModel(extra.bases[p.code], vital, extra.migration, p.code, months);
     }
