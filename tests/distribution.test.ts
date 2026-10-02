@@ -9,8 +9,7 @@ import { monthStart,addMonths,secondsInMonth } from '../src/lib/time';
 import { fixture } from '../scripts/build-fixture';
 import { nationalIndicators } from '../src/lib/groups';
 import { normalizeHolidays,normalizeBirthDistribution } from '../scripts/sources/distribution';
-import { normalizeNationalEvents } from '../scripts/sources/national-events';
-import { groupEvents } from '../scripts/models/group-events';
+import { groupEvents, internationalEvents } from '../scripts/models/group-events';
 const profiles=eventProfiles(),calendar=defaultDistribution.calendar;
 const targets=Object.fromEntries(Array.from({length:12},(_,i)=>[`2026-${String(i+1).padStart(2,'0')}`,10000.123+i*500]));
 const total=Object.values(targets).reduce((a,b)=>a+b,0);
@@ -90,19 +89,34 @@ describe('normalized hierarchical distribution',()=>{
   expect(p.daily.sourceYear).toBe(2024);expect(p.daily.weekdayWeights[0]).toBeLessThan(p.daily.weekdayWeights[1]);expect(p.monthlyProfile!.weights.reduce((a,b)=>a+b,0)).toBe(686173);
   expect(eventProfiles(defaultDistribution,'foreign').birth.daily.sourceType).toBe('heuristic');expect(profiles.birth.daily.sourceType).toBe('derived');
  });
- it('population-reference entries/exits exclude domestic counters and unrelated passenger totals',async()=>{
-  const n=fixture(at('2026-10-01T00:00:00')).national;
-  const rows=await normalizeNationalEvents(await readFile('tests/fixtures/population-reference-2026-09.xlsx'),{...n.population.source,status:'final'});
-  expect(rows.at(-1)!.international).toEqual({total:{inflow:493618,outflow:383154},japanese:{inflow:82046,outflow:66673},foreign:{inflow:411572,outflow:316481}});
-  const m=rows.at(-1)!.international!;expect(m.total.inflow).toBe(m.japanese.inflow+m.foreign.inflow);
-  // The only accepted source is the population-estimate reference table, never passenger statistics.
-  const forecastMonths=['2026-10'];
-  const history=fixture(at('2026-10-01T00:00:00')).history.vital.map(r=>({...rows.at(-1)!,month:r.month}));
-  const a=groupEvents(n.vital,history,undefined,forecastMonths);
-  const domestic=fixture(at('2026-10-01T00:00:00')).national.migration!;
-  const unrelated={rows:[],domesticSource:domestic.domesticSource,internationalSource:domestic.internationalSource};
-  const b=groupEvents(n.vital,history,{total:unrelated,japanese:unrelated,foreign:unrelated},forecastMonths);
-  expect(a.total.inflow).toEqual(b.total.inflow);expect(a.total.outflow).toEqual(b.total.outflow);
-  expect(a.total.inflow!.source.scope).toContain('90日以内');expect(a.total.inflow!.source.table).toContain('入国者数・出国者数');
+ it('national migration uses overseas address relocations; domestic and passenger counts cannot affect it',()=>{
+  const d=fixture(at('2026-10-01T00:00:00')), n=d.national;
+  const source={...n.migration!.internationalSource,status:'final' as const,statistics:'住民基本台帳人口移動報告',url:'https://www.e-stat.go.jp/dbview?sid=0003423635'};
+  const movement={internationalSource:source,domesticSource:n.migration!.domesticSource,
+    rows:d.history.vital.map(r=>({month:r.month,regions:{'00':{domesticIn:1,domesticOut:2,internationalIn:1000,internationalOut:700}}}))};
+  const a=internationalEvents(movement,['2026-10']);
+  expect(a.inflow!.months['2026-10'].estimatedMonthCount).toBe(1000);
+  expect(a.outflow!.months['2026-10'].estimatedMonthCount).toBe(700);
+  const huge=structuredClone(movement);
+  for(const r of huge.rows){r.regions['00'].domesticIn=90000000;r.regions['00'].domesticOut=80000000;}
+  expect(internationalEvents(huge,['2026-10'])).toEqual(a);
+  const history=d.history.vital.map(r=>({month:r.month,source:r.source,values:{total:r.regions['00'],japanese:r.regions['00'],foreign:r.regions['00']},international:{total:{inflow:99999999,outflow:88888888}}}));
+  const grouped=groupEvents(n.vital,history,{total:movement,japanese:movement,foreign:movement},['2026-10']);
+  expect(grouped.total.inflow).toEqual(a.inflow);
+  expect(()=>groupEvents(n.vital,history,undefined,['2026-10'])).toThrow('国外住所移転');
+  expect(()=>internationalEvents({...movement,internationalSource:{...source,statistics:'出入国管理統計'}},['2026-10'])).toThrow('国外住所移転');
+  expect(()=>internationalEvents({...movement,internationalSource:{...source,statistics:'人口推計'}},['2026-10'])).toThrow('国外住所移転');
  });
+});
+it('verified resident-register overseas history reproduces the corrected national forecasts',async()=>{
+ const data=JSON.parse(await readFile('tests/fixtures/international-address-moves.json','utf8')) as {source:import('../src/types/statistics').Source;rows:{month:string;counts:number[]}[]};
+ expect(data.rows.at(-1)).toEqual({month:'2026-08',counts:[45884,47838,9633,18192,36251,29646]});
+ for(const row of data.rows){expect(row.counts[0]).toBe(row.counts[2]+row.counts[4]);expect(row.counts[1]).toBe(row.counts[3]+row.counts[5]);}
+ const e=internationalEvents({internationalSource:data.source,rows:data.rows.slice(-66).map(r=>({month:r.month,regions:{'00':{internationalIn:r.counts[0],internationalOut:r.counts[1]}}}))},['2026-10']);
+ expect(e.inflow!.months['2026-10'].estimatedMonthCount).toBeCloseTo(71937.8110758767,6);
+ expect(e.outflow!.months['2026-10'].estimatedMonthCount).toBeCloseTo(27441.66745802866,6);
+ for(const kind of ['inflow','outflow'] as const){
+  const plan=prepareSeriesPlan(e[kind]!,2026,profiles[kind],calendar)!;
+  expect(readSeriesPlan(plan,at('2026-10-31T23:59:59.999'))!.month).toBeCloseTo(e[kind]!.months['2026-10'].estimatedMonthCount,2);
+ }
 });

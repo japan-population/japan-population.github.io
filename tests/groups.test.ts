@@ -19,6 +19,8 @@ describe('国籍別人口動態と地図', () => {
   it('旧JSONでも日本人の人口動態を総数・外国人には表示しない', () => {
     const n = fixture(now).national; delete n.eventsByGroup;
     expect(nationalIndicators(n,'total').birth).toBeUndefined();
+    expect(nationalIndicators(n,'total').inflow!.months['2026-10']).toEqual(n.migration!.months['2026-10'].internationalIn);
+    expect(nationalIndicators(n,'total').outflow!.months['2026-10']).toEqual(n.migration!.months['2026-10'].internationalOut);
     expect(nationalIndicators(n,'foreign')).toEqual({});
     expect(nationalIndicators(n,'total').marriage).toEqual(nationalIndicators(n,'japanese').marriage);
     expect(nationalIndicators(n,'japanese').birth).toBeDefined();
@@ -38,4 +40,17 @@ describe('国籍別人口動態と地図', () => {
     expect(rows.at(-1)?.month).toBe('2026-03');
     expect(rows.at(-1)?.values).toEqual({total:{birth:52804,death:135811},japanese:{birth:50750,death:135040},foreign:{birth:2054,death:771}});
   });
+});
+it('住所移転への定義訂正だけを許可し、通常の急変監視は維持する',async()=>{
+ const {validateChange}=await import('../scripts/validation');
+ const before=fixture(now),after=structuredClone(before);
+ for(const group of ['total','japanese','foreign'] as const)for(const kind of ['inflow','outflow'] as const){
+  const a=before.national.eventsByGroup![group][kind]!,b=after.national.eventsByGroup![group][kind]!;
+  a.source={...a.source,statistics:'人口推計',table:'参考表 全国人口の推移（入国者数・出国者数）'};
+  b.source={...b.source,statistics:'住民基本台帳人口移動報告',url:'https://www.e-stat.go.jp/dbview?sid=0003423635'};
+  b.months['2026-10'].estimatedMonthCount/=10;
+ }
+ expect(()=>validateChange(before,after)).not.toThrow();
+ const ordinary=structuredClone(after);ordinary.national.eventsByGroup!.total.inflow!.months['2026-10'].estimatedMonthCount*=2;
+ expect(()=>validateChange(after,ordinary)).toThrow('20%');
 });

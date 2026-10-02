@@ -54,8 +54,10 @@ export type GroupedEvents = z.infer<typeof groupedEventsSchema>;
 export const officialRegionSchema = z.object({ value: z.number().int().nonnegative(), source: sourceSchema, derived: z.boolean().optional() });
 export const nationalitiesSchema = z.object({
   source:sourceSchema, total:z.number().int().positive(),
+  populationTotal:z.number().int().positive().optional(), // Same census date and population universe.
   items:z.array(z.object({code:z.string(),name:z.string().min(1),value:z.number().int().nonnegative()})).min(1),
 }).superRefine((v,ctx)=>{
+  if(v.populationTotal!==undefined&&v.total>v.populationTotal)ctx.addIssue({code:'custom',message:'外国人人口が総人口を超えています'});
   if(new Set(v.items.map(i=>i.code)).size!==v.items.length||v.items.reduce((n,i)=>n+i.value,0)!==v.total)ctx.addIssue({code:'custom',message:'国籍内訳の合計またはコードが不正です'});
 });
 export type Nationalities = z.infer<typeof nationalitiesSchema>;
