@@ -120,21 +120,33 @@ it('原表PDFで補完した1920・1930・1950・1970年は85歳以上の男女�
  await expect(supplementCensusAges(bad)).rejects.toThrow('一致しません');
 });
 
-it('1940・1960年の地域限定100歳以上を全国グラフへ混入させない',async()=>{
+it('1940・1960年は85歳以上を沖縄を除く4階級に分けて注記する',async()=>{
  const {supplementCensusAges}=await import('../scripts/sources/census-age-supplements');
- const {AgeReference}=await import('../src/components/AgeReference');
+ const {PopulationPyramid}=await import('../src/components/PopulationPyramid');
  const fine=await supplementCensusAges(structuredClone(archive.censuses));
  const {national}=await readDataset('public/data');
  for(const [year,total,male,female]of [[1940,185,26,159],[1960,144,27,117]]){
   const group=fine.find(c=>c.year===year)!.groups.total!;
-  expect(group.rows).toEqual(archive.censuses.find(c=>c.year===year)!.groups.total!.rows);
-  expect(group.ageReference).toMatchObject({age:'100歳以上',total,male,female,scopeLabel:'沖縄を除く'});
-  expect(officialView(national,'total',year).ageReference).toEqual(group.ageReference);
-  expect(officialView(national,'japanese',year).ageReference).toBeUndefined();
-  expect(officialView(national,'foreign',year).ageReference).toBeUndefined();
-  const $=load(renderToStaticMarkup(<AgeReference data={group.ageReference!}/>));
-  expect($('h3').text()).toContain('沖縄を除く');
-  expect($('dd').map((_,e)=>$(e).text().trim()).get()).toEqual([total,male,female].map(n=>`${n} 人`));
+  const original=archive.censuses.find(c=>c.year===year)!.groups.total!;
+  expect(group.rows.filter(r=>!(parseInt(r.age)>=85))).toEqual(original.rows.filter(r=>!(parseInt(r.age)>=85)));
+  expect(group.population).toBe(original.population);
+  expect(group.ageExclusion).toMatchObject({fromAge:85,scopeLabel:'沖縄を除く'});
+  for(const [sex,key]of [['男女計','total'],['男','male'],['女','female']]as const){
+   expect(group.rows.filter(r=>r.sex===sex&&parseInt(r.age)>=85).reduce((n,r)=>n+r.value,0)+group.ageExclusion!.omitted[key]).toBe(original.rows.find(r=>r.sex===sex&&r.age==='85歳以上')!.value);
+  }
+  expect(officialView(national,'total',year).rows).toEqual(group.rows);
+  expect(officialView(national,'japanese',year).ageExclusion).toBeUndefined();
+  expect(officialView(national,'foreign',year).ageExclusion).toBeUndefined();
+  for(const interval of [5,10]as const){
+   const rows=pyramidRows(group.rows,interval);
+   expect(rows[0]).toMatchObject({age:'100歳以上',total,male,female});
+   expect(rows.find(r=>r.age===(interval===5?'85～89歳':'80～89歳'))).toBeDefined();
+   const $=load(renderToStaticMarkup(<PopulationPyramid rows={group.rows} label="総人口" interval={interval} onIntervalChange={()=>{}} historical ageExclusion={group.ageExclusion}/>));
+   expect($('.age-label sup')).toHaveLength(interval===5?4:3);
+   expect($('.age-label').filter((_,e)=>$(e).text()==='80～84歳').find('sup')).toHaveLength(0);
+   expect($('.small-note').last().text()).toBe('※85歳以上は沖縄のデータを含まない値です');
+   expect($('.small-note').last().prev().text()).toBe('年齢不詳はグラフに含めていません。');
+  }
  }
  expect(await supplementCensusAges(structuredClone(fine))).toEqual(fine);
 });
@@ -142,7 +154,7 @@ it('1950年は琉球・奄美の原表を合算し出典と基準日を保持す
  const {national}=await readDataset('public/data');
  const view=officialView(national,'total',1950);
  expect(pyramidRows(view.rows,5)[0]).toMatchObject({age:'100歳以上',total:97,male:25,female:72});
- expect(view.ageReference).toBeUndefined();
+ expect(view.ageExclusion).toBeUndefined();
  expect(view.ageSupportingSources).toHaveLength(1);
  expect(view.ageSupportingSources![0].sourcePeriod).toBe('1950-12');
  expect(view.ageSupportingSources![0].scope).toContain('奄美');

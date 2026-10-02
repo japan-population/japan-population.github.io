@@ -43,4 +43,4 @@
 .about{display:block}.about>.section-controls{margin-bottom:24px}.about .section-controls h2{margin-top:5px;font-size:23px}
 @media(max-width:760px){.section-controls{top:var(--site-header-height,76px);padding:8px 0}.section-controls h2{font-size:20px}.official-controls .official-timeline{margin-top:6px;padding:6px 8px}}
 
-.age-reference{margin:0 28px 20px;padding:18px 0;border-top:1px solid var(--line)}.age-reference h3{font-size:14px}.age-reference h3 small{font-size:11px;color:var(--muted)}.age-reference dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0 0}.age-reference dt{font-size:10px;color:var(--muted)}.age-reference dd{margin:2px 0 0;font-size:22px;font-variant-numeric:tabular-nums}.age-reference dd small{font-size:10px}@media(max-width:600px){.age-reference{margin:0 16px 16px}}
+.age-label-text{position:relative;display:inline-block}.age-label sup{position:absolute;left:100%;top:-.15em;margin-left:1px;font-size:.7em;line-height:1}.pyramid-table sup{font-size:.7em;margin-left:2px}

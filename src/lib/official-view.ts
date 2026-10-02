@@ -6,7 +6,7 @@ export function officialView(national:National,group:PopulationGroup,selection:O
     const population=snapshot?.groups[group];
     return {derivation:population?.derivation,referenceNote:population?.referenceNote,nationalities:snapshot?.nationalities,date:snapshot?.date??`${selection}-10-01`,population:population?.population,
       male:population?.male,female:population?.female,rows:population?.rows??[],
-      source:population?.source,ageSource:population?.ageSource??population?.source,ageSupportingSources:population?.ageSupportingSources,ageReference:population?.ageReference,total:snapshot?.groups.total?.population,
+      source:population?.source,ageSource:population?.ageSource??population?.source,ageSupportingSources:population?.ageSupportingSources,ageExclusion:population?.ageExclusion,total:snapshot?.groups.total?.population,
       annual:national.archive?.annual.find(a=>a.year===selection)};
   }
   const b=national.breakdown,p=b?.groups[group]??(group==='total'?national.population:undefined);
@@ -16,6 +16,6 @@ export function officialView(national:National,group:PopulationGroup,selection:O
   return {derivation:undefined,referenceNote:undefined,nationalities:national.nationalities,date:p?.baseDate.slice(0,10)??national.population.baseDate.slice(0,10),population:p?.base,
     male:exact?.male??rows.find(r=>r.age==='総数'&&r.sex==='男')?.value,
     female:exact?.female??rows.find(r=>r.age==='総数'&&r.sex==='女')?.value,
-    rows,source:p?.source,ageSource:b?.source,ageSupportingSources:undefined,ageReference:undefined,total:p?.baseDate===total.baseDate?total.base:undefined,
+    rows,source:p?.source,ageSource:b?.source,ageSupportingSources:undefined,ageExclusion:undefined,total:p?.baseDate===total.baseDate?total.base:undefined,
     annual:national.archive?.annual.reduce((a,b)=>a.year>b.year?a:b)};
 }

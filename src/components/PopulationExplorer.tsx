@@ -3,7 +3,6 @@ import {NationalityBreakdown} from './NationalityBreakdown';
 import {AnnualVital} from './AnnualVital';
 import {CENSUS_YEARS,type National,type PopulationGroup} from '../types/statistics';
 import {SourceInfo} from './SourceInfo';
-import {AgeReference} from './AgeReference';
 import {PopulationPyramid} from './PopulationPyramid';
 import {number} from '../lib/formatting';
 import {GROUP_LABELS} from '../lib/groups';
@@ -36,7 +35,7 @@ export function PopulationExplorer({national,group,demo}:{national:National;grou
     {group==='foreign'&&selection!=='latest'&&selection<=1940&&<p className="small-note">戦前の値は、当時の内地の外地人を含む区分です。</p>}
     {view.referenceNote&&<p className="small-note">{view.referenceNote}</p>}
     {view.derivation?<SourceInfo sources={view.derivation.sources}/>:view.source&&<SourceInfo source={view.source}/>}
-    <details className="official-pyramid" open={pyramidOpen} onToggle={e=>{if(e.target===e.currentTarget)setPyramidOpen(e.currentTarget.open);}}><summary>人口ピラミッド</summary>{view.rows.length>0?<><PopulationPyramid key={`${selection}/${group}`} rows={view.rows} interval={ageInterval} onIntervalChange={setAgeInterval} label={GROUP_LABELS[group]} historical={selection!=='latest'}/>{view.ageReference&&<AgeReference data={view.ageReference}/>} {view.ageSource&&<SourceInfo sources={[view.ageSource,...view.ageReference?[view.ageReference.source]:[],...view.ageSupportingSources??[]]}/>}</>:<p className="small-note pyramid-unavailable">この年の国籍別・年齢階級別人口は未収録です。</p>}</details>
+    <details className="official-pyramid" open={pyramidOpen} onToggle={e=>{if(e.target===e.currentTarget)setPyramidOpen(e.currentTarget.open);}}><summary>人口ピラミッド</summary>{view.rows.length>0?<><PopulationPyramid key={`${selection}/${group}`} rows={view.rows} interval={ageInterval} onIntervalChange={setAgeInterval} label={GROUP_LABELS[group]} historical={selection!=='latest'} ageExclusion={view.ageExclusion}/>{view.ageSource&&<SourceInfo sources={[view.ageSource,...view.ageSupportingSources??[]]}/>}</>:<p className="small-note pyramid-unavailable">この年の国籍別・年齢階級別人口は未収録です。</p>}</details>
     {group!=='foreign'&&view.annual&&<AnnualVital open={annualOpen} onOpenChange={setAnnualOpen} data={view.annual} total={group==='total'} latest={selection==='latest'}/>}
     {group==='foreign'&&<NationalityBreakdown open={nationalityOpen} onOpenChange={setNationalityOpen} data={view.nationalities} historical={selection!=='latest'}/>}
   </section>;

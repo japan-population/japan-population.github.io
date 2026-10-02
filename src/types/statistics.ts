@@ -62,10 +62,10 @@ export const nationalitiesSchema = z.object({
 });
 export type Nationalities = z.infer<typeof nationalitiesSchema>;
 export const CENSUS_YEARS = Array.from({length:11},(_,i)=>1920+i*10);
-export const ageReferenceSchema=z.object({age:z.literal('100歳以上'),total:z.number().int().nonnegative(),male:z.number().int().nonnegative(),female:z.number().int().nonnegative(),scopeLabel:z.string().min(1),source:sourceSchema}).refine(v=>v.total===v.male+v.female,'参考年齢人口の男女計が不一致です');
+const ageExclusionSchema=z.object({fromAge:z.literal(85),scopeLabel:z.literal('沖縄を除く'),omitted:z.object({total:z.number().int().nonnegative(),male:z.number().int().nonnegative(),female:z.number().int().nonnegative()})}).refine(v=>v.omitted.total===v.omitted.male+v.omitted.female,'除外人口の男女計が不一致です');
 const censusGroupSchema=z.object({
   population:z.number().int().positive(),male:z.number().int().nonnegative(),female:z.number().int().nonnegative(),
-  source:sourceSchema,ageSource:sourceSchema.optional(),ageSupportingSources:z.array(sourceSchema).optional(),ageReference:ageReferenceSchema.optional(),rows:breakdownSchema.shape.rows,
+  source:sourceSchema,ageSource:sourceSchema.optional(),ageSupportingSources:z.array(sourceSchema).optional(),ageExclusion:ageExclusionSchema.optional(),rows:breakdownSchema.shape.rows,
   derivation:z.object({method:z.literal('total-minus-foreign'),sources:z.tuple([sourceSchema,sourceSchema])}).optional(),
   coverage:z.enum(['full','summary']).optional(),referenceNote:z.string().min(1).optional(),precision:z.union([z.literal(1),z.literal(1000)]).optional(),
 }).superRefine((v,ctx)=>{
