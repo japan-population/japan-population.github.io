@@ -4,6 +4,7 @@ export type CounterModel = { baseValue: number; baseTimestamp: number; ratePerSe
 export function estimateCounter(model: CounterModel, now: number): number {
   return model.baseValue + model.ratePerSecond * (now - model.baseTimestamp) / 1000;
 }
+/** Legacy constant-rate API. Dashboard event cards use distribution/series instead. */
 export function estimateEvent(model: EventModel, month: string, now: number, period: 'day' | 'month'): number | null {
   if (monthKey(now) !== month) return null;
   const start = period === 'day' ? dayStart(now) : monthStart(month);

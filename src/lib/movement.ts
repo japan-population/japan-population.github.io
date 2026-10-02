@@ -1,4 +1,5 @@
 import type { Migration, EventModel, YearTotal } from '../types/statistics';
+/** National UI: resident international migration into/out of Japan, never domestic moves. */
 export type MovementKind = 'inflow' | 'outflow';
 export function movement(migration: Migration | undefined, month: string, kind: MovementKind, national: boolean): { model?: EventModel; year?: YearTotal } {
   const keys = kind === 'inflow' ? ['internationalIn', 'domesticIn'] as const : ['internationalOut', 'domesticOut'] as const;

@@ -1,3 +1,4 @@
+import { distributionDataSchema } from './distribution';
 import { z } from 'zod';
 import { PREFECTURES } from '../lib/prefectures';
 export const EVENTS = ['birth', 'death', 'marriage', 'divorce'] as const;
@@ -13,7 +14,8 @@ export const eventModelSchema = z.object({
   seasonalBase: z.number().finite().nonnegative(), trendFactor: z.number().finite().nonnegative(),
 });
 export const eventSetSchema = z.object({ birth: eventModelSchema, death: eventModelSchema, marriage: eventModelSchema, divorce: eventModelSchema });
-export const yearTotalSchema = z.object({ officialCount: z.number().int().nonnegative(), estimatedBeforeMonth: z.number().finite().nonnegative(), officialThrough: monthSchema.nullable(), estimatedYearCount: z.number().finite().nonnegative().optional(), averagePerDay: z.number().finite().nonnegative().optional() });
+export const monthlyTargetSchema = z.object({count:z.number().finite().nonnegative(),sourceType:z.enum(['official','derived'])});
+export const yearTotalSchema = z.object({ monthlyTargets:z.record(monthSchema,monthlyTargetSchema).optional(), officialCount: z.number().int().nonnegative(), estimatedBeforeMonth: z.number().finite().nonnegative(), officialThrough: monthSchema.nullable(), estimatedYearCount: z.number().finite().nonnegative().optional(), averagePerDay: z.number().finite().nonnegative().optional() });
 export type YearTotal = z.infer<typeof yearTotalSchema>;
 export type PopulationGroup = 'total' | 'japanese' | 'foreign';
 export type DisplayPeriod = 'day' | 'month' | 'year';
@@ -50,7 +52,7 @@ export type EventSeries = z.infer<typeof eventSeriesSchema>;
 export const groupedEventsSchema = z.record(z.enum(populationGroups), z.object({ birth: eventSeriesSchema.optional(), death: eventSeriesSchema.optional(), marriage: eventSeriesSchema.optional(), divorce: eventSeriesSchema.optional(), inflow: eventSeriesSchema.optional(), outflow: eventSeriesSchema.optional() }));
 export type GroupedEvents = z.infer<typeof groupedEventsSchema>;
 export const officialRegionSchema = z.object({ value: z.number().int().nonnegative(), source: sourceSchema, derived: z.boolean().optional() });
-export const nationalSchema = z.object({ generationId: z.string(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
+export const nationalSchema = z.object({ generationId: z.string(), distribution: distributionDataSchema.optional(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
 export const prefectureSchema = z.object({ code: z.string().regex(/^(0[1-9]|[1-3]\d|4[0-7])$/), name: z.string(), officialPopulation: z.record(z.enum(populationGroups), officialRegionSchema).optional(), vital: vitalSchema, population: referenceSchema.optional(), migration: migrationSchema.optional() });
 export const prefecturesSchema = z.object({ generationId: z.string(), prefectures: z.record(z.string(), prefectureSchema) }).superRefine((v, ctx) => {
   if (Object.keys(v.prefectures).length !== 47) ctx.addIssue({ code: 'custom', message: 'Exactly 47 prefectures required' });
