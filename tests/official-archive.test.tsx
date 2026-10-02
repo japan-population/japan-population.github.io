@@ -52,7 +52,13 @@ it('スライダーは最新を初期表示、日付はその上、年間欄は�
  const {national}=await readDataset('public/data');
  for(const group of ['total','japanese','foreign']as const){
   const $=load(renderToStaticMarkup(<PopulationExplorer national={national} group={group} demo={false}/>));
-  expect($('input[type=range]').attr('value')).toBe('11');expect($('.timeline-labels button')).toHaveLength(12);
+  const slider=$('input[type=range]');
+  const [year,month]=national.population.baseDate.slice(0,7).split('-').map(Number);
+  const latestOffset=(year-1920)*12+month-10;
+  expect(slider.attr('value')).toBe(String(latestOffset));expect(slider.attr('max')).toBe(String(latestOffset));
+  expect(slider.attr('aria-valuetext')).toBe('最新確定値');
+  expect($('.timeline-labels button[aria-pressed=true]').text()).toBe('最新');
+  expect($('.timeline-labels button')).toHaveLength(12);
   expect($('.official-date').next().is('input[type=range]')).toBe(true);
   expect($('.section-heading time')).toHaveLength(0);expect($('.official-timeline .official-date time').attr('datetime')).toBe(national.population.baseDate.slice(0,10));
   expect($('.official-pyramid').is('details')).toBe(true);expect($('.official-pyramid').attr('open')).toBeUndefined();

@@ -1,3 +1,4 @@
+import {projectionsSchema} from './projections';
 import { distributionDataSchema } from './distribution';
 import { z } from 'zod';
 import { PREFECTURES } from '../lib/prefectures';
@@ -7,7 +8,7 @@ export const monthSchema = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/);
 export const sourceSchema = z.object({
   publisher: z.string().min(1), statistics: z.string().min(1), table: z.string().min(1),
   sourcePeriod: monthSchema, publishedAt: z.iso.date(), retrievedAt: z.iso.datetime({ offset: true }),
-  url: z.url(), status: z.enum(['final', 'provisional', 'fixture']), scope: z.string().min(1),
+  url: z.url(), status: z.enum(['final', 'provisional', 'fixture', 'projection']), scope: z.string().min(1),
 });
 export const eventModelSchema = z.object({
   estimatedMonthCount: z.number().finite().nonnegative(), ratePerSecond: z.number().finite().nonnegative(),
@@ -103,7 +104,19 @@ export const officialArchiveSchema=z.object({censuses:z.array(censusSnapshotSche
   for(const a of v.annual)if(a.source.sourcePeriod!==`${a.year}-12`)ctx.addIssue({code:'custom',message:'年間人口動態の基準年が不一致です'});
 });
 export type OfficialArchive=z.infer<typeof officialArchiveSchema>;
-export const nationalSchema = z.object({ archive:officialArchiveSchema.optional(), generationId: z.string(), distribution: distributionDataSchema.optional(), nationalities:nationalitiesSchema.optional(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
+export const populationTrendSchema=z.object({
+  sources:z.array(sourceSchema).min(1),
+  points:z.array(z.object({date:z.iso.date(),total:z.number().int().positive(),japanese:z.number().int().nonnegative().optional(),foreign:z.number().int().nonnegative().optional(),precision:z.union([z.literal(1),z.literal(1000)]),sourceIndex:z.number().int().nonnegative(),breakdownReference:z.object({method:z.enum(['census-reference','linear-interpolation']),anchorDates:z.array(z.iso.date()).min(1).max(2),sourceIndexes:z.array(z.number().int().nonnegative()).min(1).max(2)}).optional()})).min(81),
+}).superRefine((v,ctx)=>{
+  v.points.forEach((p,i)=>{
+    if(p.breakdownReference&&(p.japanese===undefined||p.breakdownReference.sourceIndexes.some(i=>i>=v.sources.length)))ctx.addIssue({code:'custom',message:'参考内訳の出典・人口が不正です'});
+    if(p.sourceIndex>=v.sources.length||p.total%p.precision!==0)ctx.addIssue({code:'custom',message:'年次人口の出典・精度が不正です'});
+    if((p.japanese===undefined)!==(p.foreign===undefined)||p.japanese!==undefined&&p.japanese+p.foreign! !==p.total)ctx.addIssue({code:'custom',message:'年次人口の国籍別合計が不一致です'});
+    if(Number(p.date.slice(0,4))!==1920+i)ctx.addIssue({code:'custom',message:'年次人口に欠損・重複があります'});
+  });
+});
+export type PopulationTrend=z.infer<typeof populationTrendSchema>;
+export const nationalSchema = z.object({ projections:projectionsSchema.optional(), populationTrend:populationTrendSchema.optional(), archive:officialArchiveSchema.optional(), generationId: z.string(), distribution: distributionDataSchema.optional(), nationalities:nationalitiesSchema.optional(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
 export const prefectureSchema = z.object({ code: z.string().regex(/^(0[1-9]|[1-3]\d|4[0-7])$/), name: z.string(), officialPopulation: z.record(z.enum(populationGroups), officialRegionSchema).optional(), vital: vitalSchema, population: referenceSchema.optional(), migration: migrationSchema.optional() });
 export const prefecturesSchema = z.object({ generationId: z.string(), prefectures: z.record(z.string(), prefectureSchema) }).superRefine((v, ctx) => {
   if (Object.keys(v.prefectures).length !== 47) ctx.addIssue({ code: 'custom', message: 'Exactly 47 prefectures required' });
