@@ -9,7 +9,7 @@ export function EventBreakdown({event,sections,total,proxy=false}:{event:EventKi
     {realtime&&sections.length>0&&<p className="breakdown-note">{proxy?'日本人統計の構成比を代用した参考推計。':'公表年の構成比で配分した推計。'}人数は表示中の期間に連動します。</p>}
     {BREAKDOWN_KINDS[event].map(kind=>{
       const section=sections.find(s=>s.kind===kind);
-      return <div className="breakdown-category" key={kind}><h4>{BREAKDOWN_LABELS[kind]}{section&&<small>{section.year}年{kind!=='cause'&&kind!=='birthOrder'?' · 5歳階級':''}</small>}</h4>
+      return <div className="breakdown-category" key={kind}><h4>{BREAKDOWN_LABELS[kind]}{section&&(!realtime||kind!=='cause'&&kind!=='birthOrder')&&<small>{!realtime&&`${section.year}年`}{kind!=='cause'&&kind!=='birthOrder'?`${realtime?'':' · '}5歳階級`:''}</small>}</h4>
         {!section?<p className="breakdown-note">この年・区分の内訳は未収録です。</p>:<>
           {section.note&&<p className="breakdown-note">{section.note}</p>}
           {kind==='cause'&&<p className="breakdown-note">死因上位{section.items.filter(i=>i.rank).length}項目{section.items.some(i=>i.supplement)?' ＋ 追加項目':''}</p>}
@@ -26,6 +26,6 @@ export function EventBreakdown({event,sections,total,proxy=false}:{event:EventKi
       </div>;
     })}
     {realtime&&sections.length>0&&<p className="breakdown-note">端数処理により内訳の合計が全体と一致しない場合があります。</p>}
-    {sources.length>0&&<SourceInfo sources={sources}/>}
+    {sources.length>0&&<SourceInfo sources={sources} showPeriod={!realtime}/>}
   </div></details>;
 }

@@ -92,7 +92,11 @@ describe('リアルタイム配分と表示',()=>{
    expect($('details').attr('open')).toBeUndefined();expect($('.event-breakdown > summary').text()).toBe('内訳を見る');
    expect(html).toContain('参考推計');expect($('.breakdown-category')).toHaveLength(2);
    expect($('.breakdown-table tbody tr')).toHaveLength(16);
-   expect(html).toContain('2024年');expect(html).toContain('全体比');
+   expect($('.breakdown-category h4').text()).not.toContain('2024年');
+   expect($('.source-details > summary').text()).not.toContain('2024年');
+   expect(html).toContain('全体比');
+   const historical=load(renderToStaticMarkup(<EventBreakdown event="birth" sections={sections}/>));
+   expect(historical('.breakdown-category h4').text()).toContain('2024年');
    const empty=renderToStaticMarkup(<EventBreakdown event="birth" sections={[]}/>);expect(empty).toContain('未収録');
  });
  it('各期間の既存カウンターと同じ値を内訳へ渡す',()=>{
