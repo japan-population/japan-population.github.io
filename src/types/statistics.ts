@@ -61,7 +61,39 @@ export const nationalitiesSchema = z.object({
   if(new Set(v.items.map(i=>i.code)).size!==v.items.length||v.items.reduce((n,i)=>n+i.value,0)!==v.total)ctx.addIssue({code:'custom',message:'国籍内訳の合計またはコードが不正です'});
 });
 export type Nationalities = z.infer<typeof nationalitiesSchema>;
-export const nationalSchema = z.object({ generationId: z.string(), distribution: distributionDataSchema.optional(), nationalities:nationalitiesSchema.optional(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
+export const CENSUS_YEARS = Array.from({length:11},(_,i)=>1920+i*10);
+const censusGroupSchema=z.object({
+  population:z.number().int().positive(),male:z.number().int().nonnegative(),female:z.number().int().nonnegative(),
+  source:sourceSchema,rows:breakdownSchema.shape.rows,
+}).superRefine((v,ctx)=>{
+  if(v.male+v.female!==v.population)ctx.addIssue({code:'custom',message:'国勢調査の男女計が不一致です'});
+  for(const sex of ['男女計','男','女']){
+    const rows=v.rows.filter(r=>r.sex===sex&&r.age!=='総数');
+    if(rows.length<18||new Set(rows.map(r=>r.age)).size!==rows.length)ctx.addIssue({code:'custom',message:'国勢調査の年齢階級が欠損・重複しています'});
+    const limit=sex==='男'?v.male:sex==='女'?v.female:v.population;
+    if(v.rows.find(r=>r.sex===sex&&r.age==='総数')?.value!==limit)ctx.addIssue({code:'custom',message:'国勢調査の総数と内訳が不一致です'});
+    if(rows.reduce((n,r)=>n+r.value,0)>limit)ctx.addIssue({code:'custom',message:'国勢調査の年齢別合計が人口を超えています'});
+  }
+  const ages=v.rows.filter(r=>r.sex==='男女計'&&r.age!=='総数').map(r=>r.age);
+  for(const age of ages){
+    const total=v.rows.find(r=>r.age===age&&r.sex==='男女計')!.value;
+    const male=v.rows.find(r=>r.age===age&&r.sex==='男')?.value,female=v.rows.find(r=>r.age===age&&r.sex==='女')?.value;
+    if(male===undefined||female===undefined||male+female!==total)ctx.addIssue({code:'custom',message:'年齢階級の男女計が不一致です'});
+  }
+});
+export const annualOfficialSchema=z.object({year:z.number().int(),source:sourceSchema,
+  counts:z.object({birth:z.number().int().nonnegative(),death:z.number().int().nonnegative(),marriage:z.number().int().nonnegative(),divorce:z.number().int().nonnegative()})});
+export type AnnualOfficial=z.infer<typeof annualOfficialSchema>;
+export const censusSnapshotSchema=z.object({year:z.number().int(),date:z.iso.date(),groups:z.partialRecord(z.enum(populationGroups),censusGroupSchema)});
+export type CensusSnapshot=z.infer<typeof censusSnapshotSchema>;
+export const officialArchiveSchema=z.object({censuses:z.array(censusSnapshotSchema),annual:z.array(annualOfficialSchema)}).superRefine((v,ctx)=>{
+  if(v.censuses.length!==11||CENSUS_YEARS.some(y=>v.censuses.filter(c=>c.year===y&&c.date===`${y}-10-01`&&c.groups.total).length!==1))ctx.addIssue({code:'custom',message:'国勢調査11時点が揃っていません'});
+  if(new Set(v.annual.map(a=>a.year)).size!==v.annual.length||CENSUS_YEARS.some(y=>!v.annual.some(a=>a.year===y)))ctx.addIssue({code:'custom',message:'年間人口動態に欠損・重複があります'});
+  for(const c of v.censuses)for(const [g,p]of Object.entries(c.groups))if(p.source.sourcePeriod!==`${c.year}-10`||p.rows.some(r=>r.group!==g))ctx.addIssue({code:'custom',message:'国勢調査の年・国籍が不一致です'});
+  for(const a of v.annual)if(a.source.sourcePeriod!==`${a.year}-12`)ctx.addIssue({code:'custom',message:'年間人口動態の基準年が不一致です'});
+});
+export type OfficialArchive=z.infer<typeof officialArchiveSchema>;
+export const nationalSchema = z.object({ archive:officialArchiveSchema.optional(), generationId: z.string(), distribution: distributionDataSchema.optional(), nationalities:nationalitiesSchema.optional(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
 export const prefectureSchema = z.object({ code: z.string().regex(/^(0[1-9]|[1-3]\d|4[0-7])$/), name: z.string(), officialPopulation: z.record(z.enum(populationGroups), officialRegionSchema).optional(), vital: vitalSchema, population: referenceSchema.optional(), migration: migrationSchema.optional() });
 export const prefecturesSchema = z.object({ generationId: z.string(), prefectures: z.record(z.string(), prefectureSchema) }).superRefine((v, ctx) => {
   if (Object.keys(v.prefectures).length !== 47) ctx.addIssue({ code: 'custom', message: 'Exactly 47 prefectures required' });
