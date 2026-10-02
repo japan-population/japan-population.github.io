@@ -14,7 +14,7 @@ export function AnnualVital({data,total,latest,open,onOpenChange,breakdowns}:{da
       <div className="annual-vital-grid">{EVENTS.map(kind=><article className={`stat-card ${kind}`} key={kind}>
         <div className="card-heading"><EventIcon kind={kind}/><span>{labels[kind]}</span><span className="badge">確定値</span></div>
         <p className="event-value">{number(data.counts[kind])}<small>{kind==='birth'||kind==='death'?'人':'組'}</small></p>
-      <EventBreakdown event={kind} sections={selectEventBreakdowns(breakdowns,kind,'japanese',data.year)}/></article>)}</div>
+      <EventBreakdown event={kind} sections={selectEventBreakdowns(breakdowns,kind,'japanese',data.year,latest)}/></article>)}</div>
       <SourceInfo source={data.source}/>
     </div>
   </details>;

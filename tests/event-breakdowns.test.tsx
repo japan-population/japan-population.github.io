@@ -145,3 +145,22 @@ describe('リアルタイム配分と表示',()=>{
    }
  });
 });
+it('最新年で不足する内訳だけ前年の原値を年付きで表示する',()=>{
+ const sections=selectEventBreakdowns(data,'marriage','japanese',2025,true);
+ expect(sections).toHaveLength(2);expect(sections.every(s=>s.year===2024)).toBe(true);
+ expect(sections[0].total).toBe(485092);
+ const html=renderToStaticMarkup(<EventBreakdown event="marriage" sections={sections}/>);
+ expect(html).toContain('2024年');expect(html).not.toContain('未収録');
+ expect(selectEventBreakdowns(data,'marriage','japanese',1940)).toEqual([]);
+});
+it('交通事故は不慮の事故の閉じた内訳内にだけ表示する',()=>{
+ const section=get(2024,'death','cause');
+ const $=load(renderToStaticMarkup(<EventBreakdown event="death" sections={[section]} total={10000}/>));
+ expect($('.accident-details')).toHaveLength(1);expect($('.accident-details').attr('open')).toBeUndefined();
+ expect($('.accident-table tbody tr')).toHaveLength(7);
+ expect($('.accident-table').text()).toContain('交通事故');
+ expect($('.breakdown-category > .breakdown-table > tbody > tr > th').text()).not.toContain('交通事故');
+ const children=section.items.find(i=>i.label==='不慮の事故')!.children!;
+ expect(children.reduce((n,i)=>n+i.count,0)).toBe(45743);
+ expect($('.accident-table tr').first().text()).toContain(`${Math.floor(10000*3511/1605378)}人`);
+});

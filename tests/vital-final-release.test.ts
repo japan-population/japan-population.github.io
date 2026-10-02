@@ -27,3 +27,9 @@ it('対象年や表構造が変わった場合は公開前に失敗する',async
  book.getWorksheet('第１表')!.getCell('H5').value='令和6年(2024)';
  await expect(parseFinal2025(new Uint8Array(await book.xlsx.writeBuffer()),now)).rejects.toThrow('対象年');
 });
+it('不慮の事故の全7分類が親の件数に一致する',async()=>{
+ const r=await parseFinal2025(bytes,now),accident=r.breakdowns.find(s=>s.kind==='cause')!.items.find(i=>i.label==='不慮の事故')!;
+ expect(accident.count).toBe(45068);expect(accident.children).toHaveLength(7);
+ expect(accident.children!.reduce((n,i)=>n+i.count,0)).toBe(accident.count);
+ expect(accident.children!.find(i=>i.label==='交通事故')?.count).toBe(3348);
+});

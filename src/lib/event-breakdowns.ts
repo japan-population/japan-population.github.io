@@ -1,7 +1,10 @@
 import type {EventBreakdownData,EventBreakdowns,EventKind,PopulationGroup} from '../types/statistics';
-export function selectEventBreakdowns(data:EventBreakdowns|undefined,event:EventKind,group:PopulationGroup,year?:number):EventBreakdownData[]{
+export function selectEventBreakdowns(data:EventBreakdowns|undefined,event:EventKind,group:PopulationGroup,year?:number,previous=false):EventBreakdownData[]{
   const available=(data??[]).filter(s=>s.event===event&&s.group===group&&(year===undefined||s.year===year));
-  if(year!==undefined)return available;
+  if(year!==undefined){
+    if(!previous)return available;
+    return BREAKDOWN_KINDS[event].flatMap(kind=>{const exact=available.find(s=>s.kind===kind);return exact?[exact]:(data??[]).filter(s=>s.event===event&&s.group===group&&s.kind===kind&&s.year<year).sort((a,b)=>b.year-a.year).slice(0,1);});
+  }
   // Each category may have its own latest publication year; never mix years within a category.
   return available.filter(s=>!available.some(other=>other.kind===s.kind&&other.year>s.year));
 }

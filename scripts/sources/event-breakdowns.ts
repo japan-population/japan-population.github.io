@@ -101,6 +101,11 @@ export function normalizeEventBreakdowns(tables:Record<string,Table>,annual:Annu
       if(count!==undefined)items.push({label:name,count,rank,approximate:known===undefined});
     }
     items.sort((a,b)=>(a.rank??99)-(b.rank??99));
+    const accident=items.find(i=>i.label==='不慮の事故');
+    if(accident){
+      const children=parsed['0003411657'].filter(r=>r.year===year&&value(r,'性別')==='総数'&&value(r,'表章')==='死亡数'&&/^2010[1-7]_/.test(value(r,'死因'))).map(r=>({label:causeName(value(r,'死因')),count:r.n}));
+      if(children.length){if(children.length!==7)throw new Error('事故内訳が欠けています');accident.children=children;}
+    }
     for(const name of ['自殺','他殺','交通事故']){const count=counts.get(name);if(count!==undefined&&!items.some(i=>i.label===name))items.push({label:name,count,supplement:true});}
     section(exact.length?'0003411661':'0003411655','death','cause',year,total,items,
       '公式の死因順位。交通事故は不慮の事故の内数。'+(items.some(i=>i.approximate)?'参考値は公表死亡率から算出。':'')+(year<1950?'この年の公式順位表は上位5項目まで。':''),true);
@@ -108,7 +113,7 @@ export function normalizeEventBreakdowns(tables:Record<string,Table>,annual:Annu
       s.additionalSources=['0003411656','0003411657'].filter(id=>parsed[id].some(r=>r.year===year)).map(id=>({...tables[id].source,sourcePeriod:`${year}-12`}));
     }
   }
-  const filtered=result.filter(s=>totals.has(s.year)||s.year===Math.max(...result.map(v=>v.year)));
+  const filtered=result.filter(s=>totals.has(s.year)||s.year===Math.max(...result.filter(v=>v.event===s.event&&v.kind===s.kind&&v.group===s.group).map(v=>v.year)));
   for(const event of ['birth','death','marriage','divorce'])if(!filtered.some(s=>s.event===event))throw new Error('人口動態内訳が欠けています');
   return addHistoricalEventBreakdowns(eventBreakdownsSchema.parse(filtered),annual);
 }
