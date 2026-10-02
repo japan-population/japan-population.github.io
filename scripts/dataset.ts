@@ -1,4 +1,4 @@
-import type { Nationalities } from '../src/types/statistics';
+import type { Nationalities, OfficialArchive } from '../src/types/statistics';
 import type { DistributionData } from '../src/types/distribution';
 import type { OfficialRegions } from './sources/census-regions';
 import { createHash } from 'node:crypto';
@@ -27,7 +27,7 @@ export function semanticJSON(value: unknown): string {
     return v;
   });
 }
-export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; officialRegions?: OfficialRegions; nationalities?:Nationalities; distribution?: DistributionData; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
+export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; officialRegions?: OfficialRegions; nationalities?:Nationalities; archive?:OfficialArchive; distribution?: DistributionData; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
   const current = monthKey(now);
   const months = [0, 1, 2].map(n => addMonths(current, n));
   const sorted = [...vital].sort((a, b) => a.month.localeCompare(b.month));
@@ -47,6 +47,7 @@ export function buildDataset(population: PopulationObservation[], vital: VitalOb
     result.national.breakdown = extra.breakdown;
     result.national.distribution = extra.distribution;
     result.national.nationalities = extra.nationalities;
+    result.national.archive = extra.archive;
     if (extra.breakdown.groups.total.base !== result.national.population.base || extra.breakdown.groups.total.baseDate !== result.national.population.baseDate) throw new Error('人口内訳と総人口が一致しません');
     const makeMigration = (code: string) => ({ domesticSource: extra.migration.domesticSource, internationalSource: extra.migration.internationalSource, months: Object.fromEntries(months.map(m => [m, migrationModel(extra.migration, code, m)])),
       yearToDate: Object.fromEntries(months.map(m => [m, yearModel(MIGRATIONS, m, extra.migration.domesticSource.sourcePeriod,
