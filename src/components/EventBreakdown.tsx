@@ -6,7 +6,7 @@ function BreakdownLabel({label}:{label:string}){
   const text=label.replace(/[（(＜<]/g,'（').replace(/[）)＞>]/g,'）');
   return <>{text.split(/(（[^）]*）)/g).map((part,i)=>part.startsWith('（')?<small className="breakdown-parenthesis" key={i}>{part}</small>:part)}</>;
 }
-export function EventBreakdown({event,sections,total,proxy=false}:{event:EventKind;sections:EventBreakdownData[];total?:number|null;proxy?:boolean}){
+export function EventBreakdown({event,sections,total,proxy=false,referenceYear}:{event:EventKind;sections:EventBreakdownData[];total?:number|null;proxy?:boolean;referenceYear?:number}){
   const realtime=total!==undefined,unit='人';
   const sources=sections.flatMap(s=>[s.source,...s.additionalSources??[]]).filter((s,i,all)=>all.findIndex(v=>v.url===s.url&&v.sourcePeriod===s.sourcePeriod)===i);
   return <div className="event-breakdown">
@@ -16,7 +16,7 @@ export function EventBreakdown({event,sections,total,proxy=false}:{event:EventKi
         ...section.items.filter(item=>!item.supplement&&item.label!=='交通事故'),
         ...['自殺','他殺'].filter(label=>!section.items.some(item=>item.label===label&&!item.supplement)).map(label=>section.items.find(item=>item.label===label)??{label,count:null}),
       ]:section?.items??[];
-      return <details className="breakdown-category" key={kind}><summary>{BREAKDOWN_LABELS[kind]}{section&&(!realtime||kind!=='cause'&&kind!=='birthOrder')&&<small>{!realtime&&`${section.year}年`}{kind!=='cause'&&kind!=='birthOrder'?`${realtime?'':' · '}${section.ageGrouping==='published'?'公表年齢区分':'5歳階級'}`:''}</small>}</summary>
+      return <details className="breakdown-category" key={kind}><summary>{BREAKDOWN_LABELS[kind]}{section&&referenceYear!==undefined&&section.year<referenceYear&&<small>{section.year}年</small>}</summary>
         {!section?<p className="breakdown-note">この年・区分の内訳は未収録です。</p>:<>
           {kind!=='cause'&&kind!=='birthOrder'&&section.note&&section.note!=='届出時の年齢。'&&<p className="breakdown-note">{section.note}</p>}
           {kind==='cause'&&<p className="breakdown-note">死因上位{section.items.filter(i=>i.rank).length}項目 ＋ 追加項目</p>}
