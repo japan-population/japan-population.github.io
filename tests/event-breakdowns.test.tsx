@@ -106,7 +106,7 @@ describe('リアルタイム配分と表示',()=>{
    const estimate={day:1000,month:20000,year:300000,dailyTarget:2000,ratePerSecond:1};
    for(const period of ['day','month','year'] as const){
      const $=load(renderToStaticMarkup(<EventCounter kind="birth" month="2026-10" now={0} period={period} officialLabel="公式確定値" estimate={estimate} breakdowns={sections}/>));
-     const s=sections.find(s=>s.kind==='motherAge')!;
+     const s=sections.find(s=>s.kind==='birthOrder')!;
      expect($('.breakdown-table').first().find('tbody tr').first().find('td').first().text()).toBe(`${breakdownCount(s,s.items[0].count,estimate[period]).count.toLocaleString('ja-JP')}人`);
    }
  });
