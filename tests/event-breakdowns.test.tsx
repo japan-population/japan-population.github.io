@@ -134,7 +134,7 @@ describe('リアルタイム配分と表示',()=>{
    const historical=load(renderToStaticMarkup(<EventBreakdown event="birth" sections={sections}/>));
    expect(historical('.breakdown-category > summary small')).toHaveLength(0);
    expect($('.breakdown-category > summary small')).toHaveLength(0);
-   const empty=renderToStaticMarkup(<EventBreakdown event="birth" sections={[]}/>);expect(empty).toContain('未収録');
+   const empty=renderToStaticMarkup(<EventBreakdown event="birth" sections={[]}/>);expect(load(empty)('.breakdown-note').first().text()).toBe('—');
  });
  it('各期間の既存カウンターと同じ値を内訳へ渡す',()=>{
    const sections=selectEventBreakdowns(data,'birth','japanese');
