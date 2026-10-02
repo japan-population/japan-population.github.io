@@ -21,7 +21,7 @@ export const eventBreakdownSchema = z.object({
 }).superRefine((v,ctx)=>{
   if(new Set(v.items.map(i=>i.label)).size!==v.items.length)ctx.addIssue({code:'custom',message:'内訳の分類が重複しています'});
   if(v.items.some(i=>i.count>v.total))ctx.addIssue({code:'custom',message:'内訳が全体を超えています'});
-  for(const item of v.items)if(item.children&&(new Set(item.children.map(c=>c.label)).size!==item.children.length||item.children.reduce((n,c)=>n+c.count,0)!==item.count))ctx.addIssue({code:'custom',message:'事故内訳と総数が一致しません'});
+  for(const item of v.items)if(item.children&&(new Set(item.children.map(c=>c.label)).size!==item.children.length||item.children.reduce((n,c)=>n+c.count,0)!==item.count))ctx.addIssue({code:'custom',message:'死因内訳と総数が一致しません'});
   if(v.kind!=='cause'&&v.coverage==='complete'&&v.items.reduce((s,i)=>s+i.count,0)!==v.total)ctx.addIssue({code:'custom',message:'内訳と総数が一致しません'});
 });
 export const eventBreakdownsSchema=z.array(eventBreakdownSchema).superRefine((v,ctx)=>{

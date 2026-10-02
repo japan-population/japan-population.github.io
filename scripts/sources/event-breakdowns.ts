@@ -101,10 +101,12 @@ export function normalizeEventBreakdowns(tables:Record<string,Table>,annual:Annu
       if(count!==undefined)items.push({label:name,count,rank,approximate:known===undefined});
     }
     items.sort((a,b)=>(a.rank??99)-(b.rank??99));
-    const accident=items.find(i=>i.label==='不慮の事故');
-    if(accident){
-      const children=parsed['0003411657'].filter(r=>r.year===year&&value(r,'性別')==='総数'&&value(r,'表章')==='死亡数'&&/^2010[1-7]_/.test(value(r,'死因'))).map(r=>({label:causeName(value(r,'死因')),count:r.n}));
-      if(children.length){if(children.length!==7)throw new Error('事故内訳が欠けています');accident.children=children;}
+    for(const {parent,pattern,size} of [
+      {parent:items.find(i=>i.label==='不慮の事故'),pattern:/^2010[1-7]_/,size:7},
+      {parent:items.find(i=>i.label.startsWith('悪性新生物')),pattern:/^021(?:0[1-9]|1[0-9]|2[01])_/,size:21},
+    ])if(parent){
+      const children=parsed['0003411657'].filter(r=>r.year===year&&value(r,'性別')==='総数'&&value(r,'表章')==='死亡数'&&pattern.test(value(r,'死因'))).map(r=>({label:causeName(value(r,'死因')),count:r.n}));
+      if(children.length){if(children.length!==size)throw new Error('死因内訳が欠けています');parent.children=children;}
     }
     for(const name of ['自殺','他殺','交通事故']){const count=counts.get(name);if(count!==undefined&&!items.some(i=>i.label===name))items.push({label:name,count,supplement:true});}
     section(exact.length?'0003411661':'0003411655','death','cause',year,total,items,

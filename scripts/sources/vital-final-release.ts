@@ -19,11 +19,15 @@ export async function parseFinal2025(bytes:Uint8Array,now:number){
   motherAge.push({label:'不詳',count:unknown});
   const birthOrder=['第1子','第2子','第3子以上'].map((label,i)=>({label,count:number('第６表',`${['D','E','F'][i]}51`)}));
   const cause:EventBreakdowns[number]['items']=Array.from({length:10},(_,i)=>{const row=12+i,rank=number('第７表',`G${row}`);if(rank!==i+1)throw new Error('死因順位が変わりました');let label=text('第７表',`E${row}`);if(label==='心疾患')label='心疾患（高血圧性を除く）';if(label==='血管性等の認知症')label='血管性及び詳細不明の認知症';return {label,count:number('第７表',`H${row}`),rank};});
-  const accident=cause.find(i=>i.label==='不慮の事故')!;
-  const children:{label:string;count:number}[]=[];
-  sheet('第８表').eachRow(row=>{if(/^2010[1-7]$/.test(row.getCell(2).text.trim()))children.push({label:text('第８表',`C${row.number}`),count:number('第８表',`D${row.number}`)});});
-  if(children.length!==7)throw new Error('事故内訳が欠けています');
-  accident.children=children;
+  for(const {parent,pattern,size} of [
+    {parent:cause.find(i=>i.label==='不慮の事故'),pattern:/^2010[1-7]$/,size:7},
+    {parent:cause.find(i=>i.label.startsWith('悪性新生物')),pattern:/^021(?:0[1-9]|1[0-9]|2[01])$/,size:21},
+  ]){
+    const children:{label:string;count:number}[]=[];
+    sheet('第８表').eachRow(row=>{if(pattern.test(row.getCell(2).text.trim()))children.push({label:text('第８表',`C${row.number}`),count:number('第８表',`D${row.number}`)});});
+    if(!parent||children.length!==size)throw new Error('死因内訳が欠けています');
+    parent.children=children;
+  }
   const supplements=[['20200','自殺'],['20300','他殺'],['20101','交通事故']].map(([code,label])=>{const rows:ExcelJS.Row[]=[];sheet('第８表').eachRow(row=>{if(row.getCell(2).text.trim()===code)rows.push(row);});if(rows.length!==1||!rows[0].getCell(3).text.includes(label))throw new Error('追加死因の分類が不明です');return {label,count:number('第８表',`D${rows[0].number}`),supplement:true};});
   if(number('第７表','H11')!==annual.counts.death||number('第８表','D8')!==annual.counts.death)throw new Error('死亡総数が一致しません');
   const common={year:2025,group:'japanese' as const};

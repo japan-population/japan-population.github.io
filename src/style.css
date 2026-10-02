@@ -91,18 +91,18 @@
   .breakdown-table td:first-of-type { text-align:left; }
   .breakdown-category > summary small { display:block; margin-left:12px; }
 }
-/* Nested accident rows share the death-total denominator and stay within the card. */
-.breakdown-table .accident-row>td{padding:0;text-align:left;white-space:normal}
-.stat-card .event-breakdown .accident-details>summary{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:baseline;cursor:pointer;font-size:inherit;font-weight:400;padding:8px 0}
-.accident-details>summary>span:first-child::before{content:'▸';margin-right:4px;font-size:.8em}
-.accident-details[open]>summary>span:first-child::before{content:'▾'}
-.accident-details>summary>span:not(:first-child){white-space:nowrap;text-align:right}
-.accident-table{margin:0 0 8px;font-size:inherit}
-.accident-table tbody th{font-size:.92em}
+/* Nested cause rows share the death-total denominator and stay within the card. */
+.breakdown-table .cause-row>td{padding:0;text-align:left;white-space:normal}
+.stat-card .event-breakdown .cause-details>summary{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:baseline;cursor:pointer;font-size:inherit;font-weight:400;padding:8px 0}
+.cause-details>summary>span:first-child::before{content:'▸';margin-right:4px;font-size:.8em}
+.cause-details[open]>summary>span:first-child::before{content:'▾'}
+.cause-details>summary>span:not(:first-child){white-space:nowrap;text-align:right}
+.cause-table{margin:0 0 8px;font-size:inherit}
+.cause-table tbody th{font-size:.92em}
 @media(max-width:600px){
- .breakdown-table tbody tr.accident-row{display:block}
- .breakdown-table .accident-row>td{display:block;width:100%}
- .stat-card .event-breakdown .accident-details>summary{grid-template-columns:1fr 1fr;gap:2px}
- .accident-details>summary>span:first-child{grid-column:1/-1}
- .accident-details>summary>span:nth-child(2){text-align:left}
+ .breakdown-table tbody tr.cause-row{display:block}
+ .breakdown-table .cause-row>td{display:block;width:100%}
+ .stat-card .event-breakdown .cause-details>summary{grid-template-columns:1fr 1fr;gap:2px}
+ .cause-details>summary>span:first-child{grid-column:1/-1}
+ .cause-details>summary>span:nth-child(2){text-align:left}
 }

@@ -33,3 +33,12 @@ it('不慮の事故の全7分類が親の件数に一致する',async()=>{
  expect(accident.children!.reduce((n,i)=>n+i.count,0)).toBe(accident.count);
  expect(accident.children!.find(i=>i.label==='交通事故')?.count).toBe(3348);
 });
+
+it('2025年のがん21分類を総数に照合し、内訳の欠損を拒否する',async()=>{
+ const r=await parseFinal2025(bytes,now),cancer=r.breakdowns.find(s=>s.kind==='cause')!.items.find(i=>i.label.startsWith('悪性新生物'))!;
+ expect(cancer.count).toBe(378829);expect(cancer.children).toHaveLength(21);
+ expect(cancer.children!.reduce((n,i)=>n+i.count,0)).toBe(cancer.count);
+ const book=new ExcelJS.Workbook();await book.xlsx.load(bytes as unknown as Parameters<typeof book.xlsx.load>[0]);
+ book.getWorksheet('第８表')!.eachRow(row=>{if(row.getCell(2).text.trim()==='02101')row.getCell(4).value=0;});
+ await expect(parseFinal2025(new Uint8Array(await book.xlsx.writeBuffer()),now)).rejects.toThrow('死因内訳と総数');
+});

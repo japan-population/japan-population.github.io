@@ -156,11 +156,25 @@ it('最新年で不足する内訳だけ前年の原値を年付きで表示す�
 it('交通事故は不慮の事故の閉じた内訳内にだけ表示する',()=>{
  const section=get(2024,'death','cause');
  const $=load(renderToStaticMarkup(<EventBreakdown event="death" sections={[section]} total={10000}/>));
- expect($('.accident-details')).toHaveLength(1);expect($('.accident-details').attr('open')).toBeUndefined();
- expect($('.accident-table tbody tr')).toHaveLength(7);
- expect($('.accident-table').text()).toContain('交通事故');
+ expect($('.cause-details[data-cause=accident]')).toHaveLength(1);expect($('.cause-details[data-cause=accident]').attr('open')).toBeUndefined();
+ expect($('.cause-details[data-cause=accident] .cause-table tbody tr')).toHaveLength(7);
+ expect($('.cause-details[data-cause=accident] .cause-table').text()).toContain('交通事故');
  expect($('.breakdown-category > .breakdown-table > tbody > tr > th').text()).not.toContain('交通事故');
  const children=section.items.find(i=>i.label==='不慮の事故')!.children!;
  expect(children.reduce((n,i)=>n+i.count,0)).toBe(45743);
- expect($('.accident-table tr').first().text()).toContain(`${Math.floor(10000*3511/1605378)}人`);
+ expect($('.cause-details[data-cause=accident] .cause-table tr').first().text()).toContain(`${Math.floor(10000*3511/1605378)}人`);
+});
+
+it('がんの全21分類を閉じた内訳で表示し、死亡総数に対する割合で推計する',()=>{
+ const section=get(2024,'death','cause'),cancer=section.items.find(i=>i.label.startsWith('悪性新生物'))!;
+ expect(cancer.children).toHaveLength(21);
+ expect(cancer.children!.reduce((n,i)=>n+i.count,0)).toBe(cancer.count);
+ for(const total of [undefined,10000]){
+  const $=load(renderToStaticMarkup(<EventBreakdown event="death" sections={[section]} total={total}/>));
+  const detail=$('.cause-details[data-cause=cancer]');
+  expect(detail.attr('open')).toBeUndefined();expect(detail.find('tbody tr')).toHaveLength(21);
+  const child=cancer.children![0],row=detail.find('tbody tr').first();
+  expect(row.find('td').first().text()).toBe(`${(total===undefined?child.count:Math.floor(total*child.count/section.total)).toLocaleString('ja-JP')}人`);
+  expect(row.find('td').last().text()).toBe(`${(child.count/section.total*100).toFixed(1)}%`);
+ }
 });
