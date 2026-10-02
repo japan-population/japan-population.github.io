@@ -144,8 +144,8 @@ it('1940・1960年は85歳以上を沖縄を除く4階級に分けて注記す�
    const $=load(renderToStaticMarkup(<PopulationPyramid rows={group.rows} label="総人口" interval={interval} onIntervalChange={()=>{}} historical ageExclusion={group.ageExclusion}/>));
    expect($('.age-label sup')).toHaveLength(interval===5?4:3);
    expect($('.age-label').filter((_,e)=>$(e).text()==='80～84歳').find('sup')).toHaveLength(0);
-   expect($('.small-note').last().text()).toBe('※85歳以上は沖縄のデータを含まない値です。');
-   expect($('.small-note').last().prev().text()).toBe('年齢不詳はグラフに含めていません。');
+   expect($('.small-note').last().prev().text()).toBe('※85歳以上は沖縄のデータを含まない値です。');
+   expect($('.small-note').last().text()).toBe('年齢不詳はグラフに含めていません。');
   }
  }
  expect(await supplementCensusAges(structuredClone(fine))).toEqual(fine);
