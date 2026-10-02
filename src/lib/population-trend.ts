@@ -8,9 +8,9 @@ export function trendX(date:string,latestDate:string):number{
   return (slot+.5)/12*100;
 }
 export const trendY=(value:number,maximum:number)=>220-value/maximum*200;
-export function trendPaths(points:PopulationTrend['points']){
+export function trendPaths(points:PopulationTrend['points'],position?:(date:string)=>number){
   const latest=points.at(-1)!.date,maximum=Math.max(150_000_000,Math.ceil(Math.max(...points.map(p=>p.total))/50_000_000)*50_000_000);
-  const xy=(p:typeof points[number],value:number)=>`${trendX(p.date,latest)*12},${trendY(value,maximum)}`;
+  const xy=(p:typeof points[number],value:number)=>`${(position?position(p.date):trendX(p.date,latest))*12},${trendY(value,maximum)}`;
   const line=points.map((p,i)=>`${i?'L':'M'}${xy(p,p.total)}`).join(' ');
   const area=`${line} L${xy(points.at(-1)!,0)} L${xy(points[0],0)} Z`;
   const known=points.filter(p=>p.japanese!==undefined);

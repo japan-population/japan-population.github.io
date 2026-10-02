@@ -1,4 +1,4 @@
-const ALLOWED = new Set(['www.e-stat.go.jp', 'api.e-stat.go.jp', 'www8.cao.go.jp']);
+const ALLOWED = new Set(['www.e-stat.go.jp', 'api.e-stat.go.jp', 'www8.cao.go.jp', 'www.ipss.go.jp']);
 export async function download(url: URL): Promise<Uint8Array> {
   if (url.protocol !== 'https:' || !ALLOWED.has(url.hostname)) throw new Error('許可されていない統計URL');
   for (let attempt = 0; attempt < 3; attempt++) {
