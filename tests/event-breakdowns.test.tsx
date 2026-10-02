@@ -89,7 +89,7 @@ describe('リアルタイム配分と表示',()=>{
  it('カード内は閉じたアコーディオン、割合と推計人数を表示する',()=>{
    const sections=selectEventBreakdowns(data,'birth','japanese');
    const html=renderToStaticMarkup(<EventBreakdown event="birth" sections={sections} total={10000} proxy/>),$=load(html);
-   expect($('details').attr('open')).toBeUndefined();expect($('.event-breakdown > summary').text()).toBe('内訳を見る');
+   expect($('details').attr('open')).toBeUndefined();expect($('details.event-breakdown')).toHaveLength(0);expect(html).not.toContain('内訳を見る');
    expect(html).toContain('参考推計');expect($('.breakdown-category')).toHaveLength(2);
    expect($('.breakdown-table tbody tr')).toHaveLength(16);
    expect($('details.breakdown-category')).toHaveLength(2);
