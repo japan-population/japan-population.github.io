@@ -43,7 +43,7 @@ export function PopulationExplorer({national,group,demo}:{national:National;grou
     {view.referenceNote&&<p className="small-note">{view.referenceNote}</p>}
     {view.derivation?<SourceInfo sources={view.derivation.sources}/>:view.source&&<SourceInfo source={view.source}/>}
     <details className="official-pyramid" open={pyramidOpen} onToggle={e=>{if(e.target===e.currentTarget)setPyramidOpen(e.currentTarget.open);}}><summary>人口ピラミッド</summary>{view.rows.length>0?<><PopulationPyramid key={`${selection}/${group}`} rows={view.rows} interval={ageInterval} onIntervalChange={setAgeInterval} label={GROUP_LABELS[group]} historical={selection!=='latest'} ageExclusion={view.ageExclusion}/>{view.ageSource&&<SourceInfo sources={[view.ageSource,...view.ageSupportingSources??[]]}/>}</>:<p className="small-note pyramid-unavailable">この年の国籍別・年齢階級別人口は未収録です。</p>}</details>
-    {group!=='foreign'&&view.annual&&<AnnualVital open={annualOpen} onOpenChange={setAnnualOpen} data={view.annual} total={group==='total'} latest={selection==='latest'}/>}
+    {group!=='foreign'&&view.annual&&<AnnualVital breakdowns={national.eventBreakdowns} open={annualOpen} onOpenChange={setAnnualOpen} data={view.annual} total={group==='total'} latest={selection==='latest'}/>}
     {group==='foreign'&&<NationalityBreakdown open={nationalityOpen} onOpenChange={setNationalityOpen} data={view.nationalities} historical={selection!=='latest'}/>}
   </section>;
 }

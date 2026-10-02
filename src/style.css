@@ -50,3 +50,43 @@
 
 #official .historical-labels{display:block;position:relative;height:24px}.trend-years.historical-labels{display:block;position:relative;height:14px}.historical-labels>button,.historical-labels>span{position:absolute;transform:translateX(-50%);white-space:nowrap}.historical-labels>button{width:34px;max-width:8%}#official .official-timeline .historical-range{appearance:none;-webkit-appearance:none;display:block;width:calc(100% * 11 / 12 + 16px);height:24px;margin:0 auto;background:transparent}#official .historical-range::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:#dce3dc}#official .historical-range::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:16px;height:16px;margin-top:-5px;border:0;border-radius:50%;background:var(--green)}#official .historical-range::-moz-range-track{height:6px;border-radius:3px;background:#dce3dc}#official .historical-range::-moz-range-thumb{width:16px;height:16px;border:0;border-radius:50%;background:var(--green)}
 @media(max-width:600px){#official .timeline-labels.historical-labels{height:36px}#official .timeline-labels.historical-labels>button:last-child{top:13px}#official .trend-years.historical-labels{height:32px}#official .trend-years.historical-labels>span:last-child{top:18px}}
+
+/* Annual compositions use the same white cards and restrained typography as counters. */
+.event-breakdown { margin-top:20px; border-top:1px solid var(--line,#e2e7e4); }
+.event-breakdown > summary { cursor:pointer; padding:15px 0 0; font-size:.85rem; font-weight:600; }
+.event-breakdown-content { min-width:0; }
+.breakdown-category { margin-top:20px; }
+.breakdown-category h4 { display:flex; flex-wrap:wrap; gap:6px 12px; align-items:baseline; margin:0 0 10px; font-size:.85rem; font-weight:600; }
+.breakdown-category h4 small { font-size:.68rem; font-weight:400; color:var(--muted,#63736c); }
+.breakdown-note { margin:10px 0; font-size:.7rem; line-height:1.65; color:var(--muted,#63736c); }
+.breakdown-table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:.75rem; font-variant-numeric:tabular-nums; }
+.breakdown-table thead th { padding:5px 0; color:var(--muted,#63736c); font-size:.63rem; font-weight:400; }
+.breakdown-table th:first-child { width:53%; text-align:left; }
+.breakdown-table th:nth-child(2) { width:29%; text-align:right; }
+.breakdown-table th:nth-child(3) { width:18%; text-align:right; }
+.breakdown-table tbody th { position:relative; padding:8px 6px 8px 0; font-weight:400; overflow-wrap:anywhere; }
+.breakdown-table td { padding:8px 0 8px 4px; text-align:right; white-space:nowrap; }
+.breakdown-table td small { margin-left:2px; font-size:.6rem; color:var(--muted,#63736c); }
+.breakdown-table tr { border-bottom:1px solid #edf0ed; }
+.breakdown-bar { position:absolute; inset:4px auto 4px 0; background:#eef4ef; border-radius:3px; }
+.breakdown-row-label { position:relative; }
+.breakdown-rank { display:inline-block; min-width:1.6em; color:var(--muted,#63736c); }
+.breakdown-extra { font-size:.6rem; margin-left:5px; color:var(--muted,#63736c); }
+.breakdown-supplement { border-top:1px dashed #cfd9d2; }
+.event-breakdown .source-info { font-size:.68rem; }
+@media(max-width:600px){
+  .breakdown-table { font-size:.68rem; }
+  .breakdown-table th:first-child { width:49%; }
+  .breakdown-table th:nth-child(2) { width:32%; }
+  .breakdown-table th:nth-child(3) { width:19%; }
+}
+@media(max-width:600px){
+  .breakdown-table,.breakdown-table tbody { display:block; }
+  .breakdown-table thead { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+  .breakdown-table tbody tr { display:grid; grid-template-columns:1fr 1fr; padding:5px 0; }
+  .breakdown-table tbody th { grid-column:1 / -1; width:100%; padding:3px 0; }
+  .breakdown-table td { padding:1px 0; }
+  .breakdown-table td:first-of-type { text-align:left; }
+  .breakdown-category h4 { display:block; }
+  .breakdown-category h4 small { display:block; }
+}

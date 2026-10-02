@@ -10,6 +10,23 @@ export const sourceSchema = z.object({
   sourcePeriod: monthSchema, publishedAt: z.iso.date(), retrievedAt: z.iso.datetime({ offset: true }),
   url: z.url(), status: z.enum(['final', 'provisional', 'fixture', 'projection']), scope: z.string().min(1),
 });
+// Annual demographic compositions; shares are always relative to the full event total.
+export const eventBreakdownSchema = z.object({
+  event: z.enum(EVENTS), year: z.number().int(), group: z.enum(['total','japanese','foreign']),
+  kind: z.enum(['motherAge','birthOrder','deathAge','cause','husbandAge','wifeAge']),
+  source: sourceSchema, additionalSources:z.array(sourceSchema).optional(), total: z.number().int().nonnegative(),
+  coverage: z.enum(['complete','partial']), note: z.string().optional(),
+  items: z.array(z.object({label:z.string().min(1),count:z.number().finite().nonnegative(),rank:z.number().int().positive().optional(),supplement:z.boolean().optional(),approximate:z.boolean().optional()})).min(1),
+}).superRefine((v,ctx)=>{
+  if(new Set(v.items.map(i=>i.label)).size!==v.items.length)ctx.addIssue({code:'custom',message:'内訳の分類が重複しています'});
+  if(v.items.some(i=>i.count>v.total))ctx.addIssue({code:'custom',message:'内訳が全体を超えています'});
+  if(v.kind!=='cause'&&v.coverage==='complete'&&v.items.reduce((s,i)=>s+i.count,0)!==v.total)ctx.addIssue({code:'custom',message:'内訳と総数が一致しません'});
+});
+export const eventBreakdownsSchema=z.array(eventBreakdownSchema).superRefine((v,ctx)=>{
+  if(new Set(v.map(s=>`${s.year}/${s.group}/${s.event}/${s.kind}`)).size!==v.length)ctx.addIssue({code:'custom',message:'人口動態内訳が重複しています'});
+});
+export type EventBreakdownData=z.infer<typeof eventBreakdownSchema>;
+export type EventBreakdowns=z.infer<typeof eventBreakdownsSchema>;
 export const eventModelSchema = z.object({
   estimatedMonthCount: z.number().finite().nonnegative(), ratePerSecond: z.number().finite().nonnegative(),
   seasonalBase: z.number().finite().nonnegative(), trendFactor: z.number().finite().nonnegative(),
@@ -116,7 +133,7 @@ export const populationTrendSchema=z.object({
   });
 });
 export type PopulationTrend=z.infer<typeof populationTrendSchema>;
-export const nationalSchema = z.object({ projections:projectionsSchema.optional(), populationTrend:populationTrendSchema.optional(), archive:officialArchiveSchema.optional(), generationId: z.string(), distribution: distributionDataSchema.optional(), nationalities:nationalitiesSchema.optional(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
+export const nationalSchema = z.object({ eventBreakdowns:eventBreakdownsSchema.optional(), projections:projectionsSchema.optional(), populationTrend:populationTrendSchema.optional(), archive:officialArchiveSchema.optional(), generationId: z.string(), distribution: distributionDataSchema.optional(), nationalities:nationalitiesSchema.optional(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
 export const prefectureSchema = z.object({ code: z.string().regex(/^(0[1-9]|[1-3]\d|4[0-7])$/), name: z.string(), officialPopulation: z.record(z.enum(populationGroups), officialRegionSchema).optional(), vital: vitalSchema, population: referenceSchema.optional(), migration: migrationSchema.optional() });
 export const prefecturesSchema = z.object({ generationId: z.string(), prefectures: z.record(z.string(), prefectureSchema) }).superRefine((v, ctx) => {
   if (Object.keys(v.prefectures).length !== 47) ctx.addIssue({ code: 'custom', message: 'Exactly 47 prefectures required' });

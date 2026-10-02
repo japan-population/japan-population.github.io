@@ -1,3 +1,4 @@
+import type {EventBreakdowns} from '../src/types/statistics';
 import type {Projections} from '../src/types/projections';
 import type { Nationalities, OfficialArchive, PopulationTrend } from '../src/types/statistics';
 import type { DistributionData } from '../src/types/distribution';
@@ -28,7 +29,7 @@ export function semanticJSON(value: unknown): string {
     return v;
   });
 }
-export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; officialRegions?: OfficialRegions; nationalities?:Nationalities; archive?:OfficialArchive; projections?:Projections; populationTrend?:PopulationTrend; distribution?: DistributionData; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
+export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { eventBreakdowns?:EventBreakdowns; breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; officialRegions?: OfficialRegions; nationalities?:Nationalities; archive?:OfficialArchive; projections?:Projections; populationTrend?:PopulationTrend; distribution?: DistributionData; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
   const current = monthKey(now);
   const months = [0, 1, 2].map(n => addMonths(current, n));
   const sorted = [...vital].sort((a, b) => a.month.localeCompare(b.month));
@@ -45,6 +46,7 @@ export function buildDataset(population: PopulationObservation[], vital: VitalOb
   const prefectures = Object.fromEntries(PREFECTURES.map(p => [p.code, { ...p, vital: makeVital(p.code) }]));
   const result: Dataset = { manifest: { schemaVersion: 1, generationId: '', generatedAt: new Date(now).toISOString(), mode, population: { latestFinalMonth: national.population.source.sourcePeriod }, vital: { latestMonth: latest.month }, forecastMonths: months, historyStart: sorted[0].month }, national, prefectures, history: { population, vital: sorted } };
   if (extra) {
+    result.national.eventBreakdowns = extra.eventBreakdowns;
     result.national.breakdown = extra.breakdown;
     result.national.distribution = extra.distribution;
     result.national.nationalities = extra.nationalities;
