@@ -15,7 +15,7 @@ export function normalizeMigration(domestic: Table, international: Table): Migra
     const tabId = dimension(table.classes, labels[keys[0]])['@id'];
     const latest = table.values.map(v => period(labelFor(table, 'time', v))).sort().at(-1);
     if (!latest) throw new Error('人口移動のデータが空です');
-    sources.push({ ...table.source, sourcePeriod: latest, scope: keys[0] === 'domesticIn' ? '日本人・外国人を含む都道府県間の移動。県内移動は含みません。' : '日本人・外国人を含む国外との移動。職権消除等は含みません。' });
+    sources.push({ ...table.source, sourcePeriod: latest, scope: keys[0] === 'domesticIn' ? '日本人・外国人を含む都道府県間の移動。県内移動は含みません。' : '日本人・外国人を含む国外との住所移転（国外からの転入届・国外への転出届に基づく）。国内移動、住所移転を伴わない観光・短期旅行、職権消除等は含みません。' });
     for (const v of table.values) {
       const kind = keys.find(k => codeFor(dimension(table.classes, labels[k]), labels[k]) === v[`@${tabId}`]) as MigrationKind | undefined;
       if (!kind) throw new Error('人口移動の項目が不明です');

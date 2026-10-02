@@ -49,7 +49,8 @@ export async function normalizeCensusNationalities(bytes:Uint8Array,now:number):
     items.push({code:leaf[1],name:leaf[2]==='その他'?`${continent}（その他）`:leaf[2],value});
   }
   if(items.length!==45)throw new Error('国籍内訳の分類数が変わりました');
-  return nationalitiesSchema.parse({total:row.getCell(5).value,items,source:{publisher:'総務省統計局',statistics:'令和7年国勢調査',table:'人口等基本集計 第56表（原数値・全国・男女計・全年齢）',sourcePeriod:'2025-10',publishedAt:'2026-09-29',retrievedAt:new Date(now).toISOString(),url:CENSUS_REGIONS_URL,status:'final',scope:'国勢調査で外国人とされた人口の国籍内訳。無国籍・国名不詳を含み、日本人・外国人の別が不詳の人は含めない。月次の人口推計とは基準日・集計方法が異なります。'}});
+  if(sheet.getCell(7,4).text!=='0_総数'||sheet.getCell(9,4).text!=='人'||typeof row.getCell(4).value!=='number')throw new Error('国籍内訳の総人口が不正です');
+  return nationalitiesSchema.parse({total:row.getCell(5).value,populationTotal:row.getCell(4).value,items,source:{publisher:'総務省統計局',statistics:'令和7年国勢調査',table:'人口等基本集計 第56表（原数値・全国・男女計・全年齢）',sourcePeriod:'2025-10',publishedAt:'2026-09-29',retrievedAt:new Date(now).toISOString(),url:CENSUS_REGIONS_URL,status:'final',scope:'国勢調査で外国人とされた人口の国籍内訳。無国籍・国名不詳を含み、日本人・外国人の別が不詳の人は含めない。月次の人口推計とは基準日・集計方法が異なります。'}});
 }
 export async function fetchCensusData(now:number){
   const bytes=await download(new URL(CENSUS_REGIONS_URL));

@@ -130,7 +130,7 @@ export function validateChange(old: Dataset, next: Dataset): void {
     for (const [key,event] of Object.entries(next.national.eventsByGroup[group])) {
       const before = old.national.eventsByGroup[group][key as keyof typeof old.national.eventsByGroup[typeof group]];
       if (!before) continue;
-      const correctedMigration = (key==='inflow'||key==='outflow') && before.source.statistics==='住民基本台帳人口移動報告' && event.source.statistics==='人口推計' && event.source.table==='参考表 全国人口の推移（入国者数・出国者数）';
+      const correctedMigration = (key==='inflow'||key==='outflow') && before.source.statistics==='人口推計' && before.source.table==='参考表 全国人口の推移（入国者数・出国者数）' && event.source.statistics==='住民基本台帳人口移動報告' && event.source.url==='https://www.e-stat.go.jp/dbview?sid=0003423635';
       if(correctedMigration)continue; // Different definitions and release lags: not a revision of the old series.
       if (event.source.sourcePeriod < before.source.sourcePeriod) throw new Error('国籍別人口動態の基準月が後退しています');
       for (const [month,model] of Object.entries(event.months)) if (before.months[month]) check(before.months[month].estimatedMonthCount,model.estimatedMonthCount,`${group}/${key}/${month}`);
