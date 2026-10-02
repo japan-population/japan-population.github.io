@@ -18,7 +18,7 @@ export function EventBreakdown({event,sections,total,proxy=false}:{event:EventKi
       ]:section?.items??[];
       return <details className="breakdown-category" key={kind}><summary>{BREAKDOWN_LABELS[kind]}{section&&(!realtime||kind!=='cause'&&kind!=='birthOrder')&&<small>{!realtime&&`${section.year}年`}{kind!=='cause'&&kind!=='birthOrder'?`${realtime?'':' · '}5歳階級`:''}</small>}</summary>
         {!section?<p className="breakdown-note">この年・区分の内訳は未収録です。</p>:<>
-          {kind!=='cause'&&section.note&&section.note!=='届出時の年齢。'&&<p className="breakdown-note">{section.note}</p>}
+          {kind!=='cause'&&kind!=='birthOrder'&&section.note&&section.note!=='届出時の年齢。'&&<p className="breakdown-note">{section.note}</p>}
           {kind==='cause'&&<p className="breakdown-note">死因上位{section.items.filter(i=>i.rank).length}項目 ＋ 追加項目</p>}
           <table className="breakdown-table"><thead><tr><th scope="col">区分</th><th scope="col">{realtime?(proxy?'参考推計':'推計'):'人数'}</th><th scope="col">全体比</th></tr></thead><tbody>
             {items.map(item=>{if(item.count===null)return <tr key={item.label}><th scope="row"><BreakdownLabel label={item.label}/></th><td colSpan={2}>未収録</td></tr>;const v=breakdownCount(section,item.count,total??undefined);return <tr key={item.label} className={item.supplement?'breakdown-supplement':undefined}>
