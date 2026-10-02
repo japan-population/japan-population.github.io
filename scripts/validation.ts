@@ -13,6 +13,15 @@ function validateYear(year: Record<string, YearTotal> | undefined, month: string
       const days = (monthStart(`${Number(month.slice(0, 4)) + 1}-01`) - monthStart(`${month.slice(0, 4)}-01`)) / 86400000;
       if (value.averagePerDay === undefined || Math.abs(value.averagePerDay * days - value.estimatedYearCount) > .0001 || value.estimatedYearCount < value.officialCount + value.estimatedBeforeMonth) throw new Error('年間予測または年間平均が不正です');
     }
+    if(value?.monthlyTargets){
+      const targets=Object.entries(value.monthlyTargets);
+      if(targets.length!==12||targets.some(([m])=>m.slice(0,4)!==month.slice(0,4)))throw new Error('年間の月別総数が不完全です');
+      const total=targets.reduce((n,[,v])=>n+v.count,0);
+      const official=targets.filter(([m,v])=>m<month&&v.sourceType==='official').reduce((n,[,v])=>n+v.count,0);
+      const estimated=targets.filter(([m,v])=>m<month&&v.sourceType==='derived').reduce((n,[,v])=>n+v.count,0);
+      if(value.estimatedYearCount===undefined||Math.abs(total-value.estimatedYearCount)>.0001||Math.abs(official-value.officialCount)>.0001||Math.abs(estimated-value.estimatedBeforeMonth)>.0001)throw new Error('年・月の総数が不一致です');
+      if(targets.some(([m,v])=>v.sourceType!==(m<=latest?'official':'derived')))throw new Error('月総数の出典区分が不一致です');
+    }
     if (!value || value.officialThrough !== through) throw new Error('年累計の公表済み期間が不正です');
     if (!through && value.officialCount !== 0) throw new Error('公表値のない年に原値が混在しています');
     if (month.endsWith('-01') && value.estimatedBeforeMonth !== 0) throw new Error('年累計が元日にリセットされていません');
@@ -121,6 +130,8 @@ export function validateChange(old: Dataset, next: Dataset): void {
     for (const [key,event] of Object.entries(next.national.eventsByGroup[group])) {
       const before = old.national.eventsByGroup[group][key as keyof typeof old.national.eventsByGroup[typeof group]];
       if (!before) continue;
+      const correctedMigration = (key==='inflow'||key==='outflow') && before.source.statistics==='住民基本台帳人口移動報告' && event.source.statistics==='人口推計' && event.source.table==='参考表 全国人口の推移（入国者数・出国者数）';
+      if(correctedMigration)continue; // Different definitions and release lags: not a revision of the old series.
       if (event.source.sourcePeriod < before.source.sourcePeriod) throw new Error('国籍別人口動態の基準月が後退しています');
       for (const [month,model] of Object.entries(event.months)) if (before.months[month]) check(before.months[month].estimatedMonthCount,model.estimatedMonthCount,`${group}/${key}/${month}`);
     }

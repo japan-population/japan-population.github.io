@@ -3,12 +3,13 @@ import { addMonths } from '../../src/lib/time';
 import { download, downloadText } from './http';
 import { discoverExactPopulationFiles, EXACT_LIST } from './exact-population';
 import { populationGroups, type PopulationGroup, type Source } from '../../src/types/statistics';
-export type BirthDeathRow = { month: string; values: Record<PopulationGroup, { birth: number; death: number }>; source: Source };
+export type BirthDeathRow = { month: string; values: Record<PopulationGroup, { birth: number; death: number }>; source: Source; international?: Record<PopulationGroup,{inflow:number;outflow:number}> };
 export async function normalizeNationalEvents(bytes: Uint8Array, source: Omit<Source, 'sourcePeriod'>): Promise<BirthDeathRow[]> {
   const book = new ExcelJS.Workbook(); await book.xlsx.load(bytes as unknown as Parameters<typeof book.xlsx.load>[0]);
   const sheet = book.worksheets[0];
   let title=''; sheet.getRow(1).eachCell(c=>{title+=c.text.replace(/\s/g,'');});
   if (!title.includes('全国人口の推移')) throw new Error('国籍別出生・死亡の表題が変わりました');
+  for (const [cell,label] of [['K8','入国者数'],['L8','出国者数'],['Y8','入国者数'],['Z8','出国者数']]) if (!sheet.getCell(cell).text.replace(/\s/g,'').includes(label)) throw new Error('人口推計の入出国列が変わりました');
   const hasForeign = sheet.getCell('AJ8').text.includes('出生児数') && sheet.getCell('AK8').text.includes('死亡者数');
   for (const [cell,label] of [['H8','出生児数'],['I8','死亡者数'],['V8','出生児数'],['W8','死亡者数']]) if (!sheet?.getCell(cell).text.replace(/\s/g,'').includes(label)) throw new Error('国籍別出生・死亡の表構成が変わりました');
   let year = ''; const rows: BirthDeathRow[] = [];
@@ -24,7 +25,12 @@ export async function normalizeNationalEvents(bytes: Uint8Array, source: Omit<So
     const month = `${year}-${m[1].padStart(2,'0')}`;
     const values = Object.fromEntries(populationGroups.map((g,i) => [g,{birth:cells[i*2] as number,death:cells[i*2+1] as number}])) as BirthDeathRow['values'];
     for (const k of ['birth','death'] as const) if (values.total[k] !== values.japanese[k] + values.foreign[k]) throw new Error('国籍別出生・死亡の合計が不一致です');
-    rows.push({month,values,source:{...source,sourcePeriod:month}});
+    const movements = (hasForeign ? ['K','L','Y','Z','AM','AN'] : ['K','L','Y','Z']).map(c=>row.getCell(c).value);
+    if(movements.some(v=>typeof v!=='number'||!Number.isSafeInteger(v)||v<0))throw new Error('人口推計の入出国者数に欠損');
+    if(!hasForeign)movements.push((movements[0] as number)-(movements[2] as number),(movements[1] as number)-(movements[3] as number));
+    const international=Object.fromEntries(populationGroups.map((g,i)=>[g,{inflow:movements[i*2] as number,outflow:movements[i*2+1] as number}])) as NonNullable<BirthDeathRow['international']>;
+    for(const k of ['inflow','outflow'] as const)if(international.foreign[k]<0||international.total[k]!==international.japanese[k]+international.foreign[k])throw new Error('入出国の国籍別合計が不一致');
+    rows.push({month,values,international,source:{...source,sourcePeriod:month}});
   });
   return rows;
 }
