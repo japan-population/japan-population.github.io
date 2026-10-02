@@ -22,7 +22,7 @@ export function PopulationPyramid({ rows, label }: { rows: Breakdown['rows']; la
         <button type="button" className="pyramid-half male-half" aria-label={`${row.age} 男性 ${number(row.male)}人`} aria-describedby={selected === row.age ? `${id}-tooltip-${index}` : undefined} onClick={() => setSelected(row.age)}><span style={{width: `${row.male / max * 100}%`}}/></button>
         <span className="age-label">{row.age}</span>
         <button type="button" className="pyramid-half female-half" aria-label={`${row.age} 女性 ${number(row.female)}人`} aria-describedby={selected === row.age ? `${id}-tooltip-${index}` : undefined} onClick={() => setSelected(row.age)}><span style={{width: `${row.female / max * 100}%`}}/></button>
-        {selected === row.age && <div className="pyramid-tooltip" ><div id={`${id}-tooltip-${index}`} role="tooltip"><strong>{row.age}</strong><span>男性 {number(row.male)}人 ／ 女性 {number(row.female)}人</span></div><button type="button" aria-label="人口の詳細を閉じる" onClick={e => { e.stopPropagation(); setSelected(undefined); }}>×</button></div>}
+        {selected === row.age && <div className="pyramid-tooltip" ><div id={`${id}-tooltip-${index}`} role="tooltip"><strong>{row.age}</strong><span>男性 {number(row.male)}人 ／ 女性 {number(row.female)}人</span><span>男女計 {number(row.total)}人</span></div><button type="button" aria-label="人口の詳細を閉じる" onClick={e => { e.stopPropagation(); setSelected(undefined); }}>×</button></div>}
       </div>)}
       <div className="pyramid-axis"><div>{[1,.5,0].map(t => <span key={t}>{tick(t)}</span>)}</div><span/><div>{[0,.5,1].map(t => <span key={t}>{tick(t)}</span>)}</div></div>
     </div><p className="pyramid-unit">単位：{unit === 1 ? '人' : '万人'}</p>

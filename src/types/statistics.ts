@@ -52,7 +52,14 @@ export type EventSeries = z.infer<typeof eventSeriesSchema>;
 export const groupedEventsSchema = z.record(z.enum(populationGroups), z.object({ birth: eventSeriesSchema.optional(), death: eventSeriesSchema.optional(), marriage: eventSeriesSchema.optional(), divorce: eventSeriesSchema.optional(), inflow: eventSeriesSchema.optional(), outflow: eventSeriesSchema.optional() }));
 export type GroupedEvents = z.infer<typeof groupedEventsSchema>;
 export const officialRegionSchema = z.object({ value: z.number().int().nonnegative(), source: sourceSchema, derived: z.boolean().optional() });
-export const nationalSchema = z.object({ generationId: z.string(), distribution: distributionDataSchema.optional(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
+export const nationalitiesSchema = z.object({
+  source:sourceSchema, total:z.number().int().positive(),
+  items:z.array(z.object({code:z.string(),name:z.string().min(1),value:z.number().int().nonnegative()})).min(1),
+}).superRefine((v,ctx)=>{
+  if(new Set(v.items.map(i=>i.code)).size!==v.items.length||v.items.reduce((n,i)=>n+i.value,0)!==v.total)ctx.addIssue({code:'custom',message:'国籍内訳の合計またはコードが不正です'});
+});
+export type Nationalities = z.infer<typeof nationalitiesSchema>;
+export const nationalSchema = z.object({ generationId: z.string(), distribution: distributionDataSchema.optional(), nationalities:nationalitiesSchema.optional(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
 export const prefectureSchema = z.object({ code: z.string().regex(/^(0[1-9]|[1-3]\d|4[0-7])$/), name: z.string(), officialPopulation: z.record(z.enum(populationGroups), officialRegionSchema).optional(), vital: vitalSchema, population: referenceSchema.optional(), migration: migrationSchema.optional() });
 export const prefecturesSchema = z.object({ generationId: z.string(), prefectures: z.record(z.string(), prefectureSchema) }).superRefine((v, ctx) => {
   if (Object.keys(v.prefectures).length !== 47) ctx.addIssue({ code: 'custom', message: 'Exactly 47 prefectures required' });
