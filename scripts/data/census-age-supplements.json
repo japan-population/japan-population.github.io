@@ -82,6 +82,247 @@
     ]
   },
   {
+    "year": 1940,
+    "coverage": "partial",
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "昭和15年国勢調査 年齢各歳・男女別人口 p.304–305（PDF 2ページ目）",
+      "sourcePeriod": "1940-10",
+      "publishedAt": "2014-06-10",
+      "retrievedAt": "2026-10-02T14:19:11.990063+00:00",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000007914033",
+      "status": "final",
+      "scope": "沖縄を除く人口。原表の「全人口」は内地人・外地人を含み、外国人を除く。全国の85歳以上のグラフとは集計範囲が異なるため、100歳以上は対象地域付きの参考欄で表示。"
+    },
+    "sha256": "28f796e3083ca0869317240df3ef88876915a7453646c0fa0363c272a6510045",
+    "rows": [
+      {
+        "age": "85～89歳",
+        "total": 83486,
+        "male": 25950,
+        "female": 57536
+      },
+      {
+        "age": "90～94歳",
+        "total": 16355,
+        "male": 4360,
+        "female": 11995
+      },
+      {
+        "age": "95～99歳",
+        "total": 2020,
+        "male": 491,
+        "female": 1529
+      },
+      {
+        "age": "100歳以上",
+        "total": 185,
+        "male": 26,
+        "female": 159
+      }
+    ],
+    "unallocated": {
+      "total": 1053,
+      "male": 196,
+      "female": 857,
+      "source": {
+        "publisher": "総務省統計局",
+        "statistics": "国勢調査",
+        "table": "第3表 年齢5歳階級・男女別人口 p.313（PDF 4ページ目）",
+        "sourcePeriod": "1940-10",
+        "publishedAt": "2014-06-10",
+        "retrievedAt": "2026-10-02T14:19:11.990063+00:00",
+        "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000007914034",
+        "status": "final",
+        "scope": "沖縄の85歳以上は合計のみ収録。100歳以上の内訳はこの原表では分離されていない。"
+      },
+      "sha256": "8ebc6df5ff97728849a133253316f2532e0ec9584c31faa0439a48cf25f3582e"
+    }
+  },
+  {
+    "year": 1950,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "sourcePeriod": "1950-10",
+      "publishedAt": "2014-06-10",
+      "retrievedAt": "2026-10-02T14:19:11.990063+00:00",
+      "status": "final",
+      "table": "昭和25年国勢調査 第3表 年令各才・男女別人口 p.6（PDF 2ページ目）",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000008196349",
+      "scope": "本土の各歳表に、1950年12月1日の琉球（奄美を含む）各歳表を加算。既存時系列と同じく琉球の外国人70歳以上136人を除く。85歳以上の男女別合計が時系列表と一致することを検証。"
+    },
+    "sha256": "43244a4af19ff8e0a199ed8e0612c2910f365f80df18fb10d52743a85f2d284a",
+    "rows": [
+      {
+        "age": "85～89歳",
+        "total": 79955,
+        "male": 24715,
+        "female": 55240
+      },
+      {
+        "age": "90～94歳",
+        "total": 14313,
+        "male": 3772,
+        "female": 10541
+      },
+      {
+        "age": "95～99歳",
+        "total": 2147,
+        "male": 491,
+        "female": 1656
+      },
+      {
+        "age": "100歳以上",
+        "total": 97,
+        "male": 25,
+        "female": 72
+      }
+    ],
+    "components": [
+      {
+        "source": {
+          "publisher": "総務省統計局",
+          "statistics": "国勢調査",
+          "sourcePeriod": "1950-10",
+          "publishedAt": "2014-06-10",
+          "retrievedAt": "2026-10-02T14:19:11.990063+00:00",
+          "status": "final",
+          "table": "昭和25年国勢調査 第3表 年令各才・男女別人口 p.6（PDF 2ページ目）",
+          "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000008196349",
+          "scope": "本土の各歳表に、1950年12月1日の琉球（奄美を含む）各歳表を加算。既存時系列と同じく琉球の外国人70歳以上136人を除く。85歳以上の男女別合計が時系列表と一致することを検証。"
+        },
+        "sha256": "43244a4af19ff8e0a199ed8e0612c2910f365f80df18fb10d52743a85f2d284a",
+        "rows": [
+          {
+            "age": "85～89歳",
+            "total": 79053,
+            "male": 24507,
+            "female": 54546
+          },
+          {
+            "age": "90～94歳",
+            "total": 14147,
+            "male": 3741,
+            "female": 10406
+          },
+          {
+            "age": "95～99歳",
+            "total": 2111,
+            "male": 484,
+            "female": 1627
+          },
+          {
+            "age": "100歳以上",
+            "total": 97,
+            "male": 25,
+            "female": 72
+          }
+        ]
+      },
+      {
+        "source": {
+          "publisher": "総務省統計局",
+          "statistics": "国勢調査",
+          "sourcePeriod": "1950-12",
+          "publishedAt": "2014-06-10",
+          "retrievedAt": "2026-10-02T14:19:11.990063+00:00",
+          "status": "final",
+          "table": "1950年国勢調査 全琉球 第5表 年令別性別琉球人人口 p.100全琉球-5（PDF 4ページ目）",
+          "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000008283271",
+          "scope": "1950年12月1日現在。奄美群島を含む全琉球の琉球人人口。外国人は含まない。100歳以上の男女各欄は「－」（0人）。"
+        },
+        "sha256": "c5248444a07bb1bd2e596d71591c55f2731ade1287aa7d9b955c960dd65c68ca",
+        "rows": [
+          {
+            "age": "85～89歳",
+            "total": 902,
+            "male": 208,
+            "female": 694
+          },
+          {
+            "age": "90～94歳",
+            "total": 166,
+            "male": 31,
+            "female": 135
+          },
+          {
+            "age": "95～99歳",
+            "total": 36,
+            "male": 7,
+            "female": 29
+          },
+          {
+            "age": "100歳以上",
+            "total": 0,
+            "male": 0,
+            "female": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "year": 1960,
+    "coverage": "partial",
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "昭和35年国勢調査 年齢各歳・男女別人口 p.20–21（PDF 2ページ目）",
+      "sourcePeriod": "1960-10",
+      "publishedAt": "2014-06-10",
+      "retrievedAt": "2026-10-02T14:19:11.990063+00:00",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000008196549",
+      "status": "final",
+      "scope": "沖縄を除く人口。全国の85歳以上のグラフとは集計範囲が異なるため、100歳以上は対象地域付きの参考欄で表示。"
+    },
+    "sha256": "a7c049eb86c6d7b6838ac4026e2bff06b3a42bfb8258424e9a49ac92dc759edb",
+    "rows": [
+      {
+        "age": "85～89歳",
+        "total": 155813,
+        "male": 48193,
+        "female": 107620
+      },
+      {
+        "age": "90～94歳",
+        "total": 29276,
+        "male": 7678,
+        "female": 21598
+      },
+      {
+        "age": "95～99歳",
+        "total": 2767,
+        "male": 555,
+        "female": 2212
+      },
+      {
+        "age": "100歳以上",
+        "total": 144,
+        "male": 27,
+        "female": 117
+      }
+    ],
+    "unallocated": {
+      "total": 2603,
+      "male": 650,
+      "female": 1953,
+      "source": {
+        "publisher": "総務省統計局",
+        "statistics": "国勢調査",
+        "table": "【沖縄】第4表 年令各才・男女別人口 p.111（PDF 1ページ目）",
+        "sourcePeriod": "1960-12",
+        "publishedAt": "2014-06-10",
+        "retrievedAt": "2026-10-02T14:19:11.990063+00:00",
+        "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000008196646",
+        "status": "final",
+        "scope": "1960年12月1日現在。沖縄の85歳以上は合計のみ収録。100歳以上の内訳はこの原表では分離されていない。"
+      },
+      "sha256": "381884acefc8ef9cc302b22ca77c86b0bc902913ee500157479cb2456d1f248d"
+    }
+  },
+  {
     "year": 1970,
     "source": {
       "publisher": "総務省統計局",
