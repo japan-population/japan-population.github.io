@@ -17,7 +17,7 @@ import type { MigrationHistory } from './sources/migration';
 import { migrationModel, referenceModel } from './models/reference-model';
 import { populationModel } from './models/population-model';
 import { eventModel } from './models/event-model';
-import { validateDataset, validateChange } from './validation';
+import { validateDataset, validateChange, validatePublication } from './validation';
 export type Dataset = DashboardData & { history: { population: PopulationObservation[]; vital: VitalObservation[] } };
 // Retrieval timestamps alone must not create a daily data commit.
 export function semanticJSON(value: unknown): string {
@@ -89,7 +89,7 @@ export async function readDataset(directory: string): Promise<Dataset> {
   return result;
 }
 export async function publishDataset(data: Dataset, directory = resolve('public/data')): Promise<boolean> {
-  validateDataset(data);
+  validatePublication(data);
   let previous: Dataset | undefined;
   try { previous = await readDataset(directory); } catch (e) { if ((e as NodeJS.ErrnoException).code !== 'ENOENT') throw e; }
   if (previous && semanticJSON(previous) === semanticJSON(data)) return false;
