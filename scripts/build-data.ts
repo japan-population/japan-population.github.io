@@ -1,5 +1,5 @@
 import { fetchDistribution } from './sources/distribution';
-import { fetchCensusRegions } from './sources/census-regions';
+import { fetchCensusData } from './sources/census-regions';
 import { fetchNationalEvents } from './sources/national-events';
 import { fetchExactPopulation } from './sources/exact-population';
 import { populationModel } from './models/population-model';
@@ -32,9 +32,9 @@ try {
   const japaneseMigration = await fetchMigration(appId, now, 'japanese');
   const foreignMigration = await fetchMigration(appId, now, 'foreign');
   const nationalEvents = await fetchNationalEvents(now);
-  const officialRegions = await fetchCensusRegions(now);
+  const { officialRegions, nationalities } = await fetchCensusData(now);
   const distribution = await fetchDistribution(now);
-  const data = buildDataset(population, vital, 'official', now, { breakdown, bases, migration, japaneseBases, officialRegions, distribution, nationalEvents, migrationsByGroup: {total:migration,japanese:japaneseMigration,foreign:foreignMigration} });
+  const data = buildDataset(population, vital, 'official', now, { breakdown, bases, migration, japaneseBases, officialRegions, nationalities, distribution, nationalEvents, migrationsByGroup: {total:migration,japanese:japaneseMigration,foreign:foreignMigration} });
   console.log(await publishDataset(data) ? 'すべての検証に成功し、JSONを更新しました。' : '統計・推計モデルの変更はありません。');
 } catch (error) {
   // Only local controlled errors are printed. Zod diagnostics can include source input; avoid dumping them.
