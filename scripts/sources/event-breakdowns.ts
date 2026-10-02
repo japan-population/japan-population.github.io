@@ -100,7 +100,7 @@ export function normalizeEventBreakdowns(tables:Record<string,Table>,annual:Annu
       if(count!==undefined)items.push({label:name,count,rank,approximate:known===undefined});
     }
     items.sort((a,b)=>(a.rank??99)-(b.rank??99));
-    for(const name of ['交通事故','自殺','他殺']){const count=counts.get(name);if(count!==undefined&&!items.some(i=>i.label===name))items.push({label:name,count,supplement:true});}
+    for(const name of ['自殺','他殺','交通事故']){const count=counts.get(name);if(count!==undefined&&!items.some(i=>i.label===name))items.push({label:name,count,supplement:true});}
     section(exact.length?'0003411661':'0003411655','death','cause',year,total,items,
       '公式の死因順位。交通事故は不慮の事故の内数。'+(items.some(i=>i.approximate)?'参考値は公表死亡率から算出。':'')+(year<1950?'この年の公式順位表は上位5項目まで。':''),true);
     const s=result.at(-1);if(s?.event==='death'&&s.year===year){
