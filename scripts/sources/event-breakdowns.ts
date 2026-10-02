@@ -1,6 +1,7 @@
 import {arrayOf,type ClassObject} from './estat';
 import {fetchTable,clean,parameter,labelFor,type Table} from './table';
 import {eventBreakdownsSchema,type EventBreakdowns,type EventBreakdownData,type AnnualOfficial} from '../../src/types/statistics';
+import {addHistoricalEventBreakdowns} from './historical-event-breakdowns';
 
 export const EVENT_BREAKDOWN_TABLES=['0003411599','0003411603','0003411659','0003411657','0003411661','0003411951','0003411959','0003411840','0003411865','0003411655','0003411656'] as const;
 // Keep annual event totals untouched. These tables only describe their composition.
@@ -109,7 +110,7 @@ export function normalizeEventBreakdowns(tables:Record<string,Table>,annual:Annu
   }
   const filtered=result.filter(s=>totals.has(s.year)||s.year===Math.max(...result.map(v=>v.year)));
   for(const event of ['birth','death','marriage','divorce'])if(!filtered.some(s=>s.event===event))throw new Error('人口動態内訳が欠けています');
-  return eventBreakdownsSchema.parse(filtered);
+  return addHistoricalEventBreakdowns(eventBreakdownsSchema.parse(filtered),annual);
 }
 export async function fetchEventBreakdowns(appId:string,now:number,annual:AnnualOfficial[]):Promise<EventBreakdowns>{
   const tables:Record<string,Table>={};
