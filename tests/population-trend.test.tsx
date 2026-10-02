@@ -6,7 +6,7 @@ import ExcelJS from 'exceljs';
 import {normalizeAnnualPopulation,mergePopulationTrend,trendSource,fillHistoricalBreakdown} from '../scripts/sources/population-trend';
 import {readDataset} from '../scripts/dataset';
 import {populationTrendSchema} from '../src/types/statistics';
-import {trendX,trendY,trendPaths} from '../src/lib/population-trend';
+import {trendX,trendY,trendPaths,nearestTimelineIndex} from '../src/lib/population-trend';
 import {PopulationExplorer} from '../src/components/PopulationExplorer';
 import {PopulationTrendChart} from '../src/components/PopulationTrendChart';
 const bytes=await Promise.all(['old','new','reference'].map(n=>readFile(`tests/fixtures/annual-population-${n}.xlsx`)));
@@ -46,9 +46,11 @@ it('公式表の単位や必須列の欠損を拒否する',async()=>{
  await expect(normalizeAnnualPopulation(new Uint8Array(await book.xlsx.writeBuffer()),0)).rejects.toThrow('年次総人口');
 });
 it('スライダーの12位置に横軸を合わせ、年次の点と0人基準を維持する',()=>{
- for(let i=0;i<11;i++)expect(trendX(`${1920+i*10}-10-01`,data.points.at(-1)!.date)).toBeCloseTo((i+.5)/12*100);
+ for(let i=1;i<11;i++)expect(trendX(`${1920+i*10}-10-01`,data.points.at(-1)!.date)-trendX(`${1910+i*10}-10-01`,data.points.at(-1)!.date)).toBeCloseTo(trendX('1930-10-01',data.points.at(-1)!.date)-trendX('1920-10-01',data.points.at(-1)!.date));
  expect(trendX(data.points.at(-1)!.date,data.points.at(-1)!.date)).toBeCloseTo(11.5/12*100);
- expect(trendX('1921-10-01',data.points.at(-1)!.date)-trendX('1920-10-01',data.points.at(-1)!.date)).toBeCloseTo(100/120);
+ expect(trendX('1921-10-01',data.points.at(-1)!.date)-trendX('1920-10-01',data.points.at(-1)!.date)).toBeCloseTo((100*11/12)/105.5);
+ expect((trendX('2026-04-01','2026-04-01')-trendX('2020-10-01','2026-04-01'))/(trendX('2020-10-01','2026-04-01')-trendX('2010-10-01','2026-04-01'))).toBeCloseTo(.55);
+ expect(nearestTimelineIndex([0,120,240,1266],220)).toBe(2);
  const paths=trendPaths(data.points);expect(trendY(0,paths.maximum)).toBe(220);
  expect(paths.line.match(/[ML]/g)).toHaveLength(107);
  expect(paths.area.endsWith('Z')).toBe(true);expect(paths.line).not.toMatch(/NaN|Infinity/);

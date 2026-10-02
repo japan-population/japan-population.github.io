@@ -1,12 +1,11 @@
 import type {PopulationTrend} from '../types/statistics';
-const yearPosition=(date:string)=>Number(date.slice(0,4))+(Number(date.slice(5,7))-1)/12;
-// Twelve slider labels sit at the centres of twelve equal columns. The final
-// 2020-to-latest interval occupies one column, matching the existing slider.
+// Keep a constant number of pixels per month, including the latest partial decade.
+export const trendMonth=(date:string)=>Number(date.slice(0,4))*12+Number(date.slice(5,7))-1;
 export function trendX(date:string,latestDate:string):number{
-  const value=yearPosition(date),last=yearPosition(latestDate),boundary=2020+9/12;
-  const slot=value<=boundary?(value-(1920+9/12))/10:10+(value-boundary)/(last-boundary);
-  return (slot+.5)/12*100;
+  const start=trendMonth('1920-10-01');
+  return 100/24+(trendMonth(date)-start)/(trendMonth(latestDate)-start)*(100*11/12);
 }
+export function nearestTimelineIndex(values:number[],value:number){return values.reduce((best,n,i)=>Math.abs(n-value)<Math.abs(values[best]-value)?i:best,0);}
 export const trendY=(value:number,maximum:number)=>220-value/maximum*200;
 export function trendPaths(points:PopulationTrend['points'],position?:(date:string)=>number){
   const latest=points.at(-1)!.date,maximum=Math.max(150_000_000,Math.ceil(Math.max(...points.map(p=>p.total))/50_000_000)*50_000_000);

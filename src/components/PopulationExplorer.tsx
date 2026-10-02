@@ -1,3 +1,4 @@
+import {trendX,trendMonth,nearestTimelineIndex} from '../lib/population-trend';
 import {PopulationTrendChart} from './PopulationTrendChart';
 import {useState} from 'react';
 import {NationalityBreakdown} from './NationalityBreakdown';
@@ -16,16 +17,20 @@ export function PopulationExplorer({national,group,demo}:{national:National;grou
   const view=officialView(national,group,selection);
   const options=[...CENSUS_YEARS,'latest'] as const;
   const index=selection==='latest'?11:CENSUS_YEARS.indexOf(selection);
+  const latestDate=national.populationTrend?.points.at(-1)?.date??national.population.baseDate.slice(0,10);
+  const dates=options.map(y=>y==='latest'?latestDate:`${y}-10-01`);
+  const offsets=dates.map(d=>trendMonth(d)-trendMonth(dates[0]));
   const date=view.date.replace(/^(\d{4})-0?(\d+)-0?(\d+)$/,'$1年$2月$3日');
   const share=group==='foreign'&&view.population!==undefined&&view.total&&view.total>0?(view.population/view.total*100).toFixed(1):undefined;
   return <section id="official" className="section official-section">
     <div className="section-controls official-controls"><div className="section-heading"><div><span className="eyebrow">OFFICIAL STATISTICS</span><h2>過去確定値 <small>{GROUP_LABELS[group]}</small></h2></div></div>
     <div className="official-timeline">
       <p className="official-date"><time dateTime={view.date}>{date}現在</time></p>
-      <input type="range" min="0" max="11" step="1" value={index}
+      <input className="historical-range" type="range" min="0" max={offsets.at(-1)} step="any" value={offsets[index]}
         aria-label="過去確定値の年を選択" aria-valuetext={selection==='latest'?'最新確定値':`${selection}年 国勢調査`}
-        onChange={e=>setSelection(options[Number(e.currentTarget.value)])}/>
-      <div className="timeline-labels">{options.map((year,i)=><button type="button" key={year} aria-pressed={selection===year} aria-label={year==='latest'?'最新確定値を表示':`${year}年の国勢調査を表示`} onClick={()=>setSelection(year)} className={i%2===1&&year!=='latest'?'minor-year':undefined}>{year==='latest'?'最新':year}</button>)}</div>
+        onChange={e=>setSelection(options[nearestTimelineIndex(offsets,Number(e.currentTarget.value))])}
+        onKeyDown={e=>{const direction=['ArrowRight','ArrowUp'].includes(e.key)?1:['ArrowLeft','ArrowDown'].includes(e.key)?-1:0;if(direction||e.key==='Home'||e.key==='End'){e.preventDefault();setSelection(options[e.key==='Home'?0:e.key==='End'?options.length-1:Math.max(0,Math.min(options.length-1,index+direction))]);}}}/>
+      <div className="timeline-labels historical-labels">{options.map((year,i)=><button type="button" key={year} style={{left:`${trendX(dates[i],latestDate)}%`}} aria-pressed={selection===year} aria-label={year==='latest'?'最新確定値を表示':`${year}年の国勢調査を表示`} onClick={()=>setSelection(year)} className={i%2===1&&year!=='latest'?'minor-year':undefined}>{year==='latest'?'最新':year}</button>)}</div>
     </div>
     </div>
     {national.populationTrend&&<PopulationTrendChart data={national.populationTrend} selection={selection}/>}
