@@ -1,3 +1,4 @@
+import {TimelineSlider} from './TimelineSlider';
 import {useState,type CSSProperties} from 'react';
 import type {PopulationGroup,PopulationTrend} from '../types/statistics';
 import {PROJECTION_SCENARIOS,PROJECTION_LABELS,type Projections,type ProjectionScenario} from '../types/projections';
@@ -19,7 +20,7 @@ export function FutureExplorer({data,group,now}:{data:Projections;group:Populati
     <div className="segmented projection-switch" role="group" aria-label="将来推計のシナリオ">{PROJECTION_SCENARIOS.map(s=><button key={s} aria-pressed={scenario===s} onClick={()=>setScenario(s)}>{PROJECTION_LABELS[s]}</button>)}</div>
    </div>
    <div className="official-timeline"><p className="official-date"><time dateTime={`${year}-10-01`}>{year}年10月1日現在</time></p>
-    <input type="range" min="0" max={years.length-1} step="1" value={years.indexOf(year)} disabled={years.length===1} aria-label="未来予測値の年を選択" aria-valuetext={`${year}年`} onChange={e=>setSelected(years[Number(e.currentTarget.value)])}/>
+    <TimelineSlider min="0" max={years.length-1} step="1" value={years.indexOf(year)} disabled={years.length===1} aria-label="未来予測値の年を選択" aria-valuetext={`${year}年`} onChange={e=>setSelected(years[Number(e.currentTarget.value)])}/>
     <div className="timeline-labels">{years.map(y=><button type="button" key={y} aria-label={`${y}年の将来推計を表示`} aria-pressed={year===y} onClick={()=>setSelected(y)}>{y}</button>)}</div>
    </div>
   </div>

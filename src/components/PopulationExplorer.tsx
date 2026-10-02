@@ -1,3 +1,4 @@
+import {TimelineSlider} from './TimelineSlider';
 import {trendX,trendMonth,nearestTimelineIndex} from '../lib/population-trend';
 import {PopulationTrendChart} from './PopulationTrendChart';
 import {useState} from 'react';
@@ -26,7 +27,7 @@ export function PopulationExplorer({national,group,demo}:{national:National;grou
     <div className="section-controls official-controls"><div className="section-heading"><div><span className="eyebrow">OFFICIAL STATISTICS</span><h2>過去確定値 <small>{GROUP_LABELS[group]}</small></h2></div></div>
     <div className="official-timeline">
       <p className="official-date"><time dateTime={view.date}>{date}現在</time></p>
-      <input className="historical-range" type="range" min="0" max={offsets.at(-1)} step="any" value={offsets[index]}
+      <TimelineSlider className="historical-range" min="0" max={offsets.at(-1)} step="any" value={offsets[index]}
         aria-label="過去確定値の年を選択" aria-valuetext={selection==='latest'?'最新確定値':`${selection}年 国勢調査`}
         onChange={e=>setSelection(options[nearestTimelineIndex(offsets,Number(e.currentTarget.value))])}
         onKeyDown={e=>{const direction=['ArrowRight','ArrowUp'].includes(e.key)?1:['ArrowLeft','ArrowDown'].includes(e.key)?-1:0;if(direction||e.key==='Home'||e.key==='End'){e.preventDefault();setSelection(options[e.key==='Home'?0:e.key==='End'?options.length-1:Math.max(0,Math.min(options.length-1,index+direction))]);}}}/>
