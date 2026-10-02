@@ -39,6 +39,6 @@
 
 .official-controls .official-timeline input[type=range]{min-height:24px}
 .official-controls .timeline-labels button{min-height:24px;padding:2px 0}
-.official-controls .official-date{margin-top:4px;font-size:12px}
+.official-controls .official-date{margin:0 0 8px;font-size:12px}
 .about{display:block}.about>.section-controls{margin-bottom:24px}.about .section-controls h2{margin-top:5px;font-size:23px}
 @media(max-width:760px){.section-controls{top:var(--site-header-height,76px);padding:8px 0}.section-controls h2{font-size:20px}.official-controls .official-timeline{margin-top:6px;padding:6px 8px}}

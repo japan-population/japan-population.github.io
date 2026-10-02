@@ -20,11 +20,11 @@ export function PopulationExplorer({national,group,demo}:{national:National;grou
   return <section id="official" className="section official-section">
     <div className="section-controls official-controls"><div className="section-heading"><div><span className="eyebrow">OFFICIAL STATISTICS</span><h2>過去確定値 <small>{GROUP_LABELS[group]}</small></h2></div></div>
     <div className="official-timeline">
+      <p className="official-date"><time dateTime={view.date}>{date}現在</time></p>
       <input type="range" min="0" max="11" step="1" value={index}
         aria-label="過去確定値の年を選択" aria-valuetext={selection==='latest'?'最新確定値':`${selection}年 国勢調査`}
         onChange={e=>setSelection(options[Number(e.currentTarget.value)])}/>
       <div className="timeline-labels">{options.map((year,i)=><button type="button" key={year} aria-pressed={selection===year} aria-label={year==='latest'?'最新確定値を表示':`${year}年の国勢調査を表示`} onClick={()=>setSelection(year)} className={i%2===1&&year!=='latest'?'minor-year':undefined}>{year==='latest'?'最新':year}</button>)}</div>
-      <p className="official-date"><time dateTime={view.date}>{date}現在</time></p>
     </div>
     </div>
     <div className="official-summary">
@@ -34,7 +34,7 @@ export function PopulationExplorer({national,group,demo}:{national:National;grou
     {view.population===undefined&&selection!=='latest'&&<p className="small-note">この年の{GROUP_LABELS[group]}の人口内訳は未収録です。</p>}
     {group==='foreign'&&selection!=='latest'&&selection<=1940&&<p className="small-note">戦前の値は、当時の内地の外地人を含む区分です。</p>}
     {view.referenceNote&&<p className="small-note">{view.referenceNote}</p>}
-    {view.derivation?view.derivation.sources.map((source,i)=><SourceInfo key={i} source={source}/>):view.source&&<SourceInfo source={view.source}/>}
+    {view.derivation?<SourceInfo sources={view.derivation.sources}/>:view.source&&<SourceInfo source={view.source}/>}
     <details className="official-pyramid" open={pyramidOpen} onToggle={e=>{if(e.target===e.currentTarget)setPyramidOpen(e.currentTarget.open);}}><summary>人口ピラミッド</summary>{view.rows.length>0?<><PopulationPyramid key={`${selection}/${group}`} rows={view.rows} interval={ageInterval} onIntervalChange={setAgeInterval} label={GROUP_LABELS[group]} historical={selection!=='latest'}/>{view.ageSource&&<SourceInfo source={view.ageSource}/>}</>:<p className="small-note pyramid-unavailable">この年の国籍別・年齢階級別人口は未収録です。</p>}</details>
     {group!=='foreign'&&view.annual&&<AnnualVital open={annualOpen} onOpenChange={setAnnualOpen} data={view.annual} total={group==='total'} latest={selection==='latest'}/>}
     {group==='foreign'&&<NationalityBreakdown open={nationalityOpen} onOpenChange={setNationalityOpen} data={view.nationalities} historical={selection!=='latest'}/>}

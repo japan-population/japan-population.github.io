@@ -48,11 +48,12 @@ it('年間実績を月間推計へ置換せず、選択年に連動する',async
  expect(officialView(national,'japanese',2020).population).toBe(121541155);
  for(const g of ['total','japanese','foreign']as const){const view=officialView(national,g,'latest');expect(view.population).toBe(national.breakdown!.groups[g].base);expect(view.rows).toHaveLength(66);}
 });
-it('スライダーは最新を初期表示、日付はその下、年間欄は総人口・日本人だけで閉じる',async()=>{
+it('スライダーは最新を初期表示、日付はその上、年間欄は総人口・日本人だけで閉じる',async()=>{
  const {national}=await readDataset('public/data');
  for(const group of ['total','japanese','foreign']as const){
   const $=load(renderToStaticMarkup(<PopulationExplorer national={national} group={group} demo={false}/>));
   expect($('input[type=range]').attr('value')).toBe('11');expect($('.timeline-labels button')).toHaveLength(12);
+  expect($('.official-date').next().is('input[type=range]')).toBe(true);
   expect($('.section-heading time')).toHaveLength(0);expect($('.official-timeline .official-date time').attr('datetime')).toBe(national.population.baseDate.slice(0,10));
   expect($('.official-pyramid').is('details')).toBe(true);expect($('.official-pyramid').attr('open')).toBeUndefined();
   expect($('.annual-vital').length).toBe(group==='foreign'?0:1);expect($('.annual-vital').attr('open')).toBeUndefined();
