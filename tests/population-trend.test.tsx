@@ -3,7 +3,7 @@ import {expect,it} from 'vitest';
 import {load} from 'cheerio';
 import {renderToStaticMarkup} from 'react-dom/server';
 import ExcelJS from 'exceljs';
-import {normalizeAnnualPopulation,mergePopulationTrend,trendSource} from '../scripts/sources/population-trend';
+import {normalizeAnnualPopulation,mergePopulationTrend,trendSource,fillHistoricalBreakdown} from '../scripts/sources/population-trend';
 import {readDataset} from '../scripts/dataset';
 import {populationTrendSchema} from '../src/types/statistics';
 import {trendX,trendY,trendPaths} from '../src/lib/population-trend';
@@ -63,4 +63,22 @@ it('総人口・日本人・外国人で同じグラフを表示し固定エリ�
   return $('.population-trend').html();
  });
  expect(new Set(htmls).size).toBe(1);
+});
+
+it('未収録の国籍別内訳だけを参考値で補い、総人口と公表済み内訳を維持する',()=>{
+ const raw=structuredClone(data);
+ for(const p of raw.points)if(p.breakdownReference){delete p.japanese;delete p.foreign;delete p.breakdownReference;}
+ const filled=fillHistoricalBreakdown(raw,national.archive!);
+ expect(filled.points.every(p=>p.japanese!==undefined&&p.foreign!==undefined)).toBe(true);
+ expect(filled.points.map(p=>p.total)).toEqual(raw.points.map(p=>p.total));
+ expect(filled.points[0]).toMatchObject({foreign:78061,breakdownReference:{method:'census-reference'}});
+ expect(filled.points[5].breakdownReference).toMatchObject({method:'linear-interpolation',anchorDates:['1920-10-01','1930-10-01']});
+ expect(filled.points[5].foreign).toBeGreaterThan(78061);expect(filled.points[5].foreign).toBeLessThan(477980);
+ expect(filled.points.filter(p=>p.date>='1950')).toEqual(raw.points.filter(p=>p.date>='1950'));
+ for(const p of filled.points)expect(p.japanese!+p.foreign!).toBe(p.total);
+ expect(fillHistoricalBreakdown(filled,national.archive!)).toEqual(filled);
+ const html=renderToStaticMarkup(<PopulationTrendChart data={filled} selection={1920}/>);
+ expect(html).not.toContain('内訳未収録');expect(html).toContain('参考値');
+ const $=load(html);expect($('.trend-japanese-area')).toHaveLength(1);expect($('.trend-foreign-area')).toHaveLength(1);
+ const bad=structuredClone(filled);bad.points[0].breakdownReference!.sourceIndexes=[999];expect(()=>populationTrendSchema.parse(bad)).toThrow();
 });

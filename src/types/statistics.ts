@@ -106,9 +106,10 @@ export const officialArchiveSchema=z.object({censuses:z.array(censusSnapshotSche
 export type OfficialArchive=z.infer<typeof officialArchiveSchema>;
 export const populationTrendSchema=z.object({
   sources:z.array(sourceSchema).min(1),
-  points:z.array(z.object({date:z.iso.date(),total:z.number().int().positive(),japanese:z.number().int().nonnegative().optional(),foreign:z.number().int().nonnegative().optional(),precision:z.union([z.literal(1),z.literal(1000)]),sourceIndex:z.number().int().nonnegative()})).min(81),
+  points:z.array(z.object({date:z.iso.date(),total:z.number().int().positive(),japanese:z.number().int().nonnegative().optional(),foreign:z.number().int().nonnegative().optional(),precision:z.union([z.literal(1),z.literal(1000)]),sourceIndex:z.number().int().nonnegative(),breakdownReference:z.object({method:z.enum(['census-reference','linear-interpolation']),anchorDates:z.array(z.iso.date()).min(1).max(2),sourceIndexes:z.array(z.number().int().nonnegative()).min(1).max(2)}).optional()})).min(81),
 }).superRefine((v,ctx)=>{
   v.points.forEach((p,i)=>{
+    if(p.breakdownReference&&(p.japanese===undefined||p.breakdownReference.sourceIndexes.some(i=>i>=v.sources.length)))ctx.addIssue({code:'custom',message:'参考内訳の出典・人口が不正です'});
     if(p.sourceIndex>=v.sources.length||p.total%p.precision!==0)ctx.addIssue({code:'custom',message:'年次人口の出典・精度が不正です'});
     if((p.japanese===undefined)!==(p.foreign===undefined)||p.japanese!==undefined&&p.japanese+p.foreign! !==p.total)ctx.addIssue({code:'custom',message:'年次人口の国籍別合計が不一致です'});
     if(Number(p.date.slice(0,4))!==1920+i)ctx.addIssue({code:'custom',message:'年次人口に欠損・重複があります'});

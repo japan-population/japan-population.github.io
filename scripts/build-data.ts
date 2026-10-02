@@ -38,7 +38,7 @@ try {
   const { officialRegions, nationalities } = await fetchCensusData(now);
   const distribution = await fetchDistribution(now);
   const archive = await fetchOfficialArchive(appId, now);
-  const populationTrend = await fetchPopulationTrend(exact,now);
+  const populationTrend = await fetchPopulationTrend(exact,now,archive);
   const projections = await fetchProjections(now);
   const data = buildDataset(population, vital, 'official', now, { breakdown, bases, migration, japaneseBases, officialRegions, nationalities, distribution, archive, populationTrend, projections, nationalEvents, migrationsByGroup: {total:migration,japanese:japaneseMigration,foreign:foreignMigration} });
   console.log(await publishDataset(data) ? 'すべての検証に成功し、JSONを更新しました。' : '統計・推計モデルの変更はありません。');

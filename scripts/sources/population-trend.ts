@@ -1,7 +1,7 @@
 import ExcelJS from 'exceljs';
 import {download} from './http';
 import type {ExactHistory} from './exact-population';
-import {populationTrendSchema,type PopulationTrend,type Source} from '../../src/types/statistics';
+import {populationTrendSchema,type PopulationTrend,type Source,type OfficialArchive} from '../../src/types/statistics';
 export const TREND_FILES=[
   {url:'https://www.e-stat.go.jp/stat-search/file-download?statInfId=000000090261&fileKind=0',publishedAt:'2007-12-18',sourcePeriod:'2000-10',table:'長期時系列 第1表（1920～2000年）',scope:'公表単位は千人。1940年は国勢調査を補正した人口。1945年は11月1日現在。1945～1971年は沖縄を含まない。日本人人口は1950年以降のみ。'},
   {url:'https://www.e-stat.go.jp/stat-search/file-download?statInfId=000013168601&fileKind=4',publishedAt:'2022-07-20',sourcePeriod:'2020-10',table:'長期時系列 第1表（2000～2020年）',scope:'公表単位は千人。国勢調査間は公式の補間補正人口。日本人人口には国籍不詳の按分値・不詳補完値を含む。'},
@@ -53,7 +53,7 @@ export function mergePopulationTrend(tables:Point[][],sources:Source[],exact:Exa
   }
   return populationTrendSchema.parse({sources:resultSources,points:[...points.values()].sort((a,b)=>a.date.localeCompare(b.date))});
 }
-export async function fetchPopulationTrend(exact:ExactHistory,now:number):Promise<PopulationTrend>{
+export async function fetchPopulationTrend(exact:ExactHistory,now:number,archive:OfficialArchive):Promise<PopulationTrend>{
   const tables=[];
   for(const [i,file]of TREND_FILES.entries())tables.push(await normalizeAnnualPopulation(await download(new URL(file.url)),i,i===2));
   const latest=exact.total.at(-1);if(!latest)throw new Error('最新確定人口がありません');
@@ -63,5 +63,33 @@ export async function fetchPopulationTrend(exact:ExactHistory,now:number):Promis
   const annual=await normalizeAnnualPopulation(await download(new URL(latest.source.url)),sources.length,true);
   tables.push(annual);
   sources.push({...latest.source,table:'参考表 全国人口の推移（年次欄）',sourcePeriod:annual.at(-1)!.date.slice(0,7)});
-  return mergePopulationTrend(tables,sources,exact);
+  return fillHistoricalBreakdown(mergePopulationTrend(tables,sources,exact),archive);
+}
+
+// Retain every published annual total. Only missing nationality breakdowns are
+// estimated; the historical census categories are not modern citizenship data.
+export function fillHistoricalBreakdown(data:PopulationTrend,archive:OfficialArchive):PopulationTrend{
+ const result=structuredClone(data);
+ const firstKnown=result.points.find(p=>p.foreign!==undefined&&!p.breakdownReference);
+ if(!firstKnown)throw new Error('国籍別年次人口の接続点がありません');
+ const anchors=archive.censuses.filter(c=>c.date<firstKnown.date&&c.groups.foreign).map(c=>{
+  const foreign=c.groups.foreign!;
+  let sourceIndex=result.sources.findIndex(s=>s.url===foreign.source.url&&s.sourcePeriod===foreign.source.sourcePeriod);
+  if(sourceIndex<0){sourceIndex=result.sources.length;result.sources.push(foreign.source);}
+  return {date:c.date,value:foreign.population,sourceIndex};
+ });
+ anchors.push({date:firstKnown.date,value:firstKnown.foreign!,sourceIndex:firstKnown.sourceIndex});
+ anchors.sort((a,b)=>a.date.localeCompare(b.date));
+ for(const point of result.points){
+  if(point.foreign!==undefined)continue;
+  const exact=anchors.find(a=>a.date===point.date);
+  const left=exact??anchors.filter(a=>a.date<point.date).at(-1),right=exact??anchors.find(a=>a.date>point.date);
+  if(!left||!right)throw new Error('参考内訳の補間に必要な基準年がありません');
+  const fraction=exact?0:(Date.parse(point.date)-Date.parse(left.date))/(Date.parse(right.date)-Date.parse(left.date));
+  const foreign=exact?exact.value:Math.round((left.value+(right.value-left.value)*fraction)/1000)*1000;
+  if(foreign<0||foreign>point.total)throw new Error('参考内訳が総人口の範囲外です');
+  point.foreign=foreign;point.japanese=point.total-foreign;
+  point.breakdownReference={method:exact?'census-reference':'linear-interpolation',anchorDates:exact?[exact.date]:[left.date,right.date],sourceIndexes:exact?[exact.sourceIndex]:[left.sourceIndex,right.sourceIndex]};
+ }
+ return populationTrendSchema.parse(result);
 }

@@ -18,7 +18,7 @@ export function PopulationTrendChart({data,selection,years,notes}:{data:Populati
     setHover(points.reduce((closest,p,i)=>Math.abs(position(p.date)-pointerPosition)<Math.abs(position(points[closest].date)-pointerPosition)?i:closest,0));
   };
   return <div className="population-trend">
-    <div className="trend-heading"><h3>総人口の推移</h3><div className="trend-legend"><span><i className="trend-japanese-key"/>日本人</span><span><i className="trend-foreign-key"/>外国人</span>{!years&&<span><i className="trend-unknown-key"/>内訳未収録</span>}</div></div>
+    <div className="trend-heading"><h3>総人口の推移</h3><div className="trend-legend"><span><i className="trend-japanese-key"/>日本人</span><span><i className="trend-foreign-key"/>外国人</span>{points.some(p=>p.japanese===undefined)&&<span><i className="trend-unknown-key"/>内訳未収録</span>}</div></div>
     <div className="trend-plot" role="group" tabIndex={0} aria-label="総人口の年次推移。左右矢印キーで各年の人数を確認できます。"
       onPointerMove={e=>move(e.clientX,e.currentTarget)} onPointerLeave={e=>{if(e.pointerType==='mouse')setHover(undefined);}}
       onClick={e=>move(e.clientX,e.currentTarget)} onFocus={()=>setHover(Math.max(0,selected))} onBlur={()=>setHover(undefined)}
@@ -36,13 +36,14 @@ export function PopulationTrendChart({data,selection,years,notes}:{data:Populati
       {ticks.map(t=><span key={t} className="trend-y-label" style={{top:`${trendY(t,paths.maximum)/240*100}%`}}>{t===0?'0人':`${number(t/10000)}万人`}</span>)}
       {hover!==undefined&&<div className="trend-tooltip" style={{left:`clamp(110px, ${x}%, calc(100% - 110px))`}} role="tooltip">
         <strong>{point.date.replace(/^(\d{4})-0?(\d+)-0?(\d+)$/,'$1年$2月$3日')}現在</strong>
-        <dl><div><dt>総人口</dt><dd>{number(point.total)}人</dd></div><div><dt>日本人</dt><dd>{point.japanese===undefined?'—':`${number(point.japanese)}人`}</dd></div><div><dt>外国人</dt><dd>{point.foreign===undefined?'—':`${number(point.foreign)}人`}</dd></div></dl>
+        <dl><div><dt>総人口</dt><dd>{number(point.total)}人</dd></div><div><dt>日本人</dt><dd>{point.japanese===undefined?'—':`${point.breakdownReference?'約 ':''}${number(point.japanese)}人`}</dd></div><div><dt>外国人</dt><dd>{point.foreign===undefined?'—':`${point.breakdownReference?'約 ':''}${number(point.foreign)}人`}</dd></div></dl>
+        {point.breakdownReference&&<small>内訳は参考値{point.breakdownReference.method==='linear-interpolation'?'（基準年間の補間）':''}</small>}
         <small>{years?'表示単位：人（予測値）':`公表単位：${point.precision===1000?'千人':'人'}`}</small>
       </div>}
     </div>
     <div className="trend-years" style={years?{gridTemplateColumns:`repeat(${years.length},minmax(0,1fr))`}:undefined} aria-hidden="true">{(years??[...CENSUS_YEARS,'最新']).map(year=><span key={year}>{year}</span>)}</div>
-    <details className="trend-notes"><summary>グラフのデータ・出典</summary>{notes??<><p>各年の公表値を使用しています。1950年以降の外国人人口は、同じ表の総人口から日本人人口を差し引いた値です。日本人人口には国籍不詳の按分・補完値を含みます。</p><p>1940年は補正後の人口、1945年は11月1日現在。1945～1971年は沖縄を含みません。国勢調査の原数値とは一致しない年があります。2020年から最新値までの横幅は、スライダーに合わせて調整しています。</p></>}
-      <div className="trend-table-scroll"><table><caption>{years?'年次人口の将来推計（人）':'年次人口の公表値（人）'}</caption><thead><tr><th>基準日</th><th>総人口</th><th>日本人</th><th>外国人</th><th>公表単位</th></tr></thead><tbody>{points.map(p=><tr key={p.date}><th scope="row">{p.date}</th><td>{number(p.total)}</td><td>{p.japanese===undefined?'—':number(p.japanese)}</td><td>{p.foreign===undefined?'—':number(p.foreign)}</td><td>{p.precision===1000?'千人':'人'}</td></tr>)}</tbody></table></div>
+    <details className="trend-notes"><summary>グラフのデータ・出典</summary>{notes??<><p>総人口は各年の公表値です。1920〜1949年の内訳は参考値で、1920・1930・1940年の国勢調査の外国人数と1950年の年次内訳を基準に、間の年を直線補間しています。日本人は総人口との差引です。戦前の区分は外地人を含み、戦中・戦後の急変や集計範囲の差を再現するものではありません。1950年以降の外国人人口は、同じ表の総人口から日本人人口を差し引いた値です。日本人人口には国籍不詳の按分・補完値を含みます。</p><p>1940年は補正後の人口、1945年は11月1日現在。1945～1971年は沖縄を含みません。国勢調査の原数値とは一致しない年があります。2020年から最新値までの横幅は、スライダーに合わせて調整しています。</p></>}
+      <div className="trend-table-scroll"><table><caption>{years?'年次人口の将来推計（人）':'年次人口（人・参考内訳を含む）'}</caption><thead><tr><th>基準日</th><th>総人口</th><th>日本人</th><th>外国人</th><th>公表単位</th><th>内訳区分</th></tr></thead><tbody>{points.map(p=><tr key={p.date}><th scope="row">{p.date}</th><td>{number(p.total)}</td><td>{p.japanese===undefined?'—':number(p.japanese)}</td><td>{p.foreign===undefined?'—':number(p.foreign)}</td><td>{p.precision===1000?'千人':'人'}</td><td>{p.breakdownReference?'参考値':years?'予測値':'公表値から算出'}</td></tr>)}</tbody></table></div>
       <SourceInfo sources={data.sources}/>
     </details>
   </div>;
