@@ -12,7 +12,7 @@ export function PopulationPyramid({ rows, label }: { rows: Breakdown['rows']; la
   const max = Math.ceil(largest / step) * step;
   const unit = max < 10000 ? 1 : 10000;
   const tick = (t: number) => (max * t / unit).toLocaleString('ja-JP', { maximumFractionDigits: 1 });
-  return <figure className="pyramid"><figcaption><h3>{label}の人口ピラミッド</h3><p>横棒にカーソルを合わせるかタップすると人数を表示します。</p></figcaption><div className="segmented age-switch" role="group" aria-label="年齢階級の幅">{([5,10] as const).map(n=><button key={n} aria-pressed={interval===n} onClick={()=>{setInterval(n);setSelected(undefined);}}>{n}歳ずつ</button>)}</div><div className="pyramid-legend"><span><i className="male-key"/>男性</span><span><i className="female-key"/>女性</span></div>
+  return <figure className="pyramid"><figcaption><h3>{label}の人口ピラミッド</h3></figcaption><div className="segmented age-switch" role="group" aria-label="年齢階級の幅">{([5,10] as const).map(n=><button key={n} aria-pressed={interval===n} onClick={()=>{setInterval(n);setSelected(undefined);}}>{n}歳ずつ</button>)}</div><div className="pyramid-legend"><span><i className="male-key"/>男性</span><span><i className="female-key"/>女性</span></div>
     <div className="pyramid-chart" role="group" aria-labelledby={`${id}-title ${id}-desc`}><span className="sr-only" id={`${id}-title`}>{label}の男女・年齢階級別人口</span><span className="sr-only" id={`${id}-desc`}>上が100歳以上、下が0〜{interval - 1}歳。左が男性、右が女性。同じ目盛りで人口を比較しています。棒に触れるかキーボードで選択すると人数を確認できます。下の数値表にも掲載しています。</span>
       {data.map((row, index) => <div className="pyramid-row" key={row.age}
         onPointerEnter={e => { if (e.pointerType === 'mouse') setSelected(row.age); }}
