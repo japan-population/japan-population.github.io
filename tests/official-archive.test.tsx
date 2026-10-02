@@ -44,7 +44,7 @@ it('年間実績を月間推計へ置換せず、選択年に連動する',async
  for(const year of CENSUS_YEARS){const view=officialView(national,'total',year);expect(view.date).toBe(`${year}-10-01`);expect(view.annual!.year).toBe(year);expect(view.population).toBeDefined();expect(view.rows.length).toBeGreaterThan(0);}
  expect(officialView(national,'total',1920).annual!.counts).toEqual({birth:2025564,death:1422096,marriage:546207,divorce:55511});
  expect(officialView(national,'total',2020).annual!.counts.birth).toBe(840835);
- expect(officialView(national,'foreign',1920).population).toBeUndefined();
+ expect(officialView(national,'foreign',1920).population).toBe(78061);
  expect(officialView(national,'japanese',2020).population).toBe(121541155);
  for(const g of ['total','japanese','foreign']as const){const view=officialView(national,g,'latest');expect(view.population).toBe(national.breakdown!.groups[g].base);expect(view.rows).toHaveLength(66);}
 });
@@ -54,6 +54,7 @@ it('スライダーは最新を初期表示、日付はその下、年間欄は�
   const $=load(renderToStaticMarkup(<PopulationExplorer national={national} group={group} demo={false}/>));
   expect($('input[type=range]').attr('value')).toBe('11');expect($('.timeline-labels button')).toHaveLength(12);
   expect($('.section-heading time')).toHaveLength(0);expect($('.official-timeline .official-date time').attr('datetime')).toBe(national.population.baseDate.slice(0,10));
+  expect($('.official-pyramid').is('details')).toBe(true);expect($('.official-pyramid').attr('open')).toBeUndefined();
   expect($('.annual-vital').length).toBe(group==='foreign'?0:1);expect($('.annual-vital').attr('open')).toBeUndefined();
   if(group==='total')expect($('.annual-vital').text()).toContain('出生・死亡・婚姻・離婚は日本人のみ');
  }

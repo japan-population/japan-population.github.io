@@ -65,8 +65,11 @@ export const CENSUS_YEARS = Array.from({length:11},(_,i)=>1920+i*10);
 const censusGroupSchema=z.object({
   population:z.number().int().positive(),male:z.number().int().nonnegative(),female:z.number().int().nonnegative(),
   source:sourceSchema,rows:breakdownSchema.shape.rows,
+  coverage:z.enum(['full','summary']).optional(),referenceNote:z.string().min(1).optional(),precision:z.union([z.literal(1),z.literal(1000)]).optional(),
 }).superRefine((v,ctx)=>{
-  if(v.male+v.female!==v.population)ctx.addIssue({code:'custom',message:'国勢調査の男女計が不一致です'});
+  if(v.precision===1000&&(v.coverage!=='summary'||!v.referenceNote||[v.population,v.male,v.female].some(n=>n%1000!==0)))ctx.addIssue({code:'custom',message:'公表概数の精度・注記が不正です'});
+  if(Math.abs(v.male+v.female-v.population)>(v.precision===1000?1000:0))ctx.addIssue({code:'custom',message:'国勢調査の男女計が不一致です'});
+  if(v.coverage==='summary'){if(v.rows.length)ctx.addIssue({code:'custom',message:'総数のみの資料に年齢内訳があります'});return;}
   for(const sex of ['男女計','男','女']){
     const rows=v.rows.filter(r=>r.sex===sex&&r.age!=='総数');
     if(rows.length<18||new Set(rows.map(r=>r.age)).size!==rows.length)ctx.addIssue({code:'custom',message:'国勢調査の年齢階級が欠損・重複しています'});
@@ -84,12 +87,13 @@ const censusGroupSchema=z.object({
 export const annualOfficialSchema=z.object({year:z.number().int(),source:sourceSchema,
   counts:z.object({birth:z.number().int().nonnegative(),death:z.number().int().nonnegative(),marriage:z.number().int().nonnegative(),divorce:z.number().int().nonnegative()})});
 export type AnnualOfficial=z.infer<typeof annualOfficialSchema>;
-export const censusSnapshotSchema=z.object({year:z.number().int(),date:z.iso.date(),groups:z.partialRecord(z.enum(populationGroups),censusGroupSchema)});
+export const censusSnapshotSchema=z.object({year:z.number().int(),date:z.iso.date(),nationalities:nationalitiesSchema.optional(),groups:z.partialRecord(z.enum(populationGroups),censusGroupSchema)});
 export type CensusSnapshot=z.infer<typeof censusSnapshotSchema>;
 export const officialArchiveSchema=z.object({censuses:z.array(censusSnapshotSchema),annual:z.array(annualOfficialSchema)}).superRefine((v,ctx)=>{
   if(v.censuses.length!==11||CENSUS_YEARS.some(y=>v.censuses.filter(c=>c.year===y&&c.date===`${y}-10-01`&&c.groups.total).length!==1))ctx.addIssue({code:'custom',message:'国勢調査11時点が揃っていません'});
   if(new Set(v.annual.map(a=>a.year)).size!==v.annual.length||CENSUS_YEARS.some(y=>!v.annual.some(a=>a.year===y)))ctx.addIssue({code:'custom',message:'年間人口動態に欠損・重複があります'});
   for(const c of v.censuses)for(const [g,p]of Object.entries(c.groups))if(p.source.sourcePeriod!==`${c.year}-10`||p.rows.some(r=>r.group!==g))ctx.addIssue({code:'custom',message:'国勢調査の年・国籍が不一致です'});
+  for(const c of v.censuses)if(c.nationalities&&(c.nationalities.source.sourcePeriod!==`${c.year}-10`||c.nationalities.total!==c.groups.foreign?.population||c.nationalities.populationTotal!==c.groups.total?.population))ctx.addIssue({code:'custom',message:'過去国籍内訳の基準年・人口が不一致です'});
   for(const a of v.annual)if(a.source.sourcePeriod!==`${a.year}-12`)ctx.addIssue({code:'custom',message:'年間人口動態の基準年が不一致です'});
 });
 export type OfficialArchive=z.infer<typeof officialArchiveSchema>;

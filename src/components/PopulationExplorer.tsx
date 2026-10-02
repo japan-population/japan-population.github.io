@@ -9,6 +9,7 @@ import {GROUP_LABELS} from '../lib/groups';
 import {officialView,type OfficialSelection} from '../lib/official-view';
 export function PopulationExplorer({national,group,demo}:{national:National;group:PopulationGroup;demo:boolean}){
   const [selection,setSelection]=useState<OfficialSelection>('latest');
+  const [annualOpen,setAnnualOpen]=useState(false),[pyramidOpen,setPyramidOpen]=useState(false);
   const id=useId(),view=officialView(national,group,selection);
   const options=[...CENSUS_YEARS,'latest'] as const;
   const index=selection==='latest'?11:CENSUS_YEARS.indexOf(selection);
@@ -25,13 +26,15 @@ export function PopulationExplorer({national,group,demo}:{national:National;grou
       <p className="official-date"><time dateTime={view.date}>{date}現在</time></p>
     </div>
     <div className="official-summary">
-      <div><span>{demo?'デモの基準人口':selection==='latest'?'最新公式確定値':'国勢調査人口'}</span><strong>{view.population!==undefined?number(view.population):'—'} <small>人</small>{share!==undefined&&<> <small aria-label="総人口に占める割合">{share}%</small></>}</strong></div>
+      <div><span>{demo?'デモの基準人口':selection==='latest'?'最新公式確定値':view.referenceNote?'参考値（公表概数）':'国勢調査人口'}</span><strong>{view.population!==undefined?`${view.referenceNote?'約 ':''}${number(view.population)}`:'—'} <small>人</small>{share!==undefined&&<> <small aria-label="総人口に占める割合">{share}%</small></>}</strong></div>
       {(['male','female'] as const).map((sex,i)=><div key={sex}><span>{i===0?'男性':'女性'}</span><strong>{view[sex]!==undefined?(view[sex]/10000).toLocaleString('ja-JP',{minimumFractionDigits:1,maximumFractionDigits:1}):'—'} <small>万人</small></strong></div>)}
     </div>
     {view.population===undefined&&selection!=='latest'&&<p className="small-note">この年の{GROUP_LABELS[group]}の人口内訳は未収録です。</p>}
+    {group==='foreign'&&selection!=='latest'&&selection<=1940&&<p className="small-note">戦前の値は、当時の内地の外地人を含む区分です。</p>}
+    {view.referenceNote&&<p className="small-note">{view.referenceNote}</p>}
     {view.source&&<SourceInfo source={view.source}/>}
-    {view.rows.length>0&&<div className="official-pyramid"><PopulationPyramid key={`${selection}/${group}`} rows={view.rows} label={GROUP_LABELS[group]} historical={selection!=='latest'}/>{view.ageSource&&<SourceInfo source={view.ageSource}/>}</div>}
-    {group!=='foreign'&&view.annual&&<AnnualVital key={`${selection}/${group}`} data={view.annual} total={group==='total'} latest={selection==='latest'}/>}
-    {group==='foreign'&&selection==='latest'&&<NationalityBreakdown data={national.nationalities}/>}
+    <details className="official-pyramid" open={pyramidOpen} onToggle={e=>{if(e.target===e.currentTarget)setPyramidOpen(e.currentTarget.open);}}><summary>人口ピラミッド</summary>{view.rows.length>0?<><PopulationPyramid key={`${selection}/${group}`} rows={view.rows} label={GROUP_LABELS[group]} historical={selection!=='latest'}/>{view.ageSource&&<SourceInfo source={view.ageSource}/>}</>:<p className="small-note pyramid-unavailable">この年の国籍別・年齢階級別人口は未収録です。</p>}</details>
+    {group!=='foreign'&&view.annual&&<AnnualVital open={annualOpen} onOpenChange={setAnnualOpen} data={view.annual} total={group==='total'} latest={selection==='latest'}/>}
+    {group==='foreign'&&<NationalityBreakdown data={view.nationalities} historical={selection!=='latest'}/>}
   </section>;
 }

@@ -1,3 +1,4 @@
+import {fetchHistoricalNationalities} from './historical-nationalities';
 import {arrayOf} from './estat';
 import {fetchTable,dimension,codeFor,parameter,labelFor,clean,type Table} from './table';
 import {CENSUS_YEARS,officialArchiveSchema,type CensusSnapshot,type OfficialArchive,type Source,type PopulationGroup,type Breakdown,type AnnualOfficial} from '../../src/types/statistics';
@@ -104,5 +105,5 @@ export async function fetchOfficialArchive(appId:string,now:number):Promise<Offi
     const dates=arrayOf(time.CLASS).sort((a,b)=>clean(a['@name']).localeCompare(clean(b['@name'])));
     return {[parameter(c['@id'])]:['出生数','死亡数','婚姻件数','離婚件数'].map(k=>codeFor(c,k)).join(','),cdTime:dates.filter(d=>CENSUS_YEARS.includes(Number(clean(d['@name']).replace('年','')))||d===dates.at(-1)).map(d=>d['@code']).join(',')};
   });
-  return officialArchiveSchema.parse({censuses:[...censuses.values()].sort((a,b)=>a.year-b.year),annual:normalizeAnnualTable(annualTable)});
+  return officialArchiveSchema.parse({censuses:await fetchHistoricalNationalities([...censuses.values()].sort((a,b)=>a.year-b.year),appId,now),annual:normalizeAnnualTable(annualTable)});
 }

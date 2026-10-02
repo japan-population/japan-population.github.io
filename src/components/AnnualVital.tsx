@@ -3,8 +3,8 @@ import {EventIcon} from './EventIcon';
 import {SourceInfo} from './SourceInfo';
 import {number} from '../lib/formatting';
 const labels={birth:'出生',death:'死亡',marriage:'婚姻',divorce:'離婚'};
-export function AnnualVital({data,total,latest}:{data:AnnualOfficial;total:boolean;latest:boolean}){
-  return <details className="annual-vital">
+export function AnnualVital({data,total,latest,open,onOpenChange}:{data:AnnualOfficial;total:boolean;latest:boolean;open?:boolean;onOpenChange?:(open:boolean)=>void}){
+  return <details className="annual-vital" open={open} onToggle={e=>{if(e.target===e.currentTarget)onOpenChange?.(e.currentTarget.open);}}>
     <summary>年間人口動態 <span>{data.year}年{latest?' · 最新確定年':''}</span></summary>
     <div className="annual-vital-content">
       {total&&<p className="small-note">出生・死亡・婚姻・離婚は日本人のみの統計です。</p>}

@@ -131,12 +131,14 @@ export function validateDataset(data: Dataset): void {
 export function validatePublication(data: Dataset): void {
   if (!data.national.breakdown) throw new Error('公開用データに国籍別人口・男女年齢別内訳がありません');
   if (data.manifest.mode==='official'&&!data.national.archive) throw new Error('公開用データに過去国勢調査・年間人口動態がありません');
+  if(data.manifest.mode==='official'&&data.national.archive?.censuses.some(c=>!c.groups.japanese||!c.groups.foreign||!c.nationalities))throw new Error('過去の国籍別人口・内訳が欠けています');
   validateDataset(data);
 }
 export function validateChange(old: Dataset, next: Dataset): void {
   if (old.national.archive && !next.national.archive) throw new Error('過去統計の削除を拒否しました');
   if(old.national.archive&&next.national.archive)for(const oldSnapshot of old.national.archive.censuses){
     const nextSnapshot=next.national.archive.censuses.find(c=>c.year===oldSnapshot.year);
+    if(oldSnapshot.nationalities&&!nextSnapshot?.nationalities)throw new Error('過去の国籍内訳の削除を拒否しました');
     if(!nextSnapshot||Object.keys(oldSnapshot.groups).some(g=>!nextSnapshot.groups[g as typeof populationGroups[number]]))throw new Error('過去統計の国籍別系列が欠落しています');
   }
   if (old.national.breakdown && !next.national.breakdown) throw new Error('人口内訳の削除を拒否しました');
