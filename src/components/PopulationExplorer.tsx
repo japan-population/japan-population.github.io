@@ -9,6 +9,7 @@ import {GROUP_LABELS} from '../lib/groups';
 import {officialView,type OfficialSelection} from '../lib/official-view';
 export function PopulationExplorer({national,group,demo}:{national:National;group:PopulationGroup;demo:boolean}){
   const [selection,setSelection]=useState<OfficialSelection>('latest');
+  const [ageInterval,setAgeInterval]=useState<5|10>(5);
   const [annualOpen,setAnnualOpen]=useState(false),[pyramidOpen,setPyramidOpen]=useState(false);
   const id=useId(),view=officialView(national,group,selection);
   const options=[...CENSUS_YEARS,'latest'] as const;
@@ -33,7 +34,7 @@ export function PopulationExplorer({national,group,demo}:{national:National;grou
     {group==='foreign'&&selection!=='latest'&&selection<=1940&&<p className="small-note">戦前の値は、当時の内地の外地人を含む区分です。</p>}
     {view.referenceNote&&<p className="small-note">{view.referenceNote}</p>}
     {view.source&&<SourceInfo source={view.source}/>}
-    <details className="official-pyramid" open={pyramidOpen} onToggle={e=>{if(e.target===e.currentTarget)setPyramidOpen(e.currentTarget.open);}}><summary>人口ピラミッド</summary>{view.rows.length>0?<><PopulationPyramid key={`${selection}/${group}`} rows={view.rows} label={GROUP_LABELS[group]} historical={selection!=='latest'}/>{view.ageSource&&<SourceInfo source={view.ageSource}/>}</>:<p className="small-note pyramid-unavailable">この年の国籍別・年齢階級別人口は未収録です。</p>}</details>
+    <details className="official-pyramid" open={pyramidOpen} onToggle={e=>{if(e.target===e.currentTarget)setPyramidOpen(e.currentTarget.open);}}><summary>人口ピラミッド</summary>{view.rows.length>0?<><PopulationPyramid key={`${selection}/${group}`} rows={view.rows} interval={ageInterval} onIntervalChange={setAgeInterval} label={GROUP_LABELS[group]} historical={selection!=='latest'}/>{view.ageSource&&<SourceInfo source={view.ageSource}/>}</>:<p className="small-note pyramid-unavailable">この年の国籍別・年齢階級別人口は未収録です。</p>}</details>
     {group!=='foreign'&&view.annual&&<AnnualVital open={annualOpen} onOpenChange={setAnnualOpen} data={view.annual} total={group==='total'} latest={selection==='latest'}/>}
     {group==='foreign'&&<NationalityBreakdown data={view.nationalities} historical={selection!=='latest'}/>}
   </section>;
