@@ -31,7 +31,6 @@ export function EventBreakdown({event,sections,total,proxy=false}:{event:EventKi
         </>}
       </details>;
     })}
-    {realtime&&sections.length>0&&<p className="breakdown-note">端数処理により内訳の合計が全体と一致しない場合があります。</p>}
     {sources.length>0&&<SourceInfo sources={sources} showPeriod={!realtime}/>}
   </div>;
 }

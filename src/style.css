@@ -59,7 +59,7 @@
 .breakdown-category { margin-top:0; }
 .stat-card .breakdown-category > summary { cursor:pointer; margin:0; padding:5px 0; font-size:.8em; font-weight:500; }
 .breakdown-category > summary small { margin-left:8px; font-size:.9em; font-weight:400; color:var(--muted,#63736c); }
-.breakdown-note { margin:10px 0; font-size:.7rem; line-height:1.65; color:var(--muted,#63736c); }
+.stat-card .event-breakdown .breakdown-note { margin:8px 0; font-size:min(10px,.75em); line-height:1.6; color:var(--muted,#63736c); }
 .breakdown-table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:.75rem; font-variant-numeric:tabular-nums; }
 .breakdown-table thead th { padding:5px 0; color:var(--muted,#63736c); font-size:.63rem; font-weight:400; }
 .breakdown-table th:first-child { width:53%; text-align:left; }
@@ -86,7 +86,7 @@
   .breakdown-table,.breakdown-table tbody { display:block; }
   .breakdown-table thead { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
   .breakdown-table tbody tr { display:grid; grid-template-columns:1fr 1fr; padding:5px 0; }
-  .breakdown-table tbody th { grid-column:1 / -1; width:100%; padding:3px 0; }
+  .breakdown-table tbody th:first-child { grid-column:1 / -1; width:100%; padding:3px 0; }
   .breakdown-table td { padding:1px 0; }
   .breakdown-table td:first-of-type { text-align:left; }
   .breakdown-category > summary small { display:block; margin-left:12px; }
