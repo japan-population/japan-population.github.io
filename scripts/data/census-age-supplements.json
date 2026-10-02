@@ -1,0 +1,125 @@
+[
+  {
+    "year": 1920,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "年齢・男女別全国人口 原表 p.48–49（PDF 2ページ目）",
+      "sourcePeriod": "1920-10",
+      "publishedAt": "2014-06-10",
+      "retrievedAt": "2026-10-02T14:00:00+09:00",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000007900862",
+      "status": "final",
+      "scope": "85歳以上を原表から転記し5歳階級に集計。85歳未満と総数は時系列表。1970年は沖縄を含む全国。原表の男女別85歳以上合計と時系列表が一致する場合のみ補完。"
+    },
+    "sha256": "4ae1a7cfdca70f9098944363e5eba6b55ddabcbdee8976279ab01bc9b51e20c0",
+    "rows": [
+      {
+        "age": "85～89歳",
+        "total": 62236,
+        "male": 20687,
+        "female": 41549
+      },
+      {
+        "age": "90～94歳",
+        "total": 11742,
+        "male": 3426,
+        "female": 8316
+      },
+      {
+        "age": "95～99歳",
+        "total": 1915,
+        "male": 556,
+        "female": 1359
+      },
+      {
+        "age": "100歳以上",
+        "total": 113,
+        "male": 27,
+        "female": 86
+      }
+    ]
+  },
+  {
+    "year": 1930,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "年齢・男女別全国人口 原表 p.100–101（PDF 2ページ目）",
+      "sourcePeriod": "1930-10",
+      "publishedAt": "2014-06-10",
+      "retrievedAt": "2026-10-02T14:00:00+09:00",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000007913664",
+      "status": "final",
+      "scope": "85歳以上を原表から転記し5歳階級に集計。85歳未満と総数は時系列表。1970年は沖縄を含む全国。原表の男女別85歳以上合計と時系列表が一致する場合のみ補完。"
+    },
+    "sha256": "74dae851d0276b9e913994f2a788a423174e4b2a915eecfc324c53764c8c8b31",
+    "rows": [
+      {
+        "age": "85～89歳",
+        "total": 70163,
+        "male": 22259,
+        "female": 47904
+      },
+      {
+        "age": "90～94歳",
+        "total": 11246,
+        "male": 3061,
+        "female": 8185
+      },
+      {
+        "age": "95～99歳",
+        "total": 2751,
+        "male": 586,
+        "female": 2165
+      },
+      {
+        "age": "100歳以上",
+        "total": 105,
+        "male": 31,
+        "female": 74
+      }
+    ]
+  },
+  {
+    "year": 1970,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "年齢・男女別全国人口 原表 p.8–9（PDF 2ページ目、沖縄を含む全国）",
+      "sourcePeriod": "1970-10",
+      "publishedAt": "2014-06-10",
+      "retrievedAt": "2026-10-02T14:00:00+09:00",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000007914968",
+      "status": "final",
+      "scope": "85歳以上を原表から転記し5歳階級に集計。85歳未満と総数は時系列表。1970年は沖縄を含む全国。原表の男女別85歳以上合計と時系列表が一致する場合のみ補完。"
+    },
+    "sha256": "57477e68fda437df6455910ba7b7fc5d0ab5a88929c78a5593bf61d05139b45c",
+    "rows": [
+      {
+        "age": "85～89歳",
+        "total": 232961,
+        "male": 72469,
+        "female": 160492
+      },
+      {
+        "age": "90～94歳",
+        "total": 60700,
+        "male": 16375,
+        "female": 44325
+      },
+      {
+        "age": "95～99歳",
+        "total": 6301,
+        "male": 1432,
+        "female": 4869
+      },
+      {
+        "age": "100歳以上",
+        "total": 329,
+        "male": 68,
+        "female": 261
+      }
+    ]
+  }
+]

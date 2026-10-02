@@ -64,7 +64,7 @@ export type Nationalities = z.infer<typeof nationalitiesSchema>;
 export const CENSUS_YEARS = Array.from({length:11},(_,i)=>1920+i*10);
 const censusGroupSchema=z.object({
   population:z.number().int().positive(),male:z.number().int().nonnegative(),female:z.number().int().nonnegative(),
-  source:sourceSchema,rows:breakdownSchema.shape.rows,
+  source:sourceSchema,ageSource:sourceSchema.optional(),rows:breakdownSchema.shape.rows,
   derivation:z.object({method:z.literal('total-minus-foreign'),sources:z.tuple([sourceSchema,sourceSchema])}).optional(),
   coverage:z.enum(['full','summary']).optional(),referenceNote:z.string().min(1).optional(),precision:z.union([z.literal(1),z.literal(1000)]).optional(),
 }).superRefine((v,ctx)=>{
