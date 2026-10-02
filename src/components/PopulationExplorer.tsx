@@ -1,3 +1,4 @@
+import {TimelineSlider} from './TimelineSlider';
 import {trendX,trendMonth,nearestTimelineIndex} from '../lib/population-trend';
 import {PopulationTrendChart} from './PopulationTrendChart';
 import {useState} from 'react';
@@ -26,7 +27,7 @@ export function PopulationExplorer({national,group,demo}:{national:National;grou
     <div className="section-controls official-controls"><div className="section-heading"><div><span className="eyebrow">OFFICIAL STATISTICS</span><h2>過去確定値 <small>{GROUP_LABELS[group]}</small></h2></div></div>
     <div className="official-timeline">
       <p className="official-date"><time dateTime={view.date}>{date}現在</time></p>
-      <input className="historical-range" type="range" min="0" max={offsets.at(-1)} step="any" value={offsets[index]}
+      <TimelineSlider className="historical-range" min="0" max={offsets.at(-1)} step="any" value={offsets[index]}
         aria-label="過去確定値の年を選択" aria-valuetext={selection==='latest'?'最新確定値':`${selection}年 国勢調査`}
         onChange={e=>setSelection(options[nearestTimelineIndex(offsets,Number(e.currentTarget.value))])}
         onKeyDown={e=>{const direction=['ArrowRight','ArrowUp'].includes(e.key)?1:['ArrowLeft','ArrowDown'].includes(e.key)?-1:0;if(direction||e.key==='Home'||e.key==='End'){e.preventDefault();setSelection(options[e.key==='Home'?0:e.key==='End'?options.length-1:Math.max(0,Math.min(options.length-1,index+direction))]);}}}/>
@@ -43,7 +44,7 @@ export function PopulationExplorer({national,group,demo}:{national:National;grou
     {view.referenceNote&&<p className="small-note">{view.referenceNote}</p>}
     {view.derivation?<SourceInfo sources={view.derivation.sources}/>:view.source&&<SourceInfo source={view.source}/>}
     <details className="official-pyramid" open={pyramidOpen} onToggle={e=>{if(e.target===e.currentTarget)setPyramidOpen(e.currentTarget.open);}}><summary>人口ピラミッド</summary>{view.rows.length>0?<><PopulationPyramid key={`${selection}/${group}`} rows={view.rows} interval={ageInterval} onIntervalChange={setAgeInterval} label={GROUP_LABELS[group]} historical={selection!=='latest'} ageExclusion={view.ageExclusion}/>{view.ageSource&&<SourceInfo sources={[view.ageSource,...view.ageSupportingSources??[]]}/>}</>:<p className="small-note pyramid-unavailable">この年の国籍別・年齢階級別人口は未収録です。</p>}</details>
-    {group!=='foreign'&&view.annual&&<AnnualVital open={annualOpen} onOpenChange={setAnnualOpen} data={view.annual} total={group==='total'} latest={selection==='latest'}/>}
+    {group!=='foreign'&&view.annual&&<AnnualVital breakdowns={national.eventBreakdowns} open={annualOpen} onOpenChange={setAnnualOpen} data={view.annual} total={group==='total'} latest={selection==='latest'}/>}
     {group==='foreign'&&<NationalityBreakdown open={nationalityOpen} onOpenChange={setNationalityOpen} data={view.nationalities} historical={selection!=='latest'}/>}
   </section>;
 }
