@@ -13,7 +13,7 @@ import { groupEvents } from './models/group-events';
 import type { BirthDeathRow } from './sources/national-events';
 import type { PopulationGroup } from '../src/types/statistics';
 import { yearModel } from './models/year-model';
-import { EVENTS, MIGRATIONS, mapRegionsSchema } from '../src/types/statistics';
+import { EVENTS, MIGRATIONS, mapRegionsSchema, regionalDetailsSchema } from '../src/types/statistics';
 import type { Breakdown } from '../src/types/statistics';
 import type { MigrationHistory } from './sources/migration';
 import { migrationModel, referenceModel } from './models/reference-model';
@@ -29,7 +29,7 @@ export function semanticJSON(value: unknown): string {
     return v;
   });
 }
-export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { eventBreakdowns?:EventBreakdowns; breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; officialRegions?: OfficialRegions; nationalities?:Nationalities; archive?:OfficialArchive; projections?:Projections; populationTrend?:PopulationTrend; distribution?: DistributionData; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
+export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { regionalDetails?:Record<string,import('../src/types/statistics').RegionalDetail>; eventBreakdowns?:EventBreakdowns; breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; officialRegions?: OfficialRegions; nationalities?:Nationalities; archive?:OfficialArchive; projections?:Projections; populationTrend?:PopulationTrend; distribution?: DistributionData; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
   const current = monthKey(now);
   const months = [0, 1, 2].map(n => addMonths(current, n));
   const sorted = [...vital].sort((a, b) => a.month.localeCompare(b.month));
@@ -69,6 +69,7 @@ export function buildDataset(population: PopulationObservation[], vital: VitalOb
       }
       const official = extra.officialRegions?.[p.code];
       if (official && (!p.officialPopulation || official.total.source.sourcePeriod >= p.officialPopulation.total.source.sourcePeriod)) p.officialPopulation = official;
+      p.detail = extra.regionalDetails?.[p.code];
       p.migration = makeMigration(p.code);
       p.population = referenceModel(extra.bases[p.code], vital, extra.migration, p.code, months);
     }
@@ -92,6 +93,11 @@ export async function readDataset(directory: string): Promise<Dataset> {
     const regions = mapRegionsSchema.parse(await read('regions.json'));
     if (regions.generationId !== result.manifest.generationId) throw new Error('地域JSONの世代が一致しません');
   } catch (error) { if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error; }
+  if(Object.values(result.prefectures).some(p=>p.detail)) {
+    const details=regionalDetailsSchema.parse(await read('region-details.json'));
+    if(details.generationId!==result.manifest.generationId||Object.keys(details.regions).length!==47)throw new Error('地域詳細JSONの世代・件数が不一致です');
+    for(const p of Object.values(result.prefectures))if(semanticJSON(details.regions[p.code])!==semanticJSON(p.detail))throw new Error('地域詳細JSONの内容が不一致です');
+  }
   return result;
 }
 export async function publishDataset(data: Dataset, directory = resolve('public/data')): Promise<boolean> {
@@ -107,6 +113,7 @@ export async function publishDataset(data: Dataset, directory = resolve('public/
   const files: Record<string, unknown> = {
     'manifest.json': data.manifest, 'national.json': data.national,
     'regions.json': mapRegionsSchema.parse({generationId:id,prefectures:Object.fromEntries(Object.values(data.prefectures).map(p=>[p.code,{code:p.code,name:p.name,officialPopulation:p.officialPopulation??(p.population?{total:{value:p.population.officialBase,source:p.population.source}}:undefined)}]))}),
+    'region-details.json': {generationId:id,regions:Object.fromEntries(Object.values(data.prefectures).filter(p=>p.detail).map(p=>[p.code,p.detail]))},
     'prefectures.json': { generationId: id, prefectures: data.prefectures },
     'history/national.json': { generationId: id, population: data.history.population, vital: data.history.vital.map(row => ({ ...row, regions: { '00': row.regions['00'] } })) },
     'history/prefectures.json': { generationId: id, vital: data.history.vital.map(row => ({ ...row, regions: Object.fromEntries(Object.entries(row.regions).filter(([key]) => key !== '00')) })) },

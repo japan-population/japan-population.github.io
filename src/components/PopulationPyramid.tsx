@@ -2,13 +2,13 @@ import { useId, useState } from 'react';
 import type { Breakdown } from '../types/statistics';
 import { pyramidRows } from '../lib/pyramid';
 import { number } from '../lib/formatting';
-export function PopulationPyramid({ rows, label, interval, onIntervalChange, historical=false, ageExclusion }: { rows: Breakdown['rows']; label: string; interval:5|10; onIntervalChange:(interval:5|10)=>void; historical?:boolean; ageExclusion?:{fromAge:number;scopeLabel:string} }) {
+export function PopulationPyramid({ rows, label, interval, onIntervalChange, historical=false, regional=false, ageExclusion }: { rows: Breakdown['rows']; label: string; interval:5|10; onIntervalChange:(interval:5|10)=>void; historical?:boolean; regional?:boolean; ageExclusion?:{fromAge:number;scopeLabel:string} }) {
   const id = useId();
   const [selected, setSelected] = useState<string>();
   const data = pyramidRows(rows, interval);
   const excluded = (age:string) => ageExclusion!==undefined&&parseInt(age)+interval>ageExclusion.fromAge;
   const scope = (age:string) => excluded(age)?(parseInt(age)<ageExclusion!.fromAge?'（85歳以上は沖縄を除く）':`（${ageExclusion!.scopeLabel}）`):'';
-  const max = interval === 5 ? 6_000_000 : 12_000_000;
+  const max = regional ? Math.max(10000, Math.ceil(Math.max(...data.flatMap(r=>[r.male,r.female]))/10000)*10000) : interval === 5 ? 6_000_000 : 12_000_000;
   const unit = 10000;
   const tick = (t: number) => (max * t / unit).toLocaleString('ja-JP', { maximumFractionDigits: 1 });
   return <figure className="pyramid"><div className="segmented age-switch" role="group" aria-label="年齢階級の幅">{([5,10] as const).map(n=><button key={n} aria-pressed={interval===n} onClick={()=>{onIntervalChange(n);setSelected(undefined);}}>{n}歳ずつ</button>)}</div><div className="pyramid-legend"><span><i className="male-key"/>男性</span><span><i className="female-key"/>女性</span></div>
