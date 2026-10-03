@@ -9,7 +9,7 @@ export const sourceSchema = z.object({
   publisher: z.string().min(1), statistics: z.string().min(1), table: z.string().min(1),
   // Historical publications sometimes identify only a year or month; do not invent a day.
   sourcePeriod: monthSchema, publishedAt: z.union([z.iso.date(),monthSchema,z.string().regex(/^\d{4}$/)]), retrievedAt: z.iso.datetime({ offset: true }),
-  url: z.url(), status: z.enum(['final', 'provisional', 'fixture', 'projection']), scope: z.string().min(1),
+  url: z.url(), status: z.enum(['final', 'provisional', 'fixture', 'projection', 'reference']), scope: z.string().min(1),
 });
 // Annual demographic compositions; shares are always relative to the full event total.
 export const eventBreakdownSchema = z.object({
@@ -157,7 +157,7 @@ export const prefecturesSchema = z.object({ generationId: z.string(), prefecture
   if (Object.keys(v.prefectures).length !== 47) ctx.addIssue({ code: 'custom', message: 'Exactly 47 prefectures required' });
   for (const p of PREFECTURES) if (v.prefectures[p.code]?.code !== p.code || v.prefectures[p.code]?.name !== p.name) ctx.addIssue({ code: 'custom', message: `Invalid prefecture ${p.code}` });
 });
-export const manifestSchema = z.object({ schemaVersion: z.literal(1), generationId: z.string(), generatedAt: z.iso.datetime({ offset: true }), mode: z.enum(['fixture', 'official']), population: z.object({ latestFinalMonth: monthSchema }), vital: z.object({ latestMonth: monthSchema }), forecastMonths: z.array(monthSchema).min(1), historyStart: monthSchema });
+export const manifestSchema = z.object({ schemaVersion: z.literal(1), regionalTimeline:z.boolean().optional(), generationId: z.string(), generatedAt: z.iso.datetime({ offset: true }), mode: z.enum(['fixture', 'official']), population: z.object({ latestFinalMonth: monthSchema }), vital: z.object({ latestMonth: monthSchema }), forecastMonths: z.array(monthSchema).min(1), historyStart: monthSchema });
 export type Source = z.infer<typeof sourceSchema>;
 export type Population = z.infer<typeof populationSchema>;
 export type EventModel = z.infer<typeof eventModelSchema>;

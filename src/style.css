@@ -140,3 +140,36 @@
 .map-indicators>.regional-area{margin-bottom:-5px}
 @media(max-width:600px){.map-indicators>.regional-area{margin-bottom:-6px}}
 @media(min-width:1024px){.map-indicators>.regional-area{margin-bottom:-6px}}
+
+/* Section switches share the period-control styling and align with the heading bottom. */
+.section-heading.section-switch-heading{align-items:flex-end;flex-wrap:nowrap}
+.section-switch-heading>div:first-child{min-width:0}
+.section-switch-heading h2{line-height:1.25}
+.section-switch-heading>.segmented{flex-shrink:0;flex-wrap:nowrap}
+@media(max-width:600px){
+ .section-heading.section-switch-heading{gap:10px}
+ .section-switch-heading h2 small{margin-left:5px;font-size:11px}
+ .section-switch-heading .eyebrow{font-size:8px;letter-spacing:.1em}
+ .section-switch-heading>.segmented button{padding:5px 10px;font-size:12px}
+}
+
+@media(max-width:360px){
+ .section-switch-heading h2{font-size:16px;white-space:nowrap}
+ .section-switch-heading h2 small{font-size:9px;margin-left:4px}
+ .section-switch-heading>.segmented button{font-size:11px;padding:5px 7px}
+ .section-heading.section-switch-heading{gap:6px}
+}
+
+.regional-section .timeline-labels{grid-template-columns:repeat(var(--timeline-count),minmax(0,1fr))}
+.regional-section .timeline-labels button{max-width:min(100%,calc(var(--timeline-count) * 8%))}
+
+/* Unavailable periods remain visible, but cannot be selected. */
+.segmented button:disabled{color:#9a9f9c;background:#edf0ee;cursor:not-allowed;opacity:.65;box-shadow:none}
+.timeline-labels button:disabled{color:#adb3af;background:transparent;border-color:transparent;cursor:not-allowed;box-shadow:none}
+
+.regional-reference-label{font-size:.7em;font-weight:400;color:var(--muted);margin-left:.7em}
+
+/* Keep space around the map at every viewport width, including its overlay card. */
+.japan-map{--map-vertical-padding:24px;padding-block:var(--map-vertical-padding)}
+.map-selection{top:calc(var(--map-vertical-padding) + 4%)}
+@media(max-width:600px){.map-selection{top:calc(var(--map-vertical-padding) + 2%)}}

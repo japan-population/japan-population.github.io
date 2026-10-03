@@ -1,3 +1,4 @@
+import {regionalTimelineSchema,REGIONAL_PAST_YEARS} from '../src/types/regional-timeline';
 import { z } from 'zod';
 import { type YearTotal, EVENTS, MIGRATIONS, populationGroups, manifestSchema, nationalSchema, prefecturesSchema, sourceSchema, monthSchema, type Source } from '../src/types/statistics';
 import { addMonths, monthStart, secondsInMonth } from '../src/lib/time';
@@ -28,6 +29,22 @@ function validateYear(year: Record<string, YearTotal> | undefined, month: string
   }
 }
 export function validateDataset(data: Dataset): void {
+  if(Boolean(data.manifest.regionalTimeline)!==Boolean(data.regionalTimeline))throw Error('地域時系列の有無が不一致です');
+  if(data.regionalTimeline){
+    const t=regionalTimelineSchema.parse(data.regionalTimeline);
+    for(const [period,years]of [['past',REGIONAL_PAST_YEARS],['future',Array.from(new Set([2030,2040,2050,...Object.keys(t.future).map(Number)]))]]as const)for(const year of years){
+      const records=t[period][year];
+      if(!records||PREFECTURES.some(p=>!records[p.code])||Object.keys(records).length!==47)throw Error('地域時系列の都道府県が不完全です');
+      for(const r of Object.values(records)){
+        if(r.year!==year||!r.groups.total?.population)throw Error('地域時系列の年・総人口が不正です');
+        for(const g of Object.values(r.groups)){
+          if(g.population&&!g.population.source.sourcePeriod.startsWith(`${year}-`))throw Error('地域時系列の人口基準年が不一致です');
+          for(const event of Object.values(g.events??{}))if(event.value<0||!Number.isInteger(event.value)||!event.source.sourcePeriod.startsWith(`${year}-`))throw Error('地域時系列の人口動態が不正です');
+          if(g.population&&(g.population.value<0||g.male&&g.female&&g.male.value+g.female.value!==g.population.value))throw Error('地域時系列の男女計が不一致です');
+        }
+      }
+    }
+  }
   manifestSchema.parse(data.manifest); nationalSchema.parse(data.national);
   prefecturesSchema.parse({ generationId: data.manifest.generationId, prefectures: data.prefectures });
   if (data.national.generationId !== data.manifest.generationId) throw new Error('JSONの世代が一致しません');

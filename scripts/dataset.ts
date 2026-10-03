@@ -1,3 +1,5 @@
+import {availableRegionalPastYears} from '../src/lib/regional-view';
+import {regionalTimelineSchema,regionalYearSchema,type RegionalTimeline} from '../src/types/regional-timeline';
 import type {EventBreakdowns} from '../src/types/statistics';
 import type {Projections} from '../src/types/projections';
 import type { Nationalities, OfficialArchive, PopulationTrend } from '../src/types/statistics';
@@ -13,14 +15,14 @@ import { groupEvents } from './models/group-events';
 import type { BirthDeathRow } from './sources/national-events';
 import type { PopulationGroup } from '../src/types/statistics';
 import { yearModel } from './models/year-model';
-import { EVENTS, MIGRATIONS, mapRegionsSchema, regionalDetailsSchema } from '../src/types/statistics';
+import { populationGroups, EVENTS, MIGRATIONS, mapRegionsSchema, regionalDetailsSchema } from '../src/types/statistics';
 import type { Breakdown } from '../src/types/statistics';
 import type { MigrationHistory } from './sources/migration';
 import { migrationModel, referenceModel } from './models/reference-model';
 import { populationModel } from './models/population-model';
 import { eventModel } from './models/event-model';
 import { validateDataset, validateChange, validatePublication } from './validation';
-export type Dataset = DashboardData & { history: { population: PopulationObservation[]; vital: VitalObservation[] } };
+export type Dataset = DashboardData & { regionalTimeline?:RegionalTimeline; history: { population: PopulationObservation[]; vital: VitalObservation[] } };
 // Retrieval timestamps alone must not create a daily data commit.
 export function semanticJSON(value: unknown): string {
   return JSON.stringify(value, (key, v: unknown) => {
@@ -29,7 +31,7 @@ export function semanticJSON(value: unknown): string {
     return v;
   });
 }
-export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { regionalDetails?:Record<string,import('../src/types/statistics').RegionalDetail>; eventBreakdowns?:EventBreakdowns; breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; officialRegions?: OfficialRegions; nationalities?:Nationalities; archive?:OfficialArchive; projections?:Projections; populationTrend?:PopulationTrend; distribution?: DistributionData; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
+export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { regionalTimeline?:RegionalTimeline; regionalDetails?:Record<string,import('../src/types/statistics').RegionalDetail>; eventBreakdowns?:EventBreakdowns; breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; officialRegions?: OfficialRegions; nationalities?:Nationalities; archive?:OfficialArchive; projections?:Projections; populationTrend?:PopulationTrend; distribution?: DistributionData; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
   const current = monthKey(now);
   const months = [0, 1, 2].map(n => addMonths(current, n));
   const sorted = [...vital].sort((a, b) => a.month.localeCompare(b.month));
@@ -46,6 +48,8 @@ export function buildDataset(population: PopulationObservation[], vital: VitalOb
   const prefectures = Object.fromEntries(PREFECTURES.map(p => [p.code, { ...p, vital: makeVital(p.code) }]));
   const result: Dataset = { manifest: { schemaVersion: 1, generationId: '', generatedAt: new Date(now).toISOString(), mode, population: { latestFinalMonth: national.population.source.sourcePeriod }, vital: { latestMonth: latest.month }, forecastMonths: months, historyStart: sorted[0].month }, national, prefectures, history: { population, vital: sorted } };
   if (extra) {
+    result.regionalTimeline=extra.regionalTimeline;
+    if(extra.regionalTimeline)result.manifest.regionalTimeline=true;
     result.national.eventBreakdowns = extra.eventBreakdowns;
     result.national.breakdown = extra.breakdown;
     result.national.distribution = extra.distribution;
@@ -88,6 +92,18 @@ export async function readDataset(directory: string): Promise<Dataset> {
   const h = hp as { generationId: string; vital: VitalObservation[] };
   const result = { manifest, national, prefectures: p.prefectures, history: { population: n.population, vital: h.vital.map(row => ({ ...row, regions: { ...row.regions, '00': n.vital.find(v => v.month === row.month)!.regions['00'] } })) } } as Dataset;
   if ([p.generationId, n.generationId, h.generationId].some(id => id !== result.manifest.generationId)) throw new Error('JSONの世代が一致しません');
+  if(result.manifest.regionalTimeline){
+    const index=await read('regional-timeline.json') as {generationId:string;past:number[];future:number[]};
+    if(index.generationId!==result.manifest.generationId)throw Error('地域時系列の世代が一致しません');
+    const timeline:RegionalTimeline={past:{},future:{}};
+    for(const period of ['past','future']as const)for(const year of index[period]){
+      if(!Number.isInteger(year)||year<1920||year>2100||year%10!==0)throw Error('地域時系列の年が不正です');
+      const page=regionalYearSchema.parse(await read(`regional/${period}-${year}.json`));
+      if(page.generationId!==index.generationId||page.year!==year||page.period!==period)throw Error('地域時系列の世代・年が一致しません');
+      timeline[period][year]=page.regions;
+    }
+    result.regionalTimeline=regionalTimelineSchema.parse(timeline);
+  }
   validateDataset(result);
   try {
     const regions = mapRegionsSchema.parse(await read('regions.json'));
@@ -111,6 +127,7 @@ export async function publishDataset(data: Dataset, directory = resolve('public/
   await mkdir(resolve(stage, 'history'), { recursive: true });
   const id = data.manifest.generationId;
   const files: Record<string, unknown> = {
+    ...(data.regionalTimeline?{'regional-timeline.json':{generationId:id,past:Object.keys(data.regionalTimeline.past).map(Number),future:Object.keys(data.regionalTimeline.future).map(Number),availablePast:Object.fromEntries(populationGroups.map(group=>[group,availableRegionalPastYears(data.regionalTimeline!.past,group)]))},...Object.fromEntries((['past','future']as const).flatMap(period=>Object.entries(data.regionalTimeline![period]).map(([year,regions])=>[`regional/${period}-${year}.json`,{generationId:id,period,year:Number(year),regions}])))}:{}),
     'manifest.json': data.manifest, 'national.json': data.national,
     'regions.json': mapRegionsSchema.parse({generationId:id,prefectures:Object.fromEntries(Object.values(data.prefectures).map(p=>[p.code,{code:p.code,name:p.name,officialPopulation:p.officialPopulation??(p.population?{total:{value:p.population.officialBase,source:p.population.source}}:undefined)}]))}),
     'region-details.json': {generationId:id,regions:Object.fromEntries(Object.values(data.prefectures).filter(p=>p.detail).map(p=>[p.code,p.detail]))},
@@ -119,7 +136,7 @@ export async function publishDataset(data: Dataset, directory = resolve('public/
     'history/prefectures.json': { generationId: id, vital: data.history.vital.map(row => ({ ...row, regions: Object.fromEntries(Object.entries(row.regions).filter(([key]) => key !== '00')) })) },
   };
   try {
-    for (const [file, value] of Object.entries(files)) await writeFile(resolve(stage, file), JSON.stringify(value) + '\n');
+    for (const [file, value] of Object.entries(files)) {await mkdir(dirname(resolve(stage,file)),{recursive:true});await writeFile(resolve(stage, file), JSON.stringify(value) + '\n');}
     await readDataset(stage);
     let moved = false;
     try { await rename(directory, backup); moved = true; } catch (e) { if ((e as NodeJS.ErrnoException).code !== 'ENOENT') throw e; }

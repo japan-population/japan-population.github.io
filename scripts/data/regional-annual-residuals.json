@@ -1,0 +1,607 @@
+{
+  "retrievedAt": "2026-10-03T13:40:42.197593+00:00",
+  "entries": [
+    {
+      "year": 2010,
+      "startDate": "2009-10-01",
+      "endDate": "2010-10-01",
+      "basis": "official-count",
+      "sources": [
+        {
+          "url": "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000012681417&fileKind=0",
+          "sha256": "151116aada542888cd9dd62112759d7a6a6e81195401843dcc6a40d46a9d7985",
+          "table": "参考表3 総人口・男女計 Y15:AD61（前年人口、自然増減、社会増減、補間補正、当年人口）",
+          "publishedAt": "2012-01-30"
+        }
+      ],
+      "regions": {
+        "01": {
+          "populationStart": 5523526,
+          "populationEnd": 5506419,
+          "naturalChange": -14342,
+          "reportedMigration": -6943,
+          "adjustment": 4178
+        },
+        "02": {
+          "populationStart": 1383485,
+          "populationEnd": 1373339,
+          "naturalChange": -6253,
+          "reportedMigration": -5080,
+          "adjustment": 1187
+        },
+        "03": {
+          "populationStart": 1340110,
+          "populationEnd": 1330147,
+          "naturalChange": -5939,
+          "reportedMigration": -4031,
+          "adjustment": 7
+        },
+        "04": {
+          "populationStart": 2347804,
+          "populationEnd": 2348165,
+          "naturalChange": -2397,
+          "reportedMigration": -315,
+          "adjustment": 3073
+        },
+        "05": {
+          "populationStart": 1096607,
+          "populationEnd": 1085997,
+          "naturalChange": -7269,
+          "reportedMigration": -3601,
+          "adjustment": 260
+        },
+        "06": {
+          "populationStart": 1178227,
+          "populationEnd": 1168924,
+          "naturalChange": -5371,
+          "reportedMigration": -3827,
+          "adjustment": -105
+        },
+        "07": {
+          "populationStart": 2041454,
+          "populationEnd": 2029064,
+          "naturalChange": -6283,
+          "reportedMigration": -6544,
+          "adjustment": 437
+        },
+        "08": {
+          "populationStart": 2969638,
+          "populationEnd": 2969770,
+          "naturalChange": -4075,
+          "reportedMigration": 1874,
+          "adjustment": 2333
+        },
+        "09": {
+          "populationStart": 2010917,
+          "populationEnd": 2007683,
+          "naturalChange": -2660,
+          "reportedMigration": -1819,
+          "adjustment": 1245
+        },
+        "10": {
+          "populationStart": 2013617,
+          "populationEnd": 2008068,
+          "naturalChange": -3971,
+          "reportedMigration": -3241,
+          "adjustment": 1663
+        },
+        "11": {
+          "populationStart": 7161304,
+          "populationEnd": 7194556,
+          "naturalChange": 5434,
+          "reportedMigration": 19966,
+          "adjustment": 7852
+        },
+        "12": {
+          "populationStart": 6180052,
+          "populationEnd": 6216289,
+          "naturalChange": 2508,
+          "reportedMigration": 23483,
+          "adjustment": 10246
+        },
+        "13": {
+          "populationStart": 13048003,
+          "populationEnd": 13159388,
+          "naturalChange": 6080,
+          "reportedMigration": 60379,
+          "adjustment": 44926
+        },
+        "14": {
+          "populationStart": 9006282,
+          "populationEnd": 9048331,
+          "naturalChange": 12100,
+          "reportedMigration": 14118,
+          "adjustment": 15831
+        },
+        "15": {
+          "populationStart": 2384694,
+          "populationEnd": 2374450,
+          "naturalChange": -8349,
+          "reportedMigration": -3567,
+          "adjustment": 1672
+        },
+        "16": {
+          "populationStart": 1097508,
+          "populationEnd": 1093247,
+          "naturalChange": -3454,
+          "reportedMigration": -1323,
+          "adjustment": 516
+        },
+        "17": {
+          "populationStart": 1170537,
+          "populationEnd": 1169788,
+          "naturalChange": -1808,
+          "reportedMigration": -353,
+          "adjustment": 1412
+        },
+        "18": {
+          "populationStart": 809632,
+          "populationEnd": 806314,
+          "naturalChange": -1511,
+          "reportedMigration": -2284,
+          "adjustment": 477
+        },
+        "19": {
+          "populationStart": 866916,
+          "populationEnd": 863075,
+          "naturalChange": -2267,
+          "reportedMigration": -1566,
+          "adjustment": -8
+        },
+        "20": {
+          "populationStart": 2162080,
+          "populationEnd": 2152449,
+          "naturalChange": -5341,
+          "reportedMigration": -5020,
+          "adjustment": 730
+        },
+        "21": {
+          "populationStart": 2091192,
+          "populationEnd": 2080773,
+          "naturalChange": -2945,
+          "reportedMigration": -7332,
+          "adjustment": -142
+        },
+        "22": {
+          "populationStart": 3782596,
+          "populationEnd": 3765007,
+          "naturalChange": -3322,
+          "reportedMigration": -11930,
+          "adjustment": -2337
+        },
+        "23": {
+          "populationStart": 7411370,
+          "populationEnd": 7410719,
+          "naturalChange": 12955,
+          "reportedMigration": -12039,
+          "adjustment": -1567
+        },
+        "24": {
+          "populationStart": 1864156,
+          "populationEnd": 1854724,
+          "naturalChange": -2981,
+          "reportedMigration": -5018,
+          "adjustment": -1433
+        },
+        "25": {
+          "populationStart": 1408564,
+          "populationEnd": 1410777,
+          "naturalChange": 2018,
+          "reportedMigration": -658,
+          "adjustment": 853
+        },
+        "26": {
+          "populationStart": 2637009,
+          "populationEnd": 2636092,
+          "naturalChange": -2771,
+          "reportedMigration": -1882,
+          "adjustment": 3736
+        },
+        "27": {
+          "populationStart": 8854811,
+          "populationEnd": 8865245,
+          "naturalChange": -1081,
+          "reportedMigration": -2079,
+          "adjustment": 13594
+        },
+        "28": {
+          "populationStart": 5590569,
+          "populationEnd": 5588133,
+          "naturalChange": -3417,
+          "reportedMigration": -1014,
+          "adjustment": 1995
+        },
+        "29": {
+          "populationStart": 1403847,
+          "populationEnd": 1400728,
+          "naturalChange": -2149,
+          "reportedMigration": -2184,
+          "adjustment": 1214
+        },
+        "30": {
+          "populationStart": 1007714,
+          "populationEnd": 1002198,
+          "naturalChange": -4369,
+          "reportedMigration": -1974,
+          "adjustment": 827
+        },
+        "31": {
+          "populationStart": 592131,
+          "populationEnd": 588667,
+          "naturalChange": -2149,
+          "reportedMigration": -1692,
+          "adjustment": 377
+        },
+        "32": {
+          "populationStart": 721182,
+          "populationEnd": 717397,
+          "naturalChange": -3346,
+          "reportedMigration": -1196,
+          "adjustment": 757
+        },
+        "33": {
+          "populationStart": 1948521,
+          "populationEnd": 1945276,
+          "naturalChange": -3236,
+          "reportedMigration": -1745,
+          "adjustment": 1736
+        },
+        "34": {
+          "populationStart": 2864385,
+          "populationEnd": 2860750,
+          "naturalChange": -1627,
+          "reportedMigration": -2325,
+          "adjustment": 317
+        },
+        "35": {
+          "populationStart": 1459128,
+          "populationEnd": 1451338,
+          "naturalChange": -6018,
+          "reportedMigration": -2857,
+          "adjustment": 1085
+        },
+        "36": {
+          "populationStart": 789934,
+          "populationEnd": 785491,
+          "naturalChange": -3328,
+          "reportedMigration": -1294,
+          "adjustment": 179
+        },
+        "37": {
+          "populationStart": 999381,
+          "populationEnd": 995842,
+          "naturalChange": -2381,
+          "reportedMigration": -1237,
+          "adjustment": 79
+        },
+        "38": {
+          "populationStart": 1437844,
+          "populationEnd": 1431493,
+          "naturalChange": -4690,
+          "reportedMigration": -2103,
+          "adjustment": 442
+        },
+        "39": {
+          "populationStart": 768754,
+          "populationEnd": 764456,
+          "naturalChange": -4168,
+          "reportedMigration": -704,
+          "adjustment": 574
+        },
+        "40": {
+          "populationStart": 5063940,
+          "populationEnd": 5071968,
+          "naturalChange": 43,
+          "reportedMigration": 5290,
+          "adjustment": 2695
+        },
+        "41": {
+          "populationStart": 852777,
+          "populationEnd": 849788,
+          "naturalChange": -1519,
+          "reportedMigration": -1646,
+          "adjustment": 176
+        },
+        "42": {
+          "populationStart": 1433611,
+          "populationEnd": 1426779,
+          "naturalChange": -3970,
+          "reportedMigration": -3797,
+          "adjustment": 935
+        },
+        "43": {
+          "populationStart": 1820933,
+          "populationEnd": 1817426,
+          "naturalChange": -2584,
+          "reportedMigration": -2751,
+          "adjustment": 1828
+        },
+        "44": {
+          "populationStart": 1200264,
+          "populationEnd": 1196529,
+          "naturalChange": -2791,
+          "reportedMigration": -2324,
+          "adjustment": 1380
+        },
+        "45": {
+          "populationStart": 1137568,
+          "populationEnd": 1135233,
+          "naturalChange": -1905,
+          "reportedMigration": -1935,
+          "adjustment": 1505
+        },
+        "46": {
+          "populationStart": 1712128,
+          "populationEnd": 1706242,
+          "naturalChange": -4631,
+          "reportedMigration": -2395,
+          "adjustment": 1140
+        },
+        "47": {
+          "populationStart": 1384812,
+          "populationEnd": 1392818,
+          "naturalChange": 6829,
+          "reportedMigration": 529,
+          "adjustment": 648
+        }
+      }
+    },
+    {
+      "year": 2000,
+      "startDate": "1999-10-01",
+      "endDate": "2000-10-01",
+      "basis": "official-rate",
+      "sources": [
+        {
+          "url": "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000000090256&fileKind=0",
+          "sha256": "752f5c3b3486d20b9a78d8344a6bb36a854085f8e3d5b352082490f3c1dfdcc6",
+          "table": "Ⅱ-2 総人口 P9:P55・S9:S55（千人）",
+          "publishedAt": "2016-03-15"
+        },
+        {
+          "url": "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000000090259&fileKind=0",
+          "sha256": "bf71450f9f67ef156552cb7dd84171ef324d2734c9b21126c79935ad3ff54d60",
+          "table": "Ⅱ-5 自然増減率 H7:H53（‰、期首人口が分母）",
+          "publishedAt": "2016-03-15"
+        }
+      ],
+      "regions": {
+        "01": {
+          "populationStart": 5689000,
+          "populationEnd": 5683000,
+          "naturalRatePerThousand": 0.5
+        },
+        "02": {
+          "populationStart": 1477000,
+          "populationEnd": 1476000,
+          "naturalRatePerThousand": -0.1
+        },
+        "03": {
+          "populationStart": 1417000,
+          "populationEnd": 1416000,
+          "naturalRatePerThousand": -0.2
+        },
+        "04": {
+          "populationStart": 2360000,
+          "populationEnd": 2365000,
+          "naturalRatePerThousand": 2.1
+        },
+        "05": {
+          "populationStart": 1195000,
+          "populationEnd": 1189000,
+          "naturalRatePerThousand": -2.5
+        },
+        "06": {
+          "populationStart": 1247000,
+          "populationEnd": 1244000,
+          "naturalRatePerThousand": -1.0
+        },
+        "07": {
+          "populationStart": 2129000,
+          "populationEnd": 2127000,
+          "naturalRatePerThousand": 0.7
+        },
+        "08": {
+          "populationStart": 2981000,
+          "populationEnd": 2986000,
+          "naturalRatePerThousand": 1.9
+        },
+        "09": {
+          "populationStart": 2003000,
+          "populationEnd": 2005000,
+          "naturalRatePerThousand": 1.6
+        },
+        "10": {
+          "populationStart": 2020000,
+          "populationEnd": 2025000,
+          "naturalRatePerThousand": 1.7
+        },
+        "11": {
+          "populationStart": 6906000,
+          "populationEnd": 6938000,
+          "naturalRatePerThousand": 3.8
+        },
+        "12": {
+          "populationStart": 5893000,
+          "populationEnd": 5926000,
+          "naturalRatePerThousand": 3.1
+        },
+        "13": {
+          "populationStart": 11983000,
+          "populationEnd": 12064000,
+          "naturalRatePerThousand": 1.4
+        },
+        "14": {
+          "populationStart": 8432000,
+          "populationEnd": 8490000,
+          "naturalRatePerThousand": 3.8
+        },
+        "15": {
+          "populationStart": 2482000,
+          "populationEnd": 2476000,
+          "naturalRatePerThousand": -0.0
+        },
+        "16": {
+          "populationStart": 1122000,
+          "populationEnd": 1121000,
+          "naturalRatePerThousand": 0.4
+        },
+        "17": {
+          "populationStart": 1180000,
+          "populationEnd": 1181000,
+          "naturalRatePerThousand": 1.8
+        },
+        "18": {
+          "populationStart": 828000,
+          "populationEnd": 829000,
+          "naturalRatePerThousand": 1.5
+        },
+        "19": {
+          "populationStart": 887000,
+          "populationEnd": 888000,
+          "naturalRatePerThousand": 1.3
+        },
+        "20": {
+          "populationStart": 2210000,
+          "populationEnd": 2215000,
+          "naturalRatePerThousand": 0.9
+        },
+        "21": {
+          "populationStart": 2107000,
+          "populationEnd": 2108000,
+          "naturalRatePerThousand": 1.8
+        },
+        "22": {
+          "populationStart": 3761000,
+          "populationEnd": 3767000,
+          "naturalRatePerThousand": 2.1
+        },
+        "23": {
+          "populationStart": 7006000,
+          "populationEnd": 7043000,
+          "naturalRatePerThousand": 4.2
+        },
+        "24": {
+          "populationStart": 1856000,
+          "populationEnd": 1857000,
+          "naturalRatePerThousand": 1.4
+        },
+        "25": {
+          "populationStart": 1332000,
+          "populationEnd": 1343000,
+          "naturalRatePerThousand": 3.7
+        },
+        "26": {
+          "populationStart": 2645000,
+          "populationEnd": 2644000,
+          "naturalRatePerThousand": 1.2
+        },
+        "27": {
+          "populationStart": 8813000,
+          "populationEnd": 8805000,
+          "naturalRatePerThousand": 2.9
+        },
+        "28": {
+          "populationStart": 5528000,
+          "populationEnd": 5551000,
+          "naturalRatePerThousand": 2.2
+        },
+        "29": {
+          "populationStart": 1444000,
+          "populationEnd": 1443000,
+          "naturalRatePerThousand": 1.9
+        },
+        "30": {
+          "populationStart": 1074000,
+          "populationEnd": 1070000,
+          "naturalRatePerThousand": -0.6
+        },
+        "31": {
+          "populationStart": 614000,
+          "populationEnd": 613000,
+          "naturalRatePerThousand": -0.6
+        },
+        "32": {
+          "populationStart": 763000,
+          "populationEnd": 762000,
+          "naturalRatePerThousand": -1.6
+        },
+        "33": {
+          "populationStart": 1953000,
+          "populationEnd": 1951000,
+          "naturalRatePerThousand": 0.8
+        },
+        "34": {
+          "populationStart": 2881000,
+          "populationEnd": 2879000,
+          "naturalRatePerThousand": 1.3
+        },
+        "35": {
+          "populationStart": 1535000,
+          "populationEnd": 1528000,
+          "naturalRatePerThousand": -1.6
+        },
+        "36": {
+          "populationStart": 827000,
+          "populationEnd": 824000,
+          "naturalRatePerThousand": -0.9
+        },
+        "37": {
+          "populationStart": 1025000,
+          "populationEnd": 1023000,
+          "naturalRatePerThousand": 0.3
+        },
+        "38": {
+          "populationStart": 1496000,
+          "populationEnd": 1493000,
+          "naturalRatePerThousand": -0.7
+        },
+        "39": {
+          "populationStart": 815000,
+          "populationEnd": 814000,
+          "naturalRatePerThousand": -2.2
+        },
+        "40": {
+          "populationStart": 5002000,
+          "populationEnd": 5016000,
+          "naturalRatePerThousand": 1.6
+        },
+        "41": {
+          "populationStart": 879000,
+          "populationEnd": 877000,
+          "naturalRatePerThousand": 0.8
+        },
+        "42": {
+          "populationStart": 1520000,
+          "populationEnd": 1517000,
+          "naturalRatePerThousand": 0.3
+        },
+        "43": {
+          "populationStart": 1861000,
+          "populationEnd": 1859000,
+          "naturalRatePerThousand": 0.4
+        },
+        "44": {
+          "populationStart": 1224000,
+          "populationEnd": 1221000,
+          "naturalRatePerThousand": -0.4
+        },
+        "45": {
+          "populationStart": 1172000,
+          "populationEnd": 1170000,
+          "naturalRatePerThousand": 0.9
+        },
+        "46": {
+          "populationStart": 1788000,
+          "populationEnd": 1786000,
+          "naturalRatePerThousand": -0.6
+        },
+        "47": {
+          "populationStart": 1308000,
+          "populationEnd": 1318000,
+          "naturalRatePerThousand": 6.7
+        }
+      }
+    }
+  ]
+}
