@@ -7,7 +7,8 @@ export type EventKind = typeof EVENTS[number];
 export const monthSchema = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/);
 export const sourceSchema = z.object({
   publisher: z.string().min(1), statistics: z.string().min(1), table: z.string().min(1),
-  sourcePeriod: monthSchema, publishedAt: z.iso.date(), retrievedAt: z.iso.datetime({ offset: true }),
+  // Historical publications sometimes identify only a year or month; do not invent a day.
+  sourcePeriod: monthSchema, publishedAt: z.union([z.iso.date(),monthSchema,z.string().regex(/^\d{4}$/)]), retrievedAt: z.iso.datetime({ offset: true }),
   url: z.url(), status: z.enum(['final', 'provisional', 'fixture', 'projection']), scope: z.string().min(1),
 });
 // Annual demographic compositions; shares are always relative to the full event total.
@@ -15,11 +16,12 @@ export const eventBreakdownSchema = z.object({
   event: z.enum(EVENTS), year: z.number().int(), group: z.enum(['total','japanese','foreign']),
   kind: z.enum(['motherAge','birthOrder','deathAge','cause','husbandAge','wifeAge']),
   source: sourceSchema, additionalSources:z.array(sourceSchema).optional(), total: z.number().int().nonnegative(),
-  coverage: z.enum(['complete','partial']), note: z.string().optional(),
-  items: z.array(z.object({label:z.string().min(1),count:z.number().finite().nonnegative(),rank:z.number().int().positive().optional(),supplement:z.boolean().optional(),approximate:z.boolean().optional()})).min(1),
+  coverage: z.enum(['complete','partial']), note: z.string().optional(), ageGrouping: z.enum(['five-year','published']).optional(),
+  items: z.array(z.object({label:z.string().min(1),count:z.number().finite().nonnegative(),rank:z.number().int().positive().optional(),supplement:z.boolean().optional(),approximate:z.boolean().optional(),children:z.array(z.object({label:z.string().min(1),count:z.number().int().nonnegative()})).min(1).optional()})).min(1),
 }).superRefine((v,ctx)=>{
   if(new Set(v.items.map(i=>i.label)).size!==v.items.length)ctx.addIssue({code:'custom',message:'内訳の分類が重複しています'});
   if(v.items.some(i=>i.count>v.total))ctx.addIssue({code:'custom',message:'内訳が全体を超えています'});
+  for(const item of v.items)if(item.children&&(new Set(item.children.map(c=>c.label)).size!==item.children.length||item.children.reduce((n,c)=>n+c.count,0)!==item.count))ctx.addIssue({code:'custom',message:'死因内訳と総数が一致しません'});
   if(v.kind!=='cause'&&v.coverage==='complete'&&v.items.reduce((s,i)=>s+i.count,0)!==v.total)ctx.addIssue({code:'custom',message:'内訳と総数が一致しません'});
 });
 export const eventBreakdownsSchema=z.array(eventBreakdownSchema).superRefine((v,ctx)=>{

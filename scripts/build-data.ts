@@ -1,4 +1,5 @@
 import {fetchEventBreakdowns} from './sources/event-breakdowns';
+import {fetchFinal2025,mergeFinalRelease} from './sources/vital-final-release';
 import {fetchProjections} from './sources/projections';
 import {fetchPopulationTrend} from './sources/population-trend';
 import { fetchOfficialArchive } from './sources/official-archive';
@@ -39,7 +40,9 @@ try {
   const { officialRegions, nationalities } = await fetchCensusData(now);
   const distribution = await fetchDistribution(now);
   const archive = await fetchOfficialArchive(appId, now);
-  const eventBreakdowns = await fetchEventBreakdowns(appId,now,archive.annual);
+  const mergedFinal = mergeFinalRelease(archive.annual,await fetchEventBreakdowns(appId,now,archive.annual),await fetchFinal2025(now));
+  archive.annual=mergedFinal.annual;
+  const eventBreakdowns=mergedFinal.breakdowns;
   const populationTrend = await fetchPopulationTrend(exact,now,archive);
   const projections = await fetchProjections(now);
   const data = buildDataset(population, vital, 'official', now, { eventBreakdowns, breakdown, bases, migration, japaneseBases, officialRegions, nationalities, distribution, archive, populationTrend, projections, nationalEvents, migrationsByGroup: {total:migration,japanese:japaneseMigration,foreign:foreignMigration} });

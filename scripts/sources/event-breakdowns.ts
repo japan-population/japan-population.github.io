@@ -1,6 +1,7 @@
 import {arrayOf,type ClassObject} from './estat';
 import {fetchTable,clean,parameter,labelFor,type Table} from './table';
 import {eventBreakdownsSchema,type EventBreakdowns,type EventBreakdownData,type AnnualOfficial} from '../../src/types/statistics';
+import {addHistoricalEventBreakdowns} from './historical-event-breakdowns';
 
 export const EVENT_BREAKDOWN_TABLES=['0003411599','0003411603','0003411659','0003411657','0003411661','0003411951','0003411959','0003411840','0003411865','0003411655','0003411656'] as const;
 // Keep annual event totals untouched. These tables only describe their composition.
@@ -100,6 +101,13 @@ export function normalizeEventBreakdowns(tables:Record<string,Table>,annual:Annu
       if(count!==undefined)items.push({label:name,count,rank,approximate:known===undefined});
     }
     items.sort((a,b)=>(a.rank??99)-(b.rank??99));
+    for(const {parent,pattern,size} of [
+      {parent:items.find(i=>i.label==='不慮の事故'),pattern:/^2010[1-7]_/,size:7},
+      {parent:items.find(i=>i.label.startsWith('悪性新生物')),pattern:/^021(?:0[1-9]|1[0-9]|2[01])_/,size:21},
+    ])if(parent){
+      const children=parsed['0003411657'].filter(r=>r.year===year&&value(r,'性別')==='総数'&&value(r,'表章')==='死亡数'&&pattern.test(value(r,'死因'))).map(r=>({label:causeName(value(r,'死因')),count:r.n}));
+      if(children.length){if(children.length!==size)throw new Error('死因内訳が欠けています');parent.children=children;}
+    }
     for(const name of ['自殺','他殺','交通事故']){const count=counts.get(name);if(count!==undefined&&!items.some(i=>i.label===name))items.push({label:name,count,supplement:true});}
     section(exact.length?'0003411661':'0003411655','death','cause',year,total,items,
       '公式の死因順位。交通事故は不慮の事故の内数。'+(items.some(i=>i.approximate)?'参考値は公表死亡率から算出。':'')+(year<1950?'この年の公式順位表は上位5項目まで。':''),true);
@@ -107,9 +115,9 @@ export function normalizeEventBreakdowns(tables:Record<string,Table>,annual:Annu
       s.additionalSources=['0003411656','0003411657'].filter(id=>parsed[id].some(r=>r.year===year)).map(id=>({...tables[id].source,sourcePeriod:`${year}-12`}));
     }
   }
-  const filtered=result.filter(s=>totals.has(s.year)||s.year===Math.max(...result.map(v=>v.year)));
+  const filtered=result.filter(s=>totals.has(s.year)||s.year===Math.max(...result.filter(v=>v.event===s.event&&v.kind===s.kind&&v.group===s.group).map(v=>v.year)));
   for(const event of ['birth','death','marriage','divorce'])if(!filtered.some(s=>s.event===event))throw new Error('人口動態内訳が欠けています');
-  return eventBreakdownsSchema.parse(filtered);
+  return addHistoricalEventBreakdowns(eventBreakdownsSchema.parse(filtered),annual);
 }
 export async function fetchEventBreakdowns(appId:string,now:number,annual:AnnualOfficial[]):Promise<EventBreakdowns>{
   const tables:Record<string,Table>={};
