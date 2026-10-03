@@ -1,62 +1,35 @@
-import {extendRegionalProjections} from './models/regional-projection';
-import {fetchRegionalTimeline} from './sources/regional-timeline';
-import {fetchRegionalDetails} from './sources/regional-details';
-import {fetchEventBreakdowns} from './sources/event-breakdowns';
-import {fetchFinal2025,mergeFinalRelease} from './sources/vital-final-release';
-import {fetchProjections} from './sources/projections';
-import {fetchPopulationTrend} from './sources/population-trend';
-import { fetchOfficialArchive } from './sources/official-archive';
-import { fetchDistribution } from './sources/distribution';
-import { fetchCensusData } from './sources/census-regions';
-import { fetchNationalEvents } from './sources/national-events';
-import { fetchExactPopulation } from './sources/exact-population';
-import { populationModel } from './models/population-model';
-import { populationGroups } from '../src/types/statistics';
-import { fetchPopulation } from './sources/population';
-import { fetchBreakdown, fetchPrefectureBases } from './sources/breakdown';
-import { fetchMigration } from './sources/migration';
-import { fetchVital } from './sources/vital';
-import { buildDataset, publishDataset } from './dataset';
-try {
-  const appId = process.env.ESTAT_APP_ID?.trim();
-  if (!appId) throw new Error('ESTAT_APP_ID が未設定です。GitHub Repository Secretに登録し、Update statisticsワークフローから実行してください。既存JSONは変更しません。');
-  const now = Date.now();
-  let population = await fetchPopulation(appId, now);
-  console.log(`人口推計: ${population.length}か月を検証`);
-  const vital = await fetchVital(now);
-  const breakdown = await fetchBreakdown(appId, now);
-  const exact = await fetchExactPopulation(now);
-  for (const group of populationGroups) {
-    const precise = populationModel(exact[group]);
-    const rounded = breakdown.groups[group];
-    if (precise.baseDate !== rounded.baseDate || Math.abs(precise.base - rounded.base) > 500 || Math.abs(precise.yearAgo - rounded.yearAgo) > 500) throw new Error('1人単位の参考表と千人単位の人口表が一致しません');
-    breakdown.groups[group] = precise;
-  }
-  const exactByMonth = new Map(exact.total.map(r => [r.month, r]));
-  population = population.map(r => exactByMonth.get(r.month) ?? r);
-  const bases = await fetchPrefectureBases(appId, now);
-  const migration = await fetchMigration(appId, now);
-  const japaneseBases = await fetchPrefectureBases(appId, now, 'japanese');
-  const japaneseMigration = await fetchMigration(appId, now, 'japanese');
-  const foreignMigration = await fetchMigration(appId, now, 'foreign');
-  const nationalEvents = await fetchNationalEvents(now);
-  const { officialRegions, nationalities } = await fetchCensusData(now);
-  const regionalDetails = await fetchRegionalDetails(now);
-  const distribution = await fetchDistribution(now);
-  const archive = await fetchOfficialArchive(appId, now);
-  const mergedFinal = mergeFinalRelease(archive.annual,await fetchEventBreakdowns(appId,now,archive.annual),await fetchFinal2025(now));
-  archive.annual=mergedFinal.annual;
-  const regionalTimeline = await fetchRegionalTimeline(now,appId,archive);
-  const eventBreakdowns=mergedFinal.breakdowns;
-  const populationTrend = await fetchPopulationTrend(exact,now,archive);
-  const projections = await fetchProjections(now);
-  extendRegionalProjections(regionalTimeline,projections,regionalDetails,now);
-  const data = buildDataset(population, vital, 'official', now, { regionalTimeline, regionalDetails, eventBreakdowns, breakdown, bases, migration, japaneseBases, officialRegions, nationalities, distribution, archive, populationTrend, projections, nationalEvents, migrationsByGroup: {total:migration,japanese:japaneseMigration,foreign:foreignMigration} });
-  console.log(await publishDataset(data) ? 'すべての検証に成功し、JSONを更新しました。' : '統計・推計モデルの変更はありません。');
-} catch (error) {
-  // Only local controlled errors are printed. Zod diagnostics can include source input; avoid dumping them.
-  const message = error instanceof Error ? error.message : 'データ更新に失敗しました';
-  const secret = process.env.ESTAT_APP_ID;
-  console.error(secret ? message.split(secret).join('[REDACTED]') : message);
-  process.exitCode = 1;
+import {readFile,writeFile,rename} from 'node:fs/promises';
+import {readDataset,publishDataset} from './dataset';
+import {updateMonthly,updateRegional,monthlySignature} from './scoped-update';
+const scope=process.env.UPDATE_SCOPE??process.argv.find(a=>a.startsWith('--scope='))?.slice(8)??'monthly';
+async function recordCompletion(scope:string,newMonthly:boolean,now:number){
+ const path='.github/data-update-state.json';let state:Record<string,string>={};
+ try{state=JSON.parse(await readFile(path,'utf8'));}catch(e){if((e as NodeJS.ErrnoException).code!=='ENOENT')throw e;}
+ const date=new Date(now+9*3600000).toISOString();
+ if(newMonthly)state.monthlyCompleted=date.slice(0,7);
+ if(scope==='regional')state.regionalYear=date.slice(0,4);
+ if(newMonthly||scope==='regional'){await writeFile(path+'.tmp',JSON.stringify(state,null,2)+'\n');await rename(path+'.tmp',path);}
+}
+try{
+ if(!['monthly','regional','all'].includes(scope))throw Error('更新対象は monthly / regional / all を指定してください');
+ if(scope==='all'){
+  if(process.env.UPDATE_EVENT==='schedule')throw Error('過去統計と将来推計は手動更新専用です');
+  let previous;
+  try{previous=await readDataset('public/data');}catch(e){if((e as NodeJS.ErrnoException).code!=='ENOENT')throw e;}
+  await import('./build-all-data');
+  if(!process.exitCode){const next=await readDataset('public/data');await recordCompletion(scope,!previous||monthlySignature(previous)!==monthlySignature(next),Date.now());}
+ }else{
+  const now=Date.now(),previous=await readDataset('public/data');
+  const appId=process.env.ESTAT_APP_ID?.trim();
+  if(scope==='monthly'&&!appId)throw Error('ESTAT_APP_ID が未設定です。既存JSONは変更しません');
+  const data=scope==='monthly'?await updateMonthly(previous,appId!,now):await updateRegional(previous,now);
+  const newMonthly=scope==='monthly'&&monthlySignature(previous)!==monthlySignature(data);
+  console.log(await publishDataset(data)?'統計・モデルを更新しました':'統計・モデルの変更はありません');
+  // Written only after complete validation/publication; failures never stop later attempts.
+  await recordCompletion(scope,newMonthly,now);
+  console.log(newMonthly?'新しい月次統計を取得したため、今月の定期取得を停止します':'月次統計の新着による停止状態は変更しません');
+ }
+}catch(error){
+ const message=error instanceof Error?error.message:'更新に失敗しました',secret=process.env.ESTAT_APP_ID;
+ console.error(secret?message.split(secret).join('[REDACTED]'):message);process.exitCode=1;
 }

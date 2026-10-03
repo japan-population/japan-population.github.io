@@ -31,7 +31,7 @@ export function semanticJSON(value: unknown): string {
     return v;
   });
 }
-export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { regionalTimeline?:RegionalTimeline; regionalDetails?:Record<string,import('../src/types/statistics').RegionalDetail>; eventBreakdowns?:EventBreakdowns; breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; officialRegions?: OfficialRegions; nationalities?:Nationalities; archive?:OfficialArchive; projections?:Projections; populationTrend?:PopulationTrend; distribution?: DistributionData; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
+export function buildDataset(population: PopulationObservation[], vital: VitalObservation[], mode: 'fixture' | 'official', now: number, extra?: { includeRegionalModels?:boolean; regionalTimeline?:RegionalTimeline; regionalDetails?:Record<string,import('../src/types/statistics').RegionalDetail>; eventBreakdowns?:EventBreakdowns; breakdown: Breakdown; migration: MigrationHistory; bases: Record<string, PopulationObservation>; japaneseBases?: Record<string, PopulationObservation>; officialRegions?: OfficialRegions; nationalities?:Nationalities; archive?:OfficialArchive; projections?:Projections; populationTrend?:PopulationTrend; distribution?: DistributionData; nationalEvents?: BirthDeathRow[]; migrationsByGroup?: Record<PopulationGroup, MigrationHistory> }): Dataset {
   const current = monthKey(now);
   const months = [0, 1, 2].map(n => addMonths(current, n));
   const sorted = [...vital].sort((a, b) => a.month.localeCompare(b.month));
@@ -63,7 +63,7 @@ export function buildDataset(population: PopulationObservation[], vital: VitalOb
         month => extra.migration.rows.find(r => r.month === month)?.regions[code],
         month => { const models = migrationModel(extra.migration, code, month, true); return Object.fromEntries(MIGRATIONS.map(k => [k, models[k].estimatedMonthCount])) as Record<typeof MIGRATIONS[number], number>; })])),
     });
-    result.national.migration = makeMigration('00');
+    if(extra.includeRegionalModels!==false)result.national.migration = makeMigration('00');
     if (extra.nationalEvents && extra.migrationsByGroup) result.national.eventsByGroup = groupEvents(result.national.vital, extra.nationalEvents, extra.migrationsByGroup, months);
     for (const p of Object.values(result.prefectures)) {
       if (extra.japaneseBases) {
@@ -74,8 +74,10 @@ export function buildDataset(population: PopulationObservation[], vital: VitalOb
       const official = extra.officialRegions?.[p.code];
       if (official && (!p.officialPopulation || official.total.source.sourcePeriod >= p.officialPopulation.total.source.sourcePeriod)) p.officialPopulation = official;
       p.detail = extra.regionalDetails?.[p.code];
-      p.migration = makeMigration(p.code);
-      p.population = referenceModel(extra.bases[p.code], vital, extra.migration, p.code, months);
+      if(extra.includeRegionalModels!==false){
+        p.migration = makeMigration(p.code);
+        p.population = referenceModel(extra.bases[p.code], vital, extra.migration, p.code, months);
+      }
     }
   }
   const id = createHash('sha256').update(semanticJSON(result)).digest('hex').slice(0, 16);
