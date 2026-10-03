@@ -70,8 +70,8 @@ test('1920～2010年は全47都道府県に期間を揃えた残差を参考表�
   for(const r of Object.values(t.past[year])){
    const g=r.groups.total!,v=g.migrationChange!,c=v.calculation!;
    expect(v.reference).toBe(true);expect(v.source.status).toBe('reference');expect(v.estimateKind).toBe('residual');
-   expect(Number.isFinite(v.value)).toBe(true);expect(c.endYear-c.startYear).toBe(5);
-   expect(c.annualPopulationChange).toBe((c.populationEnd-c.populationStart)/5);
+   expect(Number.isFinite(v.value)).toBe(true);expect(c.endYear-c.startYear).toBe([2000,2010].includes(year)?1:5);
+   expect(c.annualPopulationChange).toBe((c.populationEnd-c.populationStart)/(c.endYear-c.startYear));
    expect(v.value).toBe(Math.round(c.annualPopulationChange-c.naturalChange));
    expect(g.events?.inflow).toBeUndefined();expect(g.events?.outflow).toBeUndefined();
    expect(r.groups.foreign?.migrationChange).toBeUndefined();expect(r.groups.japanese?.migrationChange).toBeUndefined();

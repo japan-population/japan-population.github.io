@@ -7,13 +7,13 @@ import {EventIcon} from './EventIcon';
 import {number,signed} from '../lib/formatting';
 export function RegionalSnapshotIndicators({snapshot,group}:{snapshot:RegionalSnapshot;group:PopulationGroup}){
  const g=snapshot.groups[group];
- const note=(v:RegionalMetric|undefined,japanese=false)=>v?`${japanese&&group==='total'?'日本人 · ':''}${v.calculation?`${v.calculation.startYear}–${String(v.calculation.endYear).slice(2)}年平均`:`${v.source.sourcePeriod.slice(0,4)}年`}${v.estimateKind==='residual'?' · 残差推計':v.reference?' · 参考値':''}`:'';
+ const note=(v:RegionalMetric|undefined,japanese=false)=>v?`${japanese&&group==='total'?'日本人 · ':''}${v.calculation?.method==='single-year'?`${v.calculation.startYear}.10–${String(v.calculation.endYear).slice(2)}.9`:v.calculation?`${v.calculation.startYear}–${String(v.calculation.endYear).slice(2)}年平均`:`${v.source.sourcePeriod.slice(0,4)}年`}${v.estimateKind==='residual'?' · 残差推計':v.reference?' · 参考値':''}`:'';
  const metric=(v:RegionalMetric|undefined,unit:string,digits=0,sign=false)=>v?<>{sign?signed(v.value):v.value.toLocaleString('ja-JP',{minimumFractionDigits:digits,maximumFractionDigits:digits})}<small>{unit}</small></>:<small>データなし</small>;
  return <div className="map-indicators">
   <div><span>平均年齢<small>{note(g?.averageAge)}</small></span><strong>{metric(g?.averageAge,'歳',1)}</strong></div>
   <div className="regional-area"><span>面積{snapshot.status!=='final'&&<small>{snapshot.area?.source.sourcePeriod.slice(0,4)}年の面積</small>}</span><strong>{metric(snapshot.area,'km²',2)}</strong></div>
   <div className="regional-density"><span>人口密度{group!=='total'&&<small>総人口</small>}</span><strong>{metric(snapshot.density,'人/km²',1)}</strong></div>
-  <div className="regional-migration-change"><span>移動による増減<small>{note(g?.migrationChange)}</small></span><strong>{metric(g?.migrationChange,g?.migrationChange?.estimateKind==='residual'?'人/年':'人',0,true)}</strong></div>
+  <div className="regional-migration-change"><span>移動による増減<small>{note(g?.migrationChange)}</small></span><strong>{metric(g?.migrationChange,g?.migrationChange?.estimateKind==='residual'&&g.migrationChange.calculation?.method!=='single-year'?'人/年':'人',0,true)}</strong></div>
   <div className="regional-natural-change"><span>自然増減<small>{note(g?.naturalChange,true)}</small></span><strong>{metric(g?.naturalChange,'人',0,true)}</strong></div>
   <div><span>合計特殊出生率<small>{note(g?.fertilityRate,true)}</small></span><strong>{metric(g?.fertilityRate,'',2)}</strong></div>
  </div>;

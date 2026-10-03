@@ -1,3 +1,4 @@
+import {readAnnualResiduals,annualResidualMetric} from '../sources/regional-annual-residuals';
 import ExcelJS from 'exceljs';
 import type {OfficialArchive,Source} from '../../src/types/statistics';
 import type {RegionalTimeline} from '../../src/types/regional-timeline';
@@ -12,6 +13,7 @@ function interpolate(points:{year:number;value:number}[],year:number):number|und
 
 /** Annualized residual, not observed moves or a decomposition into arrivals/departures. */
 export async function estimateHistoricalMigration(timeline:RegionalTimeline,history:Uint8Array,archive:OfficialArchive,now:number){
+ const annual=await readAnnualResiduals();
  const book=new ExcelJS.Workbook();await book.xlsx.load(history as never);const sheet=book.worksheets[0];
  const baselines:Record<string,Record<number,number>>={};
  for(const p of PREFECTURES){
@@ -31,7 +33,10 @@ export async function estimateHistoricalMigration(timeline:RegionalTimeline,hist
   for(const p of PREFECTURES){
    // Observed single-year migration supplied by a source always takes precedence.
    // Only missing years receive a clearly labelled annualized residual fallback.
-   const g=timeline.past[year][p.code].groups.total!;if(g.migrationChange)continue;
+   const g=timeline.past[year][p.code].groups.total!;if(g.migrationChange&&!g.migrationChange.estimateKind)continue;
+   const single=annual.entries.find(e=>e.year===year);
+   if(single){g.migrationChange=annualResidualMetric(single,p.code,annual.retrievedAt);continue;}
+   if(g.migrationChange)continue;
    // 1920 has no earlier census. 1950 uses the postwar 1950–55 interval to avoid
    // treating the differently covered 1945 survey as a comparable population baseline.
    const startYear=year===1920||year===1950?year:year-5,endYear=startYear===year?year+5:year;
@@ -58,7 +63,7 @@ export async function estimateHistoricalMigration(timeline:RegionalTimeline,hist
    let naturalTotal=0;for(let at=startYear;at<endYear;at++)naturalTotal+=(naturalAt(at)+naturalAt(at+1))/2;
    const naturalChange=naturalTotal/(endYear-startYear),naturalBasis=usedNationalRate?'national-rate':'regional-japanese';
    const source:Source={publisher:'日本人口観測所',statistics:'過去の移動増減の参考推計',table:'国勢調査間の年平均人口増減－同期間の年平均自然増減',sourcePeriod:`${year}-12`,publishedAt:g.population!.source.publishedAt,retrievedAt:new Date(now).toISOString(),url:REGIONAL_HISTORY_URL,status:'reference',scope:`移動の実測値ではない残差推計（年換算）。${startYear}年人口${populationStart}人→${endYear}年人口${populationEnd}人の年平均増減${annualPopulationChange}人から、同じ${startYear}～${endYear}年区間の自然増減の年平均${naturalChange.toFixed(3)}人を差し引く。${usedNationalRate?'当県の出生・死亡の年次が不足する箇所は、全国自然増減率を当県の総人口に適用した参考値。地域差を捉えない。':'当県の日本人の出生－死亡を総人口の近似として使用。外国人の自然増減との差は誤差となる。'}自然増減は収録年の間を線形補間して区間積分し年平均にする。全国率の分母は1947～1972年は沖縄を除いた同年の都道府県人口合計。自然増減資料：${[g.events?.birth?.source.url,usedNationalRate?national.source.url:undefined].filter(Boolean).join("、")}。人口増減と自然増減の比較期間は同一だが、自然増減には補間・近似を含む。選択年単年の移動実績を復元するものではない。調査誤差・国籍や境界の変更・未把握の出生死亡等も残差に含む。1920・1950年は後続5年間を使用。1950年は奄美を鹿児島へ組替え済みだが、基準日の違いと未収録島しょ部の影響は残る。公表日は基礎人口表の公表・更新日。`};
-   g.migrationChange={value:Math.round(annualPopulationChange-naturalChange),source,reference:true,estimateKind:'residual',calculation:{startYear,endYear,populationStart,populationEnd,annualPopulationChange,naturalChange,naturalBasis}};
+   g.migrationChange={value:Math.round(annualPopulationChange-naturalChange),source,reference:true,estimateKind:'residual',calculation:{method:'multi-year',startYear,endYear,populationStart,populationEnd,annualPopulationChange,naturalChange,naturalBasis}};
   }
  }
 }
