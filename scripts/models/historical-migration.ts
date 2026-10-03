@@ -29,6 +29,8 @@ export async function estimateHistoricalMigration(timeline:RegionalTimeline,hist
  for(let year=1920;year<=2010;year+=10){
   const national=archive.annual.find(r=>r.year===year);if(!national)throw Error('残差推計の全国人口動態がありません');
   for(const p of PREFECTURES){
+   // Observed single-year migration supplied by a source always takes precedence.
+   // Only missing years receive a clearly labelled annualized residual fallback.
    const g=timeline.past[year][p.code].groups.total!;if(g.migrationChange)continue;
    // 1920 has no earlier census. 1950 uses the postwar 1950–55 interval to avoid
    // treating the differently covered 1945 survey as a comparable population baseline.

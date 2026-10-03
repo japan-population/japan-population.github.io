@@ -84,3 +84,16 @@ test('1920～2010年は全47都道府県に期間を揃えた残差を参考表�
  const $=load(renderToStaticMarkup(<RegionalSnapshotIndicators snapshot={t.past[1950]['46']} group="total"/>));
  expect($('.regional-migration-change').text()).toContain('1950–55年平均 · 残差推計');expect($('.regional-migration-change strong').text()).toContain('人/年');
 });
+
+test('過去年に単年実績がある場合は平均残差で上書きしない',async()=>{
+ const t=structuredClone(raw);correctRegionalTerritories(t,0);
+ const source={...t.past[2010]['13'].groups.total!.population!.source,sourcePeriod:'2010-12'};
+ // Synthetic observation tests precedence; this is not a claimed historical value.
+ const actual={value:123,source};t.past[2010]['13'].groups.total!.migrationChange=actual;
+ const national=JSON.parse(await readFile('public/data/national.json','utf8')) as National;
+ await estimateHistoricalMigration(t,await readFile('tests/fixtures/regional-history.xlsx'),national.archive!,0);
+ expect(t.past[2010]['13'].groups.total!.migrationChange).toBe(actual);
+ expect(t.past[2010]['14'].groups.total!.migrationChange!.estimateKind).toBe('residual');
+ const $=load(renderToStaticMarkup(<RegionalSnapshotIndicators snapshot={t.past[2010]['13']} group="total"/>));
+ expect($('.regional-migration-change').text()).toContain('2010年');expect($('.regional-migration-change').text()).not.toContain('平均');expect($('.regional-migration-change strong').text()).toBe('+123人');
+});
