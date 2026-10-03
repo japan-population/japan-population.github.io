@@ -93,16 +93,22 @@
 }
 /* Nested cause rows share the death-total denominator and stay within the card. */
 .breakdown-table .cause-row>td{padding:0;text-align:left;white-space:normal}
-.stat-card .event-breakdown .cause-details>summary{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:baseline;cursor:pointer;font-size:inherit;font-weight:400;padding:8px 0}
-.cause-details>summary>span:first-child::before{content:'▸';margin-right:4px;font-size:.8em}
-.cause-details[open]>summary>span:first-child::before{content:'▾'}
-.cause-details>summary>span:not(:first-child){white-space:nowrap;text-align:right}
+.stat-card .event-breakdown .cause-details>summary{display:grid;grid-template-columns:53% 29% 18%;gap:0;align-items:baseline;cursor:pointer;font-size:inherit;font-weight:400;padding:0;list-style:none}
+.cause-details>summary::-webkit-details-marker{display:none}
+.cause-label{position:relative;padding:8px 6px 8px 0;overflow-wrap:anywhere}
+.cause-label .breakdown-rank{margin-left:0;font-size:.833333em}
+.cause-label .breakdown-parenthesis{margin-left:0;font-size:.85em}
+.cause-toggle::after{content:'▸';margin-left:4px;font-size:.8em}
+.cause-details[open] .cause-toggle::after{content:'▾'}
+.cause-details>summary>span:not(:first-child){white-space:nowrap;text-align:right;padding:8px 0 8px 4px}
 .cause-table{margin:0 0 8px;font-size:inherit}
 .cause-table tbody th{font-size:.92em}
 @media(max-width:600px){
  .breakdown-table tbody tr.cause-row{display:block}
  .breakdown-table .cause-row>td{display:block;width:100%}
- .stat-card .event-breakdown .cause-details>summary{grid-template-columns:1fr 1fr;gap:2px}
+ .stat-card .event-breakdown .cause-details>summary{grid-template-columns:1fr 1fr;gap:0}
+ .cause-label{padding:3px 0}
+ .cause-details>summary>span:not(:first-child){padding:1px 0}
  .cause-details>summary>span:first-child{grid-column:1/-1}
  .cause-details>summary>span:nth-child(2){text-align:left}
 }
