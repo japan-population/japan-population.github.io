@@ -135,3 +135,8 @@
  .map-indicators span small{font-size:11px;margin-top:3px}
 }
 @media(max-width:360px){.map-population{font-size:18px}.map-selection{padding:6px}.map-indicators span{font-size:9px}}
+
+.map-indicators:has(.regional-area){grid-template-rows:1fr auto auto 1fr 1fr 1fr}
+.map-indicators>.regional-area{margin-bottom:-5px}
+@media(max-width:600px){.map-indicators>.regional-area{margin-bottom:-6px}}
+@media(min-width:1024px){.map-indicators>.regional-area{margin-bottom:-6px}}
