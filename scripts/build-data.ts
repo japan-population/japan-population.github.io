@@ -1,3 +1,4 @@
+import {fetchRegionalDetails} from './sources/regional-details';
 import {fetchEventBreakdowns} from './sources/event-breakdowns';
 import {fetchFinal2025,mergeFinalRelease} from './sources/vital-final-release';
 import {fetchProjections} from './sources/projections';
@@ -38,6 +39,7 @@ try {
   const foreignMigration = await fetchMigration(appId, now, 'foreign');
   const nationalEvents = await fetchNationalEvents(now);
   const { officialRegions, nationalities } = await fetchCensusData(now);
+  const regionalDetails = await fetchRegionalDetails(now);
   const distribution = await fetchDistribution(now);
   const archive = await fetchOfficialArchive(appId, now);
   const mergedFinal = mergeFinalRelease(archive.annual,await fetchEventBreakdowns(appId,now,archive.annual),await fetchFinal2025(now));
@@ -45,7 +47,7 @@ try {
   const eventBreakdowns=mergedFinal.breakdowns;
   const populationTrend = await fetchPopulationTrend(exact,now,archive);
   const projections = await fetchProjections(now);
-  const data = buildDataset(population, vital, 'official', now, { eventBreakdowns, breakdown, bases, migration, japaneseBases, officialRegions, nationalities, distribution, archive, populationTrend, projections, nationalEvents, migrationsByGroup: {total:migration,japanese:japaneseMigration,foreign:foreignMigration} });
+  const data = buildDataset(population, vital, 'official', now, { regionalDetails, eventBreakdowns, breakdown, bases, migration, japaneseBases, officialRegions, nationalities, distribution, archive, populationTrend, projections, nationalEvents, migrationsByGroup: {total:migration,japanese:japaneseMigration,foreign:foreignMigration} });
   console.log(await publishDataset(data) ? 'すべての検証に成功し、JSONを更新しました。' : '統計・推計モデルの変更はありません。');
 } catch (error) {
   // Only local controlled errors are printed. Zod diagnostics can include source input; avoid dumping them.

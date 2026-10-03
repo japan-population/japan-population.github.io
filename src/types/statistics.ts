@@ -136,7 +136,18 @@ export const populationTrendSchema=z.object({
 });
 export type PopulationTrend=z.infer<typeof populationTrendSchema>;
 export const nationalSchema = z.object({ eventBreakdowns:eventBreakdownsSchema.optional(), projections:projectionsSchema.optional(), populationTrend:populationTrendSchema.optional(), archive:officialArchiveSchema.optional(), generationId: z.string(), distribution: distributionDataSchema.optional(), nationalities:nationalitiesSchema.optional(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
-export const prefectureSchema = z.object({ code: z.string().regex(/^(0[1-9]|[1-3]\d|4[0-7])$/), name: z.string(), officialPopulation: z.record(z.enum(populationGroups), officialRegionSchema).optional(), vital: vitalSchema, population: referenceSchema.optional(), migration: migrationSchema.optional() });
+export const regionalDetailSchema = z.object({
+  populationSource: sourceSchema,
+  rows: breakdownSchema.shape.rows,
+  annual: z.object({year:z.number().int(), vitalSource:sourceSchema,
+    japanese:z.object({birth:z.number().int().nonnegative(),death:z.number().int().nonnegative(),marriage:z.number().int().nonnegative(),divorce:z.number().int().nonnegative()}),
+    domesticSource:sourceSchema, internationalSource:sourceSchema,
+    migration:z.record(z.enum(populationGroups),z.object({domesticIn:z.number().int().nonnegative(),domesticOut:z.number().int().nonnegative(),internationalIn:z.number().int().nonnegative(),internationalOut:z.number().int().nonnegative()}))
+  })
+});
+export type RegionalDetail = z.infer<typeof regionalDetailSchema>;
+export const regionalDetailsSchema = z.object({generationId:z.string(),regions:z.record(z.string(),regionalDetailSchema)});
+export const prefectureSchema = z.object({ code: z.string().regex(/^(0[1-9]|[1-3]\d|4[0-7])$/), name: z.string(), detail:regionalDetailSchema.optional(), officialPopulation: z.record(z.enum(populationGroups), officialRegionSchema).optional(), vital: vitalSchema, population: referenceSchema.optional(), migration: migrationSchema.optional() });
 export const prefecturesSchema = z.object({ generationId: z.string(), prefectures: z.record(z.string(), prefectureSchema) }).superRefine((v, ctx) => {
   if (Object.keys(v.prefectures).length !== 47) ctx.addIssue({ code: 'custom', message: 'Exactly 47 prefectures required' });
   for (const p of PREFECTURES) if (v.prefectures[p.code]?.code !== p.code || v.prefectures[p.code]?.name !== p.name) ctx.addIssue({ code: 'custom', message: `Invalid prefecture ${p.code}` });
