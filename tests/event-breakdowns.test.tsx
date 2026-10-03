@@ -134,7 +134,7 @@ describe('リアルタイム配分と表示',()=>{
    const historical=load(renderToStaticMarkup(<EventBreakdown event="birth" sections={sections}/>));
    expect(historical('.breakdown-category > summary small')).toHaveLength(0);
    expect($('.breakdown-category > summary small')).toHaveLength(0);
-   const empty=renderToStaticMarkup(<EventBreakdown event="birth" sections={[]}/>);expect(load(empty)('.breakdown-note').first().text()).toBe('—');
+   const empty=renderToStaticMarkup(<EventBreakdown event="birth" sections={[]}/>);expect(load(empty)('.breakdown-note').first().text()).toBe('データなし');
  });
  it('各期間の既存カウンターと同じ値を内訳へ渡す',()=>{
    const sections=selectEventBreakdowns(data,'birth','japanese');
@@ -151,7 +151,7 @@ it('最新年で不足する内訳だけ前年の原値を年付きで表示す�
  expect(sections).toHaveLength(2);expect(sections.every(s=>s.year===2024)).toBe(true);
  expect(sections[0].total).toBe(485092);
  const html=renderToStaticMarkup(<EventBreakdown event="marriage" sections={sections} referenceYear={2025}/>);
- expect(load(html)('.breakdown-category > summary small').map((_,el)=>load(html)(el).text()).get()).toEqual(['2024年','2024年']);expect(html).not.toContain('未収録');
+ expect(load(html)('.breakdown-category > summary small').map((_,el)=>load(html)(el).text()).get()).toEqual(['2024年','2024年']);expect(html).not.toContain('データなし');
  expect(selectEventBreakdowns(data,'marriage','japanese',1940)).toEqual([]);
 });
 it('交通事故は不慮の事故の閉じた内訳内にだけ表示する',()=>{
