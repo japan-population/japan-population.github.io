@@ -165,3 +165,5 @@
 
 /* Unavailable periods remain visible, but cannot be selected. */
 .timeline-labels button:disabled,.segmented button:disabled{color:#9a9f9c;background:#edf0ee;cursor:not-allowed;opacity:.65;box-shadow:none}
+
+.regional-reference-label{font-size:.7em;font-weight:400;color:var(--muted);margin-left:.7em}

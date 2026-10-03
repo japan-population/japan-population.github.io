@@ -9,7 +9,7 @@ export const sourceSchema = z.object({
   publisher: z.string().min(1), statistics: z.string().min(1), table: z.string().min(1),
   // Historical publications sometimes identify only a year or month; do not invent a day.
   sourcePeriod: monthSchema, publishedAt: z.union([z.iso.date(),monthSchema,z.string().regex(/^\d{4}$/)]), retrievedAt: z.iso.datetime({ offset: true }),
-  url: z.url(), status: z.enum(['final', 'provisional', 'fixture', 'projection']), scope: z.string().min(1),
+  url: z.url(), status: z.enum(['final', 'provisional', 'fixture', 'projection', 'reference']), scope: z.string().min(1),
 });
 // Annual demographic compositions; shares are always relative to the full event total.
 export const eventBreakdownSchema = z.object({

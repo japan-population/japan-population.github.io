@@ -1,3 +1,4 @@
+import {estimateHistoricalMigration} from '../models/historical-migration';
 import {fetchRegionalMigrationHistory} from './regional-migration-history';
 import {correctRegionalTerritories} from './regional-territories';
 import ExcelJS from 'exceljs';
@@ -50,7 +51,7 @@ export async function normalizeRegionalTimeline(history:Uint8Array,projection:Ui
  for(const records of [...Object.values(past),...Object.values(future)])if(Object.keys(records).length!==47)throw Error('地域時系列の47都道府県が揃いません');
  return regionalTimelineSchema.parse({past,future});
 }
-export async function fetchRegionalTimeline(now:number,appId:string){const [h,p]=await Promise.all([download(new URL(REGIONAL_HISTORY_URL)),download(new URL(REGIONAL_PROJECTION_URL))]);const result=await normalizeRegionalTimeline(h,p,now);const tables=await fetchRegionalSupplementTables(appId,now);supplementRegionalNationalities(result,tables);supplementRegionalForeignTotals(result,tables);supplementRegionalVital(result,tables);supplementRegionalIndicators(result,tables);await fetchRegionalMigrationHistory(result,now);correctRegionalTerritories(result,now);return result;}
+export async function fetchRegionalTimeline(now:number,appId:string,archive:import('../../src/types/statistics').OfficialArchive){const [h,p]=await Promise.all([download(new URL(REGIONAL_HISTORY_URL)),download(new URL(REGIONAL_PROJECTION_URL))]);const result=await normalizeRegionalTimeline(h,p,now);const tables=await fetchRegionalSupplementTables(appId,now);supplementRegionalNationalities(result,tables);supplementRegionalForeignTotals(result,tables);supplementRegionalVital(result,tables);supplementRegionalIndicators(result,tables);await fetchRegionalMigrationHistory(result,now);correctRegionalTerritories(result,now);await estimateHistoricalMigration(result,h,archive,now);return result;}
 
 export const REGIONAL_VITAL_TABLES={birth:'0003411597',death:'0003411654',marriage:'0003411835',divorce:'0003411861'} as const;
 export function supplementRegionalVital(timeline:RegionalTimeline,tables:Record<string,import('./table').Table>){

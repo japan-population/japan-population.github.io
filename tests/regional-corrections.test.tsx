@@ -6,6 +6,8 @@ import {normalizeRegionalTimeline,supplementRegionalIndicators} from '../scripts
 import {supplementRegionalMigration} from '../scripts/sources/regional-migration-history';
 import {correctRegionalTerritories} from '../scripts/sources/regional-territories';
 import {allocateRegional,extendRegionalProjections} from '../scripts/models/regional-projection';
+import {estimateHistoricalMigration} from '../scripts/models/historical-migration';
+import {RegionalSnapshotIndicators} from '../src/components/RegionalSnapshotDetail';
 import {RegionalYearSlider} from '../src/components/RegionalYearSlider';
 import {regionalTimelineSchema,type RegionalTimeline} from '../src/types/regional-timeline';
 import type {National,RegionalDetail} from '../src/types/statistics';
@@ -27,7 +29,15 @@ test('奄美を一度だけ鹿児島へ移し、総人口・男女・面積・�
  expect(r['47'].area!.value).toBe(2388.22);expect(r['47'].area!.value+r['46'].area!.value).toBeCloseTo(raw.past[1950]['47'].area!.value+raw.past[1950]['46'].area!.value,6);
  expect(r['47'].groups.total!.population!.source.sourcePeriod).toBe('1950-12');expect(t.past[1960]['47'].groups.total!.population!.source.sourcePeriod).toBe('1960-12');
  expect(r['13'].groups.total!.population!.value).toBe(6277500);expect(r['13'].groups.total!.population!.source.scope).toContain('伊豆諸島は東京都');
- expect(r['47'].groups.total!.rows.every(row=>row.age==='総数')).toBe(true);
+ for(const code of ['46','47']){
+  const g=r[code].groups.total!;expect(g.pyramidReference).toBe(true);expect(g.pyramidSource!.status).toBe('reference');
+  for(const [sex,key]of [['男','male'],['女','female'],['男女計','population']]as const){
+   const rows=g.rows.filter(r=>r.sex===sex&&r.age!=='総数');expect(rows).toHaveLength(15);expect(rows.at(-1)!.age).toBe('70歳以上');
+   expect(rows.every(r=>Number.isInteger(r.value)&&r.value>=0)).toBe(true);expect(rows.reduce((s,r)=>s+r.value,0)).toBe(g[key]!.value);
+  }
+  for(const row of g.rows.filter(r=>r.sex==='男女計'))expect(row.value).toBe(g.rows.filter(r=>r.age===row.age&&r.sex!=='男女計').reduce((s,r)=>s+r.value,0));
+ }
+ for(const year of [1960,1970])for(const code of ['46','47','13'])expect(t.past[year][code].groups.total!.population!.value).toBe(raw.past[year][code].groups.total!.population!.value);
  expect(()=>correctRegionalTerritories(t,0)).toThrow('二重補正');
 });
 test('2060年以降は全国の男女別総数を保った参考配分で最新面積を全将来年に保持',async()=>{
@@ -47,4 +57,30 @@ test('データなし年は灰色対象のdisabledになり、沖縄の調査日
  const $=load(renderToStaticMarkup(<RegionalYearSlider period="past" year={1980} availableYears={[1980,1990,2000,2010,2020]} onChange={()=>{}}/>));
  expect($('.timeline-labels button:disabled')).toHaveLength(6);expect($('.timeline-labels button[aria-pressed=true]').text()).toBe('1980');
  const date=renderToStaticMarkup(<RegionalYearSlider period="past" year={1950} date="1950-12" onChange={()=>{}}/>);expect(date).toContain('1950年12月1日現在');
+});
+
+test('1920～2010年は全47都道府県に期間を揃えた残差を参考表示し2020年実績は保持',async()=>{
+ const t=structuredClone(raw);correctRegionalTerritories(t,0);
+ await supplementRegionalMigration(t,await readFile('tests/fixtures/regional-domestic-2020.xlsx'),await readFile('tests/fixtures/regional-international-2020.xlsx'),0);
+ const observed=JSON.stringify(t.past[2020]);
+ const national=JSON.parse(await readFile('public/data/national.json','utf8')) as National;
+ await estimateHistoricalMigration(t,await readFile('tests/fixtures/regional-history.xlsx'),national.archive!,0);
+ for(let year=1920;year<=2010;year+=10){
+  expect(Object.keys(t.past[year])).toHaveLength(47);
+  for(const r of Object.values(t.past[year])){
+   const g=r.groups.total!,v=g.migrationChange!,c=v.calculation!;
+   expect(v.reference).toBe(true);expect(v.source.status).toBe('reference');expect(v.estimateKind).toBe('residual');
+   expect(Number.isFinite(v.value)).toBe(true);expect(c.endYear-c.startYear).toBe(5);
+   expect(c.annualPopulationChange).toBe((c.populationEnd-c.populationStart)/5);
+   expect(v.value).toBe(Math.round(c.annualPopulationChange-c.naturalChange));
+   expect(g.events?.inflow).toBeUndefined();expect(g.events?.outflow).toBeUndefined();
+   expect(r.groups.foreign?.migrationChange).toBeUndefined();expect(r.groups.japanese?.migrationChange).toBeUndefined();
+  }
+ }
+ expect(t.past[1920]['46'].groups.total!.migrationChange!.calculation!.naturalBasis).toBe('national-rate');
+ expect(t.past[1950]['46'].groups.total!.migrationChange!.calculation).toMatchObject({startYear:1950,endYear:1955,populationStart:2020228,populationEnd:2044112,naturalBasis:'national-rate'});
+ expect(JSON.stringify(t.past[2020])).toBe(observed);
+ expect(()=>regionalTimelineSchema.parse(t)).not.toThrow();
+ const $=load(renderToStaticMarkup(<RegionalSnapshotIndicators snapshot={t.past[1950]['46']} group="total"/>));
+ expect($('.regional-migration-change').text()).toContain('1950–55年平均 · 残差推計');expect($('.regional-migration-change strong').text()).toContain('人/年');
 });

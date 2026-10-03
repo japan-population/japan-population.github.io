@@ -41,12 +41,12 @@ try {
   const foreignMigration = await fetchMigration(appId, now, 'foreign');
   const nationalEvents = await fetchNationalEvents(now);
   const { officialRegions, nationalities } = await fetchCensusData(now);
-  const regionalTimeline = await fetchRegionalTimeline(now,appId);
   const regionalDetails = await fetchRegionalDetails(now);
   const distribution = await fetchDistribution(now);
   const archive = await fetchOfficialArchive(appId, now);
   const mergedFinal = mergeFinalRelease(archive.annual,await fetchEventBreakdowns(appId,now,archive.annual),await fetchFinal2025(now));
   archive.annual=mergedFinal.annual;
+  const regionalTimeline = await fetchRegionalTimeline(now,appId,archive);
   const eventBreakdowns=mergedFinal.breakdowns;
   const populationTrend = await fetchPopulationTrend(exact,now,archive);
   const projections = await fetchProjections(now);
