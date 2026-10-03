@@ -17,12 +17,12 @@ export function EventBreakdown({event,sections,total,proxy=false,referenceYear}:
         ...['自殺','他殺'].filter(label=>!section.items.some(item=>item.label===label&&!item.supplement)).map(label=>section.items.find(item=>item.label===label)??{label,count:null}),
       ]:section?.items??[];
       return <details className="breakdown-category" key={kind}><summary>{BREAKDOWN_LABELS[kind]}{section&&referenceYear!==undefined&&section.year<referenceYear&&<small>{section.year}年</small>}</summary>
-        {!section?<p className="breakdown-note">—</p>:<>
+        {!section?<p className="breakdown-note">データなし</p>:<>
           <table className="breakdown-table"><thead><tr><th scope="col">区分</th><th scope="col">{realtime?(proxy?'参考推計':'推計'):'人数'}</th><th scope="col">全体比</th></tr></thead><tbody>
-            {items.map(item=>{if(item.count===null)return <tr key={item.label}><th scope="row"><BreakdownLabel label={item.label}/></th><td colSpan={2}>未収録</td></tr>;const v=breakdownCount(section,item.count,total??undefined);
-              if(item.label==='不慮の事故'||item.label.startsWith('悪性新生物'))return <tr key={item.label} className="cause-row"><td colSpan={3}>
+            {items.map(item=>{if(item.count===null)return <tr key={item.label}><th scope="row"><BreakdownLabel label={item.label}/></th><td colSpan={2}>データなし</td></tr>;const v=breakdownCount(section,item.count,total??undefined);
+              if(item.children?.length&&(item.label==='不慮の事故'||item.label.startsWith('悪性新生物')))return <tr key={item.label} className="cause-row"><td colSpan={3}>
                 <details className="cause-details" data-cause={item.label==='不慮の事故'?'accident':'cancer'}><summary><span className="cause-label"><span className="breakdown-bar" aria-hidden="true" style={{width:`${Math.min(100,v.percent)}%`}}/><span className="breakdown-row-label">{item.rank&&<small className="breakdown-rank">{item.rank}</small>}<BreakdownLabel label={item.label}/><span className="cause-toggle" aria-hidden="true"/></span></span><span>{total===null?'—':number(v.count)}<small>人</small></span><span>{v.percent.toFixed(1)}<small>%</small></span></summary>
-                  {item.children?<table className="breakdown-table cause-table"><tbody>{[...item.children].sort((a,b)=>b.count-a.count).map(child=>{const c=breakdownCount(section,child.count,total??undefined);return <tr key={child.label}><th scope="row"><BreakdownLabel label={child.label}/></th><td>{total===null?'—':number(c.count)}<small>人</small></td><td>{c.percent.toFixed(1)}<small>%</small></td></tr>;})}</tbody></table>:<p className="breakdown-note">—</p>}
+                  {item.children?<table className="breakdown-table cause-table"><tbody>{[...item.children].sort((a,b)=>b.count-a.count).map(child=>{const c=breakdownCount(section,child.count,total??undefined);return <tr key={child.label}><th scope="row"><BreakdownLabel label={child.label}/></th><td>{total===null?'—':number(c.count)}<small>人</small></td><td>{c.percent.toFixed(1)}<small>%</small></td></tr>;})}</tbody></table>:<p className="breakdown-note">データなし</p>}
                 </details>
               </td></tr>;
               return <tr key={item.label} className={item.supplement?'breakdown-supplement':undefined}>
