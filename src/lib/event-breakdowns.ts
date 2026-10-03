@@ -17,7 +17,8 @@ export function breakdownCount(section:EventBreakdownData,count:number,total?:nu
 export const BREAKDOWN_LABELS={motherAge:'出産年齢（母）',birthOrder:'出生順位',deathAge:'死亡年齢',cause:'死因',husbandAge:'夫の年齢',wifeAge:'妻の年齢'};
 export const BREAKDOWN_KINDS={birth:['birthOrder','motherAge'],death:['cause','deathAge'],marriage:['husbandAge','wifeAge'],divorce:['husbandAge','wifeAge']} as const;
 export function realtimeEventBreakdowns(data:EventBreakdowns|undefined,event:EventKind,group:PopulationGroup){
-  if(group==='foreign'&&(event==='marriage'||event==='divorce'))return {sections:[],proxy:false};
+  // Foreign breakdowns must use foreign statistics; never substitute Japanese proportions.
+  if(group==='foreign')return {sections:selectEventBreakdowns(data,event,'foreign'),proxy:false};
   const target=(event==='marriage'||event==='divorce')?'japanese':group;
   const own=selectEventBreakdowns(data,event,target);
   if(own.length)return {sections:own,proxy:false};

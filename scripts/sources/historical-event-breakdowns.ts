@@ -29,6 +29,20 @@ const homicide1950:Source={
   url:'https://www.tmiph.metro.tokyo.lg.jp/files/archive/issue/kenkyunenpo/nenpou66/333-339.pdf',
   scope:'人口動態統計を用いた全国日本人の集計（沖縄県を除く）。本文記載の1950年男性1,115人と女性768人を合算。警察の事件数ではありません。',
 };
+const homicide1970:Source={
+  publisher:'厚生省（e-Stat）',statistics:'昭和45年 人口動態統計 上巻',
+  table:'表5.11 年次別にみた死因（B分類）・性別死亡数および率、90～91頁 BE50.a 他殺',
+  sourcePeriod:'1970-12',publishedAt:'2019-08-09',retrievedAt,status:'final',
+  url:'https://www.e-stat.go.jp/stat-search/file-download?statInfId=000031845508&fileKind=2',
+  scope:'沖縄県を除く日本における日本人の死亡。BE50.a「他殺」の男女計は1960年1,715人、1970年1,362人。BE50全体（その他の外因）や法的介入・戦争行為は含めません。公表・更新日はe-Stat掲載日。',
+};
+const homicide1960Detail:Source={
+  publisher:'厚生省（e-Stat）',statistics:'昭和35年 人口動態統計 下巻',
+  table:'第53表 死亡者数、性・年齢（5才階級）・死因（基本分類）別、186～187頁 E980～E985',
+  sourcePeriod:'1960-12',publishedAt:'2019-08-09',retrievedAt,status:'final',
+  url:'https://www.e-stat.go.jp/stat-search/file-download?statInfId=000031845533&fileKind=2',
+  scope:'沖縄県を除く日本における日本人の死亡。当時のE980～E985計1,749人にはE985「処刑」34人が含まれるため除外。E980～E983の120＋37＋727＋831＝1,715人（E984「警察干与の傷害」は0人）を他殺として採用し、昭和45年報告書の年次比較表と照合。',
+};
 const ages=['19歳以下',...Array.from({length:10},(_,i)=>`${20+i*5}～${24+i*5}歳`),'70歳以上'];
 const age1930={
   first:{husbandAge:[9829,142925,197496,55599,16052,7128,3687,2143,1219,602,248,166],wifeAge:[104844,257701,67369,19202,7438,3929,2345,1384,595,215,76,30]},
@@ -60,11 +74,11 @@ export function addHistoricalEventBreakdowns(input:EventBreakdowns,annual:Annual
     const divorceCounts=age1930.divorce[kind];
     addAge(1930,'divorce',kind,[...ages,'年齢不詳'],[...divorceCounts,51259-divorceCounts.reduce((a,b)=>a+b,0)],{...ipss('07'),scope:'内閣統計局「日本帝国人口動態統計」による1930年の離婚届出総数。年齢不詳は公表総数と年齢別合計の差。'});
   }
-  for(const [year,count,source] of [[1950,1115+768,homicide1950],[1980,1113,{...causes1990,sourcePeriod:'1980-12'}],[1990,744,causes1990]] as const){
+  for(const [year,count,source] of [[1950,1115+768,homicide1950],[1960,120+37+727+831,{...homicide1970,sourcePeriod:'1960-12'}],[1970,1362,homicide1970],[1980,1113,{...causes1990,sourcePeriod:'1980-12'}],[1990,744,causes1990]] as const){
     const section=result.find(s=>s.year===year&&s.group==='japanese'&&s.kind==='cause');
     if(!section||section.items.some(i=>i.label==='他殺'))continue;
     section.items.push({label:'他殺',count,supplement:true});
-    section.additionalSources=[...section.additionalSources??[],source];
+    section.additionalSources=[...section.additionalSources??[],source,...year===1960?[homicide1960Detail]:[]];
   }
   return eventBreakdownsSchema.parse(result);
 }

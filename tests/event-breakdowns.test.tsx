@@ -35,6 +35,17 @@ describe('公表内訳の正規化',()=>{
    expect(get(1930,'death','cause').items.some(i=>i.label==='交通事故')).toBe(false);
    expect(selectEventBreakdowns(data,'marriage','japanese',1940)).toEqual([]);
  });
+ it('1960・1970年の他殺を原表から補い、処刑やその他の外因を混入しない',()=>{
+   for(const [year,count] of [[1960,1715],[1970,1362]]){
+     const section=get(year,'death','cause');
+     expect(section.items.find(i=>i.label==='他殺')).toMatchObject({count,supplement:true});
+     expect(section.total).toBe(annual.find(a=>a.year===year)!.counts.death);
+     expect(section.additionalSources?.some(s=>s.url.includes('000031845508')&&s.sourcePeriod===`${year}-12`)).toBe(true);
+     const $=load(renderToStaticMarkup(<EventBreakdown event="death" sections={[section]}/>));
+     expect($('tr').filter((_,row)=>$(row).find('th').text()==='他殺').text()).toContain(count.toLocaleString('ja-JP')+'人');
+   }
+   expect(get(1960,'death','cause').additionalSources?.some(s=>s.url.includes('000031845533')&&s.scope.includes('処刑'))).toBe(true);
+ });
  it('更新処理は補足を重複させず、APIから取得できた既存値を優先する',()=>{
    const before=structuredClone(data);expect(addHistoricalEventBreakdowns(data,annual)).toEqual(data);expect(data).toEqual(before);
    const preferred=structuredClone(data);preferred.find(s=>s.year===1980&&s.kind==='cause')!.items.find(i=>i.label==='他殺')!.count=1234;
@@ -115,7 +126,9 @@ describe('リアルタイム配分と表示',()=>{
  });
  it('日本人の代用を明示し、外国人の婚姻・離婚へは流用しない',()=>{
    expect(realtimeEventBreakdowns(data,'birth','total').proxy).toBe(true);
-   expect(realtimeEventBreakdowns(data,'birth','foreign').proxy).toBe(true);
+   for(const event of ['birth','death','marriage','divorce'] as const)expect(realtimeEventBreakdowns(data,event,'foreign')).toEqual({sections:[],proxy:false});
+   const foreign={...get(2024,'birth','motherAge'),group:'foreign' as const};
+   expect(realtimeEventBreakdowns([...data,foreign],'birth','foreign')).toEqual({sections:[foreign],proxy:false});
    expect(realtimeEventBreakdowns(data,'birth','japanese').proxy).toBe(false);
    expect(realtimeEventBreakdowns(data,'marriage','total').proxy).toBe(false);
    expect(realtimeEventBreakdowns(data,'marriage','foreign').sections).toEqual([]);
