@@ -14,6 +14,6 @@ it('人口区分に従う平均年齢と小数2桁の出生率を表示し外国
 
 it('年間増減は日本人の自然増減と区分別の国内・国外住所移転から算出する',()=>{
  const h=regions['01'];const html=renderToStaticMarkup(<RegionalIndicators data={h} group="total"/>);
- expect(html).toContain('−53,083');expect(html).toContain('+2,244');expect(html.indexOf('平均年齢')).toBeLessThan(html.indexOf('自然増減'));expect(html.indexOf('自然増減')).toBeLessThan(html.indexOf('移動による増減'));expect(html.indexOf('移動による増減')).toBeLessThan(html.indexOf('合計特殊出生率'));
+ expect(html).toContain('−53,083');expect(html).toContain('+2,244');expect(html.indexOf('平均年齢')).toBeLessThan(html.indexOf('自然増減'));expect(html.indexOf('移動による増減')).toBeLessThan(html.indexOf('自然増減'));expect(html.indexOf('自然増減')).toBeLessThan(html.indexOf('合計特殊出生率'));
  const foreign=renderToStaticMarkup(<RegionalIndicators data={h} group="foreign"/>);expect(foreign).not.toContain('−53,083');expect(foreign).toContain('+7,175');expect(foreign).toContain('データなし');
 });
