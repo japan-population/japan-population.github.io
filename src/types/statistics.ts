@@ -137,6 +137,7 @@ export const populationTrendSchema=z.object({
 export type PopulationTrend=z.infer<typeof populationTrendSchema>;
 export const nationalSchema = z.object({ eventBreakdowns:eventBreakdownsSchema.optional(), projections:projectionsSchema.optional(), populationTrend:populationTrendSchema.optional(), archive:officialArchiveSchema.optional(), generationId: z.string(), distribution: distributionDataSchema.optional(), nationalities:nationalitiesSchema.optional(), population: populationSchema, vital: vitalSchema, eventsByGroup: groupedEventsSchema.optional(), breakdown: breakdownSchema.optional(), migration: migrationSchema.optional() });
 export const regionalDetailSchema = z.object({
+  geography:z.object({areaKm2:z.number().finite().positive(),populationDensity:z.number().finite().positive(),source:sourceSchema}).optional(),
   indicators:z.object({
     averageAge:z.object({values:z.record(z.enum(populationGroups),z.number().finite().min(0).max(120)),source:sourceSchema}),
     birthRate:z.object({totalFertilityRate:z.number().finite().min(0).max(10),crudeBirthRate:z.number().finite().min(0).max(100),year:z.number().int(),source:sourceSchema})

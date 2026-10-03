@@ -1,3 +1,4 @@
+import {fetchRegionalArea} from './regional-area';
 import {fetchRegionalIndicators} from './regional-indicators';
 import ExcelJS from 'exceljs';
 import {PREFECTURES} from '../../src/lib/prefectures';
@@ -51,4 +52,4 @@ export async function normalizeRegionalDetails(census:Uint8Array,vital:Uint8Arra
   }
   return result;
 }
-export async function fetchRegionalDetails(now:number){const bytes=await Promise.all([CENSUS_REGIONS_URL,REGIONAL_VITAL_URL,REGIONAL_DOMESTIC_URL,REGIONAL_INTERNATIONAL_URL].map(url=>download(new URL(url))));const regions=await normalizeRegionalDetails(bytes[0],bytes[1],bytes[2],bytes[3],now);await fetchRegionalIndicators(regions,now);return regions;}
+export async function fetchRegionalDetails(now:number){const bytes=await Promise.all([CENSUS_REGIONS_URL,REGIONAL_VITAL_URL,REGIONAL_DOMESTIC_URL,REGIONAL_INTERNATIONAL_URL].map(url=>download(new URL(url))));const regions=await normalizeRegionalDetails(bytes[0],bytes[1],bytes[2],bytes[3],now);await fetchRegionalIndicators(regions,now);await fetchRegionalArea(regions,now);return regions;}
