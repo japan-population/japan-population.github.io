@@ -157,7 +157,7 @@ export const prefecturesSchema = z.object({ generationId: z.string(), prefecture
   if (Object.keys(v.prefectures).length !== 47) ctx.addIssue({ code: 'custom', message: 'Exactly 47 prefectures required' });
   for (const p of PREFECTURES) if (v.prefectures[p.code]?.code !== p.code || v.prefectures[p.code]?.name !== p.name) ctx.addIssue({ code: 'custom', message: `Invalid prefecture ${p.code}` });
 });
-export const manifestSchema = z.object({ schemaVersion: z.literal(1), generationId: z.string(), generatedAt: z.iso.datetime({ offset: true }), mode: z.enum(['fixture', 'official']), population: z.object({ latestFinalMonth: monthSchema }), vital: z.object({ latestMonth: monthSchema }), forecastMonths: z.array(monthSchema).min(1), historyStart: monthSchema });
+export const manifestSchema = z.object({ schemaVersion: z.literal(1), regionalTimeline:z.boolean().optional(), generationId: z.string(), generatedAt: z.iso.datetime({ offset: true }), mode: z.enum(['fixture', 'official']), population: z.object({ latestFinalMonth: monthSchema }), vital: z.object({ latestMonth: monthSchema }), forecastMonths: z.array(monthSchema).min(1), historyStart: monthSchema });
 export type Source = z.infer<typeof sourceSchema>;
 export type Population = z.infer<typeof populationSchema>;
 export type EventModel = z.infer<typeof eventModelSchema>;
