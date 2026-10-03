@@ -13,3 +13,12 @@ it('県内移動・職権消除を除き他県と国外の移動を収録',()=>{
 it('年や列の変更を拒否し不完全なデータを公開しない',async()=>{const w=new ExcelJS.Workbook();await w.xlsx.load(inputs[2] as never);w.worksheets[0].getCell(8,4).value='2024年';await expect(normalizeRegionalDetails(inputs[0],inputs[1],await w.xlsx.writeBuffer() as unknown as Uint8Array,inputs[3],Date.now())).rejects.toThrow('年が不一致');});
 it('過去確定値と同じ開閉UIで6項目を順番に表示し、内訳は付けない',()=>{const $=load(renderToStaticMarkup(<RegionalDetail data={data['01']} group="total" name="北海道"/>));expect($('.official-pyramid>summary').text()).toBe('人口ピラミッド');expect($('.annual-vital').attr('open')).toBeUndefined();expect($('.card-heading').map((_,e)=>$(e).text()).get()).toEqual(['出生確定値','死亡確定値','転入確定値','転出確定値','婚姻確定値','離婚確定値']);expect($('.inflow .event-value').text()).toBe('76,463人');expect($('.outflow .event-value').text()).toBe('74,219人');expect($('.event-breakdown')).toHaveLength(0);});
 it('外国人に日本人の出生等を流用せず、移動と人口は外国人の値',()=>{const $=load(renderToStaticMarkup(<RegionalDetail data={data['01']} group="foreign" name="北海道"/>));expect($('.birth .event-value').text()).toBe('データなし');expect($('.death .event-value').text()).toBe('データなし');expect($('.inflow .event-value').text()).not.toBe('データなし');});
+
+it('同一の年間人口動態の出典は国籍区分にかかわらず一つに集約する',()=>{
+ for(const group of ['total','japanese','foreign'] as const){
+  const $=load(renderToStaticMarkup(<RegionalDetail data={data['01']} group={group} name="北海道"/>));
+  expect($('.annual-vital .source-details')).toHaveLength(1);
+  expect($('.annual-vital .source-details>div')).toHaveLength(group==='foreign'?2:3);
+  expect($('.annual-vital .source-details>summary').text().match(/2025年12月/g)).toHaveLength(1);
+ }
+});
