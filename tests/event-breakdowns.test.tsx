@@ -163,7 +163,7 @@ it('交通事故は不慮の事故の閉じた内訳内にだけ表示する',()
  expect($('.breakdown-category > .breakdown-table > tbody > tr > th').text()).not.toContain('交通事故');
  const children=section.items.find(i=>i.label==='不慮の事故')!.children!;
  expect(children.reduce((n,i)=>n+i.count,0)).toBe(45743);
- expect($('.cause-details[data-cause=accident] .cause-table tr').first().text()).toContain(`${Math.floor(10000*3511/1605378)}人`);
+ expect($('.cause-details[data-cause=accident] .cause-table tr').filter((_,row)=>$(row).find('th').text()==='交通事故').text()).toContain(`${Math.floor(10000*3511/1605378)}人`);
 });
 
 it('がんの全21分類を閉じた内訳で表示し、死亡総数に対する割合で推計する',()=>{
@@ -174,8 +174,20 @@ it('がんの全21分類を閉じた内訳で表示し、死亡総数に対す�
   const $=load(renderToStaticMarkup(<EventBreakdown event="death" sections={[section]} total={total}/>));
   const detail=$('.cause-details[data-cause=cancer]');
   expect(detail.attr('open')).toBeUndefined();expect(detail.find('tbody tr')).toHaveLength(21);
-  const child=cancer.children![0],row=detail.find('tbody tr').first();
+  const child=[...cancer.children!].sort((a,b)=>b.count-a.count)[0],row=detail.find('tbody tr').first();
   expect(row.find('td').first().text()).toBe(`${(total===undefined?child.count:Math.floor(total*child.count/section.total)).toLocaleString('ja-JP')}人`);
   expect(row.find('td').last().text()).toBe(`${(child.count/section.total*100).toFixed(1)}%`);
  }
+});
+
+it('がん・事故の内訳は原値を変更せず人数の降順で表示する',()=>{
+ const section=get(2024,'death','cause'),before=structuredClone(section);
+ for(const total of [undefined,10000]){
+  const $=load(renderToStaticMarkup(<EventBreakdown event="death" sections={[section]} total={total}/>));
+  for(const cause of ['cancer','accident']){
+   const values=$(`.cause-details[data-cause=${cause}] tbody tr`).map((_,row)=>Number($(row).find('td').first().text().replace(/[^0-9]/g,''))).get();
+   expect(values.length).toBeGreaterThan(1);expect(values).toEqual([...values].sort((a,b)=>b-a));
+  }
+ }
+ expect(section).toEqual(before);
 });
