@@ -1,6 +1,8 @@
 import type { Source } from '../types/statistics';
 import { monthLabel } from '../lib/formatting';
 type SourceInfoProps = ({ source: Source; sources?: never } | { source?: never; sources: readonly Source[] }) & { showPeriod?: boolean };
+// One disclosure per statistics block: pass all relevant sources through `sources`.
+// Do not render consecutive SourceInfo components for the same block.
 export function SourceInfo(props: SourceInfoProps) {
   const sources = props.sources ?? [props.source];
   const periods = [...new Set(sources.map(source => monthLabel(source.sourcePeriod)))];

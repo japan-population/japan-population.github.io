@@ -15,7 +15,7 @@ export function RegionalDetail({data,group,name}:{data:Detail;group:PopulationGr
       {group==='total'&&<p className="small-note">出生・死亡・婚姻・離婚は日本人のみの統計です。</p>}
       <div className="annual-vital-grid">{cards.map(([kind,label,value,unit])=><article className={`stat-card ${kind}`} key={kind}><div className="card-heading"><EventIcon kind={kind}/><span>{label}</span>{value!==undefined&&<span className="badge">確定値</span>}</div><p className="event-value">{value===undefined?'データなし':<>{number(value)}<small>{unit}</small></>}</p></article>)}</div>
       <p className="small-note">転入・転出は他都道府県と国外との住所移転です。</p>
-      {group!=='foreign'&&<SourceInfo source={data.annual.vitalSource}/>}<SourceInfo source={data.annual.domesticSource}/><SourceInfo source={data.annual.internationalSource}/>
+      <SourceInfo sources={[...(group==='foreign'?[]:[data.annual.vitalSource]),data.annual.domesticSource,data.annual.internationalSource]}/>
     </div></details>
   </div>;
 }
