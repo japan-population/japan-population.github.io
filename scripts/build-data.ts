@@ -1,3 +1,4 @@
+import {extendRegionalProjections} from './models/regional-projection';
 import {fetchRegionalTimeline} from './sources/regional-timeline';
 import {fetchRegionalDetails} from './sources/regional-details';
 import {fetchEventBreakdowns} from './sources/event-breakdowns';
@@ -49,6 +50,7 @@ try {
   const eventBreakdowns=mergedFinal.breakdowns;
   const populationTrend = await fetchPopulationTrend(exact,now,archive);
   const projections = await fetchProjections(now);
+  extendRegionalProjections(regionalTimeline,projections,regionalDetails,now);
   const data = buildDataset(population, vital, 'official', now, { regionalTimeline, regionalDetails, eventBreakdowns, breakdown, bases, migration, japaneseBases, officialRegions, nationalities, distribution, archive, populationTrend, projections, nationalEvents, migrationsByGroup: {total:migration,japanese:japaneseMigration,foreign:foreignMigration} });
   console.log(await publishDataset(data) ? 'すべての検証に成功し、JSONを更新しました。' : '統計・推計モデルの変更はありません。');
 } catch (error) {

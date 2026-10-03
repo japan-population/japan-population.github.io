@@ -162,3 +162,6 @@
 
 .regional-section .timeline-labels{grid-template-columns:repeat(var(--timeline-count),minmax(0,1fr))}
 .regional-section .timeline-labels button{max-width:min(100%,calc(var(--timeline-count) * 8%))}
+
+/* Unavailable periods remain visible, but cannot be selected. */
+.timeline-labels button:disabled,.segmented button:disabled{color:#9a9f9c;background:#edf0ee;cursor:not-allowed;opacity:.65;box-shadow:none}

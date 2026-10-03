@@ -11,7 +11,7 @@ export function RegionalSnapshotIndicators({snapshot,group}:{snapshot:RegionalSn
  const metric=(v:RegionalMetric|undefined,unit:string,digits=0,sign=false)=>v?<>{sign?signed(v.value):v.value.toLocaleString('ja-JP',{minimumFractionDigits:digits,maximumFractionDigits:digits})}<small>{unit}</small></>:<small>データなし</small>;
  return <div className="map-indicators">
   <div><span>平均年齢<small>{note(g?.averageAge)}</small></span><strong>{metric(g?.averageAge,'歳',1)}</strong></div>
-  <div className="regional-area"><span>面積</span><strong>{metric(snapshot.area,'km²',2)}</strong></div>
+  <div className="regional-area"><span>面積{snapshot.status!=='final'&&<small>{snapshot.area?.source.sourcePeriod.slice(0,4)}年の面積</small>}</span><strong>{metric(snapshot.area,'km²',2)}</strong></div>
   <div className="regional-density"><span>人口密度{group!=='total'&&<small>総人口</small>}</span><strong>{metric(snapshot.density,'人/km²',1)}</strong></div>
   <div className="regional-migration-change"><span>移動による増減<small>{note(g?.migrationChange)}</small></span><strong>{metric(g?.migrationChange,'人',0,true)}</strong></div>
   <div className="regional-natural-change"><span>自然増減<small>{note(g?.naturalChange,true)}</small></span><strong>{metric(g?.naturalChange,'人',0,true)}</strong></div>

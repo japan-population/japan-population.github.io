@@ -19,3 +19,5 @@ export type RegionalTimeline=z.infer<typeof regionalTimelineSchema>;
 export type RegionalMetric=z.infer<typeof metric>;
 
 export const regionalYearSchema=z.object({generationId:z.string(),period:z.enum(['past','future']),year:z.number().int(),regions:z.record(z.string(),regionalSnapshotSchema)}).superRefine((v,ctx)=>{if(Object.keys(v.regions).length!==47||Object.values(v.regions).some(s=>s.year!==v.year))ctx.addIssue({code:'custom',message:'地域時系列の年・件数が不一致です'});});
+
+export const regionalIndexSchema=z.object({generationId:z.string(),past:z.array(z.number().int()),future:z.array(z.number().int()),availablePast:z.record(z.enum(populationGroups),z.array(z.number().int()))});

@@ -1,3 +1,5 @@
+import {fetchRegionalMigrationHistory} from './regional-migration-history';
+import {correctRegionalTerritories} from './regional-territories';
 import ExcelJS from 'exceljs';
 import {download} from './http';
 import {PREFECTURES} from '../../src/lib/prefectures';
@@ -12,7 +14,7 @@ function average(rows:Breakdown['rows'],source:Source){
  // Five-year midpoint approximation; the open upper band uses its lower bound + 2.5.
  return denominator?{value:ages.reduce((s,r)=>s+(parseInt(r.age)+2.5)*r.value,0)/denominator,source:{...source,scope:source.scope+' 平均年齢は年齢既知人口の階級中央値（最上位も下限＋2.5歳）から算出した参考値。'},reference:true}:undefined;
 }
-function makeGroup(rows:Breakdown['rows'],source:Source):NonNullable<RegionalSnapshot['groups']['total']> & {population:{value:number;source:Source;reference?:boolean}}{
+export function makeGroup(rows:Breakdown['rows'],source:Source):NonNullable<RegionalSnapshot['groups']['total']> & {population:{value:number;source:Source;reference?:boolean}}{
  const metric=(sex:string)=>{const r=rows.find(r=>r.sex===sex&&r.age==='総数');if(!r)throw Error('地域人口総数が欠けています');return {value:r.value,source};};
  const total=metric('男女計'),male=metric('男'),female=metric('女');if(total.value!==male.value+female.value)throw Error('男女計が不一致です');
  return {population:total,male,female,rows,averageAge:average(rows,source)};
@@ -48,7 +50,7 @@ export async function normalizeRegionalTimeline(history:Uint8Array,projection:Ui
  for(const records of [...Object.values(past),...Object.values(future)])if(Object.keys(records).length!==47)throw Error('地域時系列の47都道府県が揃いません');
  return regionalTimelineSchema.parse({past,future});
 }
-export async function fetchRegionalTimeline(now:number,appId:string){const [h,p]=await Promise.all([download(new URL(REGIONAL_HISTORY_URL)),download(new URL(REGIONAL_PROJECTION_URL))]);const result=await normalizeRegionalTimeline(h,p,now);const tables=await fetchRegionalSupplementTables(appId,now);supplementRegionalNationalities(result,tables);supplementRegionalForeignTotals(result,tables);supplementRegionalVital(result,tables);supplementRegionalIndicators(result,tables);return result;}
+export async function fetchRegionalTimeline(now:number,appId:string){const [h,p]=await Promise.all([download(new URL(REGIONAL_HISTORY_URL)),download(new URL(REGIONAL_PROJECTION_URL))]);const result=await normalizeRegionalTimeline(h,p,now);const tables=await fetchRegionalSupplementTables(appId,now);supplementRegionalNationalities(result,tables);supplementRegionalForeignTotals(result,tables);supplementRegionalVital(result,tables);supplementRegionalIndicators(result,tables);await fetchRegionalMigrationHistory(result,now);correctRegionalTerritories(result,now);return result;}
 
 export const REGIONAL_VITAL_TABLES={birth:'0003411597',death:'0003411654',marriage:'0003411835',divorce:'0003411861'} as const;
 export function supplementRegionalVital(timeline:RegionalTimeline,tables:Record<string,import('./table').Table>){
