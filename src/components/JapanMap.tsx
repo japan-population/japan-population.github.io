@@ -8,6 +8,7 @@ import type { SiteData, PopulationGroup } from '../types/statistics';
 import { number, monthLabel } from '../lib/formatting';
 import { GROUP_LABELS } from '../lib/groups';
 export function JapanMap({data,group}:{data:SiteData;group:PopulationGroup}) {
+  const [period,setPeriod]=useState<'past'|'latest'|'future'>('latest');
   const [selected,setSelected]=useState<string>();
   const [details,setDetails]=useState<{generationId:string;regions:Record<string,Detail>}>();
   const [error,setError]=useState('');
@@ -26,7 +27,7 @@ export function JapanMap({data,group}:{data:SiteData;group:PopulationGroup}) {
   const source=Object.values(data.prefectures).map(p=>p.officialPopulation?.[group]?.source).find(Boolean);
   const census=source?.statistics.includes('国勢調査');
   const chosen=selected?get(selected):undefined;
-  return <section id="regions" className="section"><div className="section-heading section-controls"><div><span className="eyebrow">PREFECTURES</span><h2>地域別に見る <small>{GROUP_LABELS[group]}</small></h2></div></div><p className="small-note">都道府県を選ぶと、最新の公表人口を表示します。</p><div className="japan-map" onKeyDown={e=>{if(e.key==='Escape')setSelected(undefined);}}>
+  return <section id="regions" className="section"><div className="section-heading section-controls section-switch-heading"><div><span className="eyebrow">PREFECTURES</span><h2>地域別に見る <small>{GROUP_LABELS[group]}</small></h2></div><div className="segmented" role="group" aria-label="地域の表示時点">{(['past','latest','future'] as const).map((p,i)=><button type="button" key={p} aria-pressed={period===p} onClick={()=>setPeriod(p)}>{['過去','最新','未来'][i]}</button>)}</div></div><p className="small-note">都道府県を選ぶと、最新の公表人口を表示します。</p><div className="japan-map" onKeyDown={e=>{if(e.key==='Escape')setSelected(undefined);}}>
     <svg viewBox={map.viewBox} preserveAspectRatio="xMidYMax meet" role="group" aria-label="都道府県別人口地図">{map.paths.map(p=>{const v=get(p.code);const light=v?25+55*(Math.log1p(v.value)-Math.log1p(min))/Math.max(.001,Math.log1p(max)-Math.log1p(min)):65;return <path key={p.code} d={p.d} fill={v?`hsl(151 24% ${light}%)`:'#d4d8d5'} role="button" tabIndex={0} aria-label={`${p.name} ${v?number(v.value)+'人':'データなし'}`} aria-pressed={selected===p.code} onClick={()=>setSelected(p.code)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setSelected(p.code);}}}/>;})}</svg>
     {selected&&<div className="map-selection" aria-live="polite">
       <h3>{data.prefectures[selected]?.name}</h3><p className="map-population">{chosen?number(chosen.value):'データなし'}{chosen&&<small>人</small>}</p><p className="map-date">{chosen&&`${monthLabel(chosen.source.sourcePeriod)}1日現在`}</p><div className="map-sex">{(['男','女'] as const).map(sex=><div key={sex}><span>{sex}性</span><strong>{detail?number(detail.rows.find(r=>r.group===group&&r.sex===sex&&r.age==='総数')?.value??0):'—'}<small>人</small></strong></div>)}</div>{detail&&<RegionalIndicators data={detail} group={group}/>}

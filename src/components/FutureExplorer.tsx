@@ -16,8 +16,8 @@ export function FutureExplorer({data,group,now}:{data:Projections;group:Populati
  const trend:PopulationTrend={sources:projectionSources(data,scenario),points:record.points.filter(p=>p.year>=years[0]).map(p=>({date:`${p.year}-10-01`,total:p.population.total,japanese:p.population.japanese,foreign:p.population.total-p.population.japanese,precision:1,sourceIndex:0}))};
  return <section id="future" className="section official-section future-section" style={{'--timeline-count':years.length} as CSSProperties}>
   <div className="section-controls official-controls">
-   <div className="section-heading"><div><span className="eyebrow">POPULATION PROJECTIONS</span><h2>未来予測値 <small>{GROUP_LABELS[group]}</small></h2></div>
-    <div className="segmented projection-switch" role="group" aria-label="将来推計のシナリオ">{PROJECTION_SCENARIOS.map(s=><button key={s} aria-pressed={scenario===s} onClick={()=>setScenario(s)}>{PROJECTION_LABELS[s]}</button>)}</div>
+   <div className="section-heading section-switch-heading"><div><span className="eyebrow">POPULATION PROJECTIONS</span><h2>未来予測値 <small>{GROUP_LABELS[group]}</small></h2></div>
+    <div className="segmented projection-switch" role="group" aria-label="将来推計のシナリオ">{PROJECTION_SCENARIOS.map(s=><button key={s} aria-pressed={scenario===s} onClick={()=>setScenario(s)}>{({high:'高位',medium:'中位',low:'低位'} as const)[s]}</button>)}</div>
    </div>
    <div className="official-timeline"><p className="official-date"><time dateTime={`${year}-10-01`}>{year}年10月1日現在</time></p>
     <TimelineSlider min="0" max={years.length-1} step="1" value={years.indexOf(year)} disabled={years.length===1} aria-label="未来予測値の年を選択" aria-valuetext={`${year}年`} onChange={e=>setSelected(years[Number(e.currentTarget.value)])}/>

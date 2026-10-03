@@ -140,3 +140,22 @@
 .map-indicators>.regional-area{margin-bottom:-5px}
 @media(max-width:600px){.map-indicators>.regional-area{margin-bottom:-6px}}
 @media(min-width:1024px){.map-indicators>.regional-area{margin-bottom:-6px}}
+
+/* Section switches share the period-control styling and align with the heading bottom. */
+.section-heading.section-switch-heading{align-items:flex-end;flex-wrap:nowrap}
+.section-switch-heading>div:first-child{min-width:0}
+.section-switch-heading h2{line-height:1.25}
+.section-switch-heading>.segmented{flex-shrink:0;flex-wrap:nowrap}
+@media(max-width:600px){
+ .section-heading.section-switch-heading{gap:10px}
+ .section-switch-heading h2 small{margin-left:5px;font-size:11px}
+ .section-switch-heading .eyebrow{font-size:8px;letter-spacing:.1em}
+ .section-switch-heading>.segmented button{padding:5px 10px;font-size:12px}
+}
+
+@media(max-width:360px){
+ .section-switch-heading h2{font-size:16px;white-space:nowrap}
+ .section-switch-heading h2 small{font-size:9px;margin-left:4px}
+ .section-switch-heading>.segmented button{font-size:11px;padding:5px 7px}
+ .section-heading.section-switch-heading{gap:6px}
+}
