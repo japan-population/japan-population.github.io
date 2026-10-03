@@ -1,3 +1,4 @@
+import {availableRegionalPastYears} from '../src/lib/regional-view';
 import {regionalTimelineSchema,regionalYearSchema,type RegionalTimeline} from '../src/types/regional-timeline';
 import type {EventBreakdowns} from '../src/types/statistics';
 import type {Projections} from '../src/types/projections';
@@ -126,7 +127,7 @@ export async function publishDataset(data: Dataset, directory = resolve('public/
   await mkdir(resolve(stage, 'history'), { recursive: true });
   const id = data.manifest.generationId;
   const files: Record<string, unknown> = {
-    ...(data.regionalTimeline?{'regional-timeline.json':{generationId:id,past:Object.keys(data.regionalTimeline.past).map(Number),future:Object.keys(data.regionalTimeline.future).map(Number),availablePast:Object.fromEntries(populationGroups.map(group=>[group,Object.entries(data.regionalTimeline!.past).filter(([,records])=>Object.values(records).some(r=>{const g=r.groups[group];return g&&(g.population||g.events&&Object.keys(g.events).length||g.fertilityRate||g.migrationChange);})).map(([year])=>Number(year))]))},...Object.fromEntries((['past','future']as const).flatMap(period=>Object.entries(data.regionalTimeline![period]).map(([year,regions])=>[`regional/${period}-${year}.json`,{generationId:id,period,year:Number(year),regions}])))}:{}),
+    ...(data.regionalTimeline?{'regional-timeline.json':{generationId:id,past:Object.keys(data.regionalTimeline.past).map(Number),future:Object.keys(data.regionalTimeline.future).map(Number),availablePast:Object.fromEntries(populationGroups.map(group=>[group,availableRegionalPastYears(data.regionalTimeline!.past,group)]))},...Object.fromEntries((['past','future']as const).flatMap(period=>Object.entries(data.regionalTimeline![period]).map(([year,regions])=>[`regional/${period}-${year}.json`,{generationId:id,period,year:Number(year),regions}])))}:{}),
     'manifest.json': data.manifest, 'national.json': data.national,
     'regions.json': mapRegionsSchema.parse({generationId:id,prefectures:Object.fromEntries(Object.values(data.prefectures).map(p=>[p.code,{code:p.code,name:p.name,officialPopulation:p.officialPopulation??(p.population?{total:{value:p.population.officialBase,source:p.population.source}}:undefined)}]))}),
     'region-details.json': {generationId:id,regions:Object.fromEntries(Object.values(data.prefectures).filter(p=>p.detail).map(p=>[p.code,p.detail]))},

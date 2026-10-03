@@ -61,7 +61,7 @@ test('データなし年は灰色対象のdisabledになり、沖縄の調査日
  const date=renderToStaticMarkup(<RegionalYearSlider period="past" year={1950} date="1950-12" onChange={()=>{}}/>);expect(date).toContain('1950年12月1日現在');
 });
 
-test('1920～2010年は全47都道府県に期間を揃えた残差を参考表示し2020年実績は保持',async()=>{
+test('1920～2010年は単年実績を優先し欠損のみ残差で補い2020年実績は保持',async()=>{
  const t=structuredClone(raw);correctRegionalTerritories(t,0);
  await supplementRegionalMigration(t,await readFile('tests/fixtures/regional-domestic-2020.xlsx'),await readFile('tests/fixtures/regional-international-2020.xlsx'),0);
  const observed=JSON.stringify(t.past[2020]);
@@ -71,6 +71,7 @@ test('1920～2010年は全47都道府県に期間を揃えた残差を参考表�
   expect(Object.keys(t.past[year])).toHaveLength(47);
   for(const r of Object.values(t.past[year])){
    const g=r.groups.total!,v=g.migrationChange!,c=v.calculation!;
+   if(year>=1960&&!(year<1980&&r===t.past[year]['47'])){expect(v.source.status).toBe('final');expect(v.migrationCoverage).toBe('domestic-japanese');expect(v.calculation).toBeUndefined();expect(v.value).toBe(g.events!.inflow!.value-g.events!.outflow!.value);continue;}
    expect(v.reference).toBe(true);expect(v.source.status).toBe('reference');expect(v.estimateKind).toBe('residual');
    expect(Number.isFinite(v.value)).toBe(true);expect(c.endYear-c.startYear).toBe([2000,2010].includes(year)?1:5);
    expect(c.annualPopulationChange).toBe((c.populationEnd-c.populationStart)/(c.endYear-c.startYear));
@@ -84,7 +85,7 @@ test('1920～2010年は全47都道府県に期間を揃えた残差を参考表�
  expect(JSON.stringify(t.past[2020])).toBe(observed);
  expect(()=>regionalTimelineSchema.parse(t)).not.toThrow();
  const $=load(renderToStaticMarkup(<RegionalSnapshotIndicators snapshot={t.past[1950]['46']} group="total"/>));
- expect($('.regional-migration-change').text()).toContain('1950–55年平均 · 残差推計');expect($('.regional-migration-change strong').text()).toContain('人/年');
+ expect($('.regional-migration-change').text()).toContain('1950–55年平均 · 残差推計');expect($('.regional-migration-change strong small').text()).toBe('人');
 });
 
 test('過去年に単年実績がある場合は平均残差で上書きしない',async()=>{
@@ -95,7 +96,7 @@ test('過去年に単年実績がある場合は平均残差で上書きしな�
  const national=JSON.parse(await readFile('public/data/national.json','utf8')) as National;
  await estimateHistoricalMigration(t,await readFile('tests/fixtures/regional-history.xlsx'),national.archive!,0);
  expect(t.past[2010]['13'].groups.total!.migrationChange).toBe(actual);
- expect(t.past[2010]['14'].groups.total!.migrationChange!.estimateKind).toBe('residual');
+ expect(t.past[2010]['14'].groups.total!.migrationChange!.migrationCoverage).toBe('domestic-japanese');
  const $=load(renderToStaticMarkup(<RegionalSnapshotIndicators snapshot={t.past[2010]['13']} group="total"/>));
  expect($('.regional-migration-change').text()).toContain('2010年');expect($('.regional-migration-change').text()).not.toContain('平均');expect($('.regional-migration-change strong').text()).toBe('+123人');
 });

@@ -1,3 +1,4 @@
+import {supplementDomesticMigrationHistory} from '../sources/regional-domestic-history';
 import {readAnnualResiduals,annualResidualMetric} from '../sources/regional-annual-residuals';
 import ExcelJS from 'exceljs';
 import type {OfficialArchive,Source} from '../../src/types/statistics';
@@ -13,6 +14,7 @@ function interpolate(points:{year:number;value:number}[],year:number):number|und
 
 /** Annualized residual, not observed moves or a decomposition into arrivals/departures. */
 export async function estimateHistoricalMigration(timeline:RegionalTimeline,history:Uint8Array,archive:OfficialArchive,now:number){
+ supplementDomesticMigrationHistory(timeline);
  const annual=await readAnnualResiduals();
  const book=new ExcelJS.Workbook();await book.xlsx.load(history as never);const sheet=book.worksheets[0];
  const baselines:Record<string,Record<number,number>>={};
