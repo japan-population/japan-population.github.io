@@ -30,7 +30,9 @@ test('奄美を一度だけ鹿児島へ移し、総人口・男女・面積・�
  expect(r['47'].groups.total!.population!.source.sourcePeriod).toBe('1950-12');expect(t.past[1960]['47'].groups.total!.population!.source.sourcePeriod).toBe('1960-12');
  expect(r['13'].groups.total!.population!.value).toBe(6277500);expect(r['13'].groups.total!.population!.source.scope).toContain('伊豆諸島は東京都');
  for(const code of ['46','47']){
-  const g=r[code].groups.total!;expect(g.pyramidReference).toBe(true);expect(g.pyramidSource!.status).toBe('reference');
+  const g=r[code].groups.total!;expect(g.averageAge!.reference).toBe(true);expect(g.averageAge!.value).toBeCloseTo(code==='46'?26.424901050772487:24.65884618081442,8);
+  const markup=renderToStaticMarkup(<RegionalSnapshotIndicators snapshot={r[code]} group="total"/>);expect(markup).toContain(code==='46'?'26.4':'24.7');
+  expect(g.pyramidReference).toBe(true);expect(g.pyramidSource!.status).toBe('reference');
   for(const [sex,key]of [['男','male'],['女','female'],['男女計','population']]as const){
    const rows=g.rows.filter(r=>r.sex===sex&&r.age!=='総数');expect(rows).toHaveLength(15);expect(rows.at(-1)!.age).toBe('70歳以上');
    expect(rows.every(r=>Number.isInteger(r.value)&&r.value>=0)).toBe(true);expect(rows.reduce((s,r)=>s+r.value,0)).toBe(g[key]!.value);

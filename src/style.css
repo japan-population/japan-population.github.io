@@ -164,6 +164,12 @@
 .regional-section .timeline-labels button{max-width:min(100%,calc(var(--timeline-count) * 8%))}
 
 /* Unavailable periods remain visible, but cannot be selected. */
-.timeline-labels button:disabled,.segmented button:disabled{color:#9a9f9c;background:#edf0ee;cursor:not-allowed;opacity:.65;box-shadow:none}
+.segmented button:disabled{color:#9a9f9c;background:#edf0ee;cursor:not-allowed;opacity:.65;box-shadow:none}
+.timeline-labels button:disabled{color:#adb3af;background:transparent;border-color:transparent;cursor:not-allowed;box-shadow:none}
 
 .regional-reference-label{font-size:.7em;font-weight:400;color:var(--muted);margin-left:.7em}
+
+/* Keep space around the map at every viewport width, including its overlay card. */
+.japan-map{--map-vertical-padding:24px;padding-block:var(--map-vertical-padding)}
+.map-selection{top:calc(var(--map-vertical-padding) + 4%)}
+@media(max-width:600px){.map-selection{top:calc(var(--map-vertical-padding) + 2%)}}
