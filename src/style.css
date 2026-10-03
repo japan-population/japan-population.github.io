@@ -121,7 +121,7 @@
 .map-selection{line-height:1.25}.map-selection p{line-height:1.25}.map-selection strong,.map-selection span,.map-selection small{line-height:1.25}
 @media(max-width:600px){.map-sex{gap:2px}.map-indicators{gap:3px}.map-indicators span small{font-size:8px}}
 
-@media(max-width:600px){.japan-map>svg{min-height:340px}}
+@media(max-width:600px){.japan-map>svg{min-height:460px}}
 
 @media(min-width:900px){
  .map-selection{width:min(44%,calc((100% - 920px)/2 + 390px));padding:24px}
