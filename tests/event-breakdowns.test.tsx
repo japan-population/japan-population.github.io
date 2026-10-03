@@ -115,7 +115,9 @@ describe('リアルタイム配分と表示',()=>{
  });
  it('日本人の代用を明示し、外国人の婚姻・離婚へは流用しない',()=>{
    expect(realtimeEventBreakdowns(data,'birth','total').proxy).toBe(true);
-   expect(realtimeEventBreakdowns(data,'birth','foreign').proxy).toBe(true);
+   for(const event of ['birth','death','marriage','divorce'] as const)expect(realtimeEventBreakdowns(data,event,'foreign')).toEqual({sections:[],proxy:false});
+   const foreign={...get(2024,'birth','motherAge'),group:'foreign' as const};
+   expect(realtimeEventBreakdowns([...data,foreign],'birth','foreign')).toEqual({sections:[foreign],proxy:false});
    expect(realtimeEventBreakdowns(data,'birth','japanese').proxy).toBe(false);
    expect(realtimeEventBreakdowns(data,'marriage','total').proxy).toBe(false);
    expect(realtimeEventBreakdowns(data,'marriage','foreign').sections).toEqual([]);
