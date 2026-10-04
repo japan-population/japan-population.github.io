@@ -8,6 +8,10 @@ export const tokyoAreasSchema=z.object({latest:tokyoAreaSetSchema,past:z.record(
 export type TokyoAreaSet=z.infer<typeof tokyoAreaSetSchema>;
 export type TokyoAreas=z.infer<typeof tokyoAreasSchema>;
 
+export function tokyoAvailablePastYears(data:TokyoAreas,area:TokyoArea,group:'total'|'japanese'|'foreign'){
+ return Object.entries(data.past).filter(([,set])=>set[area].groups[group]?.population!==undefined).map(([year])=>Number(year)).sort((a,b)=>a-b);
+}
+
 export function validateTokyoTotals(data:TokyoAreas){
  for(const set of [data.latest,...Object.values(data.past),...Object.values(data.future)])for(const area of TOKYO_AREAS){
   const snapshot=set[area];

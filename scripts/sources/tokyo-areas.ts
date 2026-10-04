@@ -4,6 +4,7 @@ import {download} from './http';
 import {makeGroup} from './regional-timeline';
 import {TOKYO_AREAS,type TokyoAreaSet} from '../../src/types/tokyo-areas';
 import {populationGroups,type Source} from '../../src/types/statistics';
+import {readTamaFertility,addTamaFertility} from './tokyo-fertility';
 export const TOKYO_STAT='https://www.toukei.metro.tokyo.lg.jp';
 export function csv(bytes:Uint8Array):string[][]{
  const utf=new TextDecoder().decode(bytes);return parse(utf.includes('\ufffd')?new TextDecoder('shift_jis').decode(bytes):utf,{bom:true,relax_column_count:true,skip_empty_lines:true}) as string[][];
@@ -80,6 +81,14 @@ export async function fetchTokyoLatest(now:number):Promise<TokyoAreaSet>{
  const healthPaths={birth:'01syussyou-1-csv',death:'03shibou-1-csv',marriage:'05konninnrikon-1-csv',fertility:'02goukei-1-csv'};const tables=Object.fromEntries(await Promise.all(Object.entries(healthPaths).map(async([k,p])=>[k,await download(new URL(`/documents/d/hokeniryo/${p}`,healthRoot))]))) as Parameters<typeof addTokyoHealth>[1];
  const historyPage=load(new TextDecoder().decode(await download(new URL('/kiban/chosa_tokei/jinkodotaitokei/kushityosonbetsu',healthRoot))));const publishedAt=historyPage('time[datetime]').first().attr('datetime');if(!publishedAt||!/^\d{4}-\d{2}-\d{2}$/.test(publishedAt))throw Error('東京都人口動態の公表日が不明です');
  const health=tokyoSource(`${healthRoot}/kiban/chosa_tokei/jinkodotaitokei/kushityosonbetsu`,`${release}-12`,'人口動態統計 年次推移（区市町村別）',now,'日本における日本人の人口動態。出生・死亡・婚姻・離婚。');health.publishedAt=publishedAt;addTokyoHealth(areas,tables,release,health);
+ const releaseUrl=new URL(releases.find(h=>Number(h.match(/reiwa(\d+)nen$/)![1])+2018===release)!,healthRoot);
+ const releasePage=load(new TextDecoder().decode(await download(releaseUrl)));
+ const supplements=releasePage('a[href]').toArray().filter(a=>releasePage(a).text().replace(/\s/g,'').startsWith('人口動態総覧（率）、区市町村別')).map(a=>releasePage(a).attr('href')!);
+ if(supplements.length!==1)throw Error('東京都人口動態の率の付表が一意に確認できません');
+ const fertilityUrl=new URL(supplements[0],healthRoot);
+ const fertilityPublishedAt=releasePage('time[datetime]').first().attr('datetime');
+ if(!fertilityPublishedAt||!/^\d{4}-\d{2}-\d{2}$/.test(fertilityPublishedAt))throw Error('東京都人口動態の率の付表の公表日が不明です');
+ addTamaFertility(areas,await readTamaFertility(await download(fertilityUrl)),{...health,publishedAt:fertilityPublishedAt,url:fertilityUrl.href,table:'人口動態統計 付表 人口動態総覧（率）、区市町村別',scope:'日本人の合計特殊出生率。多摩（市部と郡部）の公表集計値。市部・郡部の率の加算や単純平均ではない。'});
  const registered=tokyoSource(`${TOKYO_STAT}/jugoki/${last}/ju${ly}q10000.htm`,`${last}-12`,'人口の動き 第15・16表',now,'住民基本台帳に基づく当年中の出生・死亡による人口増減。総数・日本人・外国人別。人口動態統計とは定義が異なります。');
  addTokyoRegisteredVital(areas,{birth:await bytes(`/jugoki/${last}/ju${ly}qv1500.csv`),death:await bytes(`/jugoki/${last}/ju${ly}qv1600.csv`)},registered);
  for(const area of TOKYO_AREAS)if(!areas[area].groups.total?.events?.marriage)throw Error('最新の東京都人口動態が不足しています');

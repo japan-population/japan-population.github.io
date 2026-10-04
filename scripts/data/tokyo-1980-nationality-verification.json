@@ -1,0 +1,107 @@
+{
+  "year": 1980,
+  "knownAgeTotal": [
+    5841538,
+    5755673
+  ],
+  "publishedJapanese": [
+    5793927,
+    5713017
+  ],
+  "publishedForeign": [
+    47611,
+    42656
+  ],
+  "foreignAgeBands": {
+    "male": [
+      3433,
+      3745,
+      3464,
+      3763,
+      4664,
+      5164,
+      4984,
+      3567,
+      2818,
+      2369,
+      2694,
+      2849,
+      1842,
+      1193,
+      597,
+      317,
+      109,
+      39
+    ],
+    "female": [
+      3371,
+      3742,
+      3279,
+      3526,
+      4456,
+      5205,
+      4385,
+      3208,
+      2591,
+      2187,
+      2103,
+      1769,
+      1038,
+      801,
+      474,
+      273,
+      158,
+      90
+    ]
+  },
+  "regions": {
+    "wards": {
+      "total": [
+        4189836,
+        4162057
+      ],
+      "unknownAge": [
+        10720,
+        4870
+      ],
+      "foreign": [
+        38951,
+        35430
+      ]
+    },
+    "tama": {
+      "total": [
+        1649490,
+        1583224
+      ],
+      "unknownAge": [
+        4022,
+        1458
+      ],
+      "foreign": [
+        8644,
+        7210
+      ]
+    },
+    "islands": {
+      "total": [
+        16954,
+        16720
+      ],
+      "unknownAge": [
+        0,
+        0
+      ],
+      "foreign": [
+        16,
+        16
+      ]
+    }
+  },
+  "sources": {
+    "population": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1981/tn81qa0022.pdf",
+    "japanese": "https://www.e-stat.go.jp/dbview?sid=0000030129",
+    "foreign": "https://www.e-stat.go.jp/dbview?sid=0000030133",
+    "foreignAge": "https://www.e-stat.go.jp/dbview?sid=0000030005"
+  }
+}

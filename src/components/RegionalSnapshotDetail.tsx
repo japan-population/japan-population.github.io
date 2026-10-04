@@ -11,8 +11,8 @@ export function RegionalSnapshotIndicators({snapshot,group,tokyo=false}:{snapsho
  const metric=(v:RegionalMetric|undefined,unit:string,digits=0,sign=false)=>v?<>{sign?signed(v.value):v.value.toLocaleString('ja-JP',{minimumFractionDigits:digits,maximumFractionDigits:digits})}<small>{unit}</small></>:<small>データなし</small>;
  return <div className="map-indicators">
   <div><span>平均年齢<small>{note(g?.averageAge)}</small></span><strong>{metric(g?.averageAge,'歳',1)}</strong></div>
-  <div className="regional-area"><span>面積{snapshot.status!=='final'&&<small>{snapshot.area?.source.sourcePeriod.slice(0,4)}年の面積</small>}</span><strong>{metric(snapshot.area,'km²',2)}</strong></div>
-  <div className="regional-density"><span>人口密度{group!=='total'&&<small>総人口</small>}</span><strong>{metric(snapshot.density,'人/km²',1)}</strong></div>
+  <div className="regional-area"><span>面積{snapshot.area?.reference?<small>{snapshot.area.source.sourcePeriod.slice(0,4)}年 · 参考値</small>:snapshot.status!=='final'&&<small>{snapshot.area?.source.sourcePeriod.slice(0,4)}年の面積</small>}</span><strong>{metric(snapshot.area,'km²',2)}</strong></div>
+  <div className="regional-density"><span>人口密度{(group!=='total'||snapshot.density?.reference)&&<small>{[group!=='total'?'総人口':'',snapshot.density?.reference?'参考値':''].filter(Boolean).join(' · ')}</small>}</span><strong>{metric(snapshot.density,'人/km²',1)}</strong></div>
   <div className="regional-migration-change"><span>移動による増減<small>{note(g?.migrationChange)}</small></span><strong>{metric(g?.migrationChange,'人',0,true)}</strong></div>
   <div className="regional-natural-change"><span>自然増減<small>{note(g?.naturalChange,!tokyo||g?.naturalChange?.source.scope.includes('日本における日本人'))}</small></span><strong>{metric(g?.naturalChange,'人',0,true)}</strong></div>
   <div><span>合計特殊出生率<small>{note(g?.fertilityRate,true)}</small></span><strong>{metric(g?.fertilityRate,'',2)}</strong></div>
