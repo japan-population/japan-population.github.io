@@ -15,9 +15,7 @@ on:
           - regional
           - all
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+  contents: read
 concurrency:
   group: update-statistics
   cancel-in-progress: false
@@ -30,7 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.sha }}
+          persist-credentials: false
       - id: plan
         run: node scripts/update-schedule.mjs
         env:
@@ -43,12 +42,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     outputs:
-      changed: ${{ steps.commit.outputs.changed }}
-      ref: ${{ steps.commit.outputs.ref }}
+      artifact_id: ${{ steps.handoff.outputs.artifact-id }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.sha }}
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -68,11 +67,45 @@ jobs:
           UPDATE_EVENT: ${{ github.event_name }}
       - run: npm run validate-data
       - run: npm run build
+      - name: Prepare JSON-only handoff
+        run: node scripts/data-update-artifact.mjs pack "$RUNNER_TEMP/data-handoff/data-update.json" "$BASE_SHA"
+        env:
+          BASE_SHA: ${{ github.sha }}
+      - uses: actions/upload-artifact@v4
+        id: handoff
+        with:
+          name: statistics-update-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/data-handoff/data-update.json
+          if-no-files-found: error
+          retention-days: 1
+  commit:
+    needs: update
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+      ref: ${{ steps.commit.outputs.ref }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.update.outputs.artifact_id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/data-handoff
+      - name: Apply data without executing artifact code
+        run: node scripts/data-update-artifact.mjs apply "$RUNNER_TEMP/data-handoff/data-update.json" "$BASE_SHA"
+        env:
+          BASE_SHA: ${{ github.sha }}
       - name: Commit changed data
         id: commit
         shell: bash
         env:
           TARGET_BRANCH: ${{ github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           changed=false
           if [ -n "$(git status --porcelain -- public/data)" ]; then changed=true; fi
@@ -84,12 +117,19 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add public/data .github/data-update-state.json
           git commit -m 'data: update official statistics and forecasts'
-          git push origin "HEAD:$TARGET_BRANCH"
+          auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)
+          echo "::add-mask::$auth"
+          # A concurrent branch change causes a normal non-fast-forward rejection.
+          git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $auth" push origin "HEAD:$TARGET_BRANCH"
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
           echo "ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
   deploy:
-    needs: update
-    if: needs.update.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+    needs: commit
+    if: needs.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     uses: ./.github/workflows/deploy.yml
     with:
-      ref: ${{ needs.update.outputs.ref }}
+      ref: ${{ needs.commit.outputs.ref }}
