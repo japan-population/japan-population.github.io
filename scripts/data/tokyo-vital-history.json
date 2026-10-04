@@ -1,0 +1,92 @@
+{
+  "1980": {
+    "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1980/tn80qa0021.pdf",
+    "table": "東京都統計年鑑 第14表(3)（40～43頁）",
+    "wards": {
+      "birth": 96156,
+      "death": 44329,
+      "marriage": 65426,
+      "divorce": 12078
+    },
+    "tama": {
+      "birth": 43375,
+      "death": 13621,
+      "marriage": 22292,
+      "divorce": 3851
+    },
+    "islands": {
+      "birth": 422,
+      "death": 308,
+      "marriage": 204,
+      "divorce": 40
+    }
+  },
+  "1990": {
+    "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1990/tn90qa0021.pdf",
+    "table": "東京都統計年鑑 第18表(3)（52～55頁）",
+    "wards": {
+      "birth": 68852,
+      "death": 51814,
+      "marriage": 58083,
+      "divorce": 13042
+    },
+    "tama": {
+      "birth": 34860,
+      "death": 18244,
+      "marriage": 23668,
+      "divorce": 4849
+    },
+    "islands": {
+      "birth": 271,
+      "death": 312,
+      "marriage": 169,
+      "divorce": 44
+    }
+  },
+  "1960": {
+    "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1960/tn60qa0023.pdf",
+    "table": "東京都統計年鑑 第21表(2)（124～125頁）",
+    "status": "provisional",
+    "wards": {
+      "birth": 125870,
+      "death": 40013,
+      "marriage": 91832,
+      "divorce": 6191
+    },
+    "tama": {
+      "birth": 23583,
+      "death": 7197,
+      "marriage": 12050,
+      "divorce": 639
+    },
+    "islands": {
+      "birth": 679,
+      "death": 309,
+      "marriage": 297,
+      "divorce": 26
+    }
+  },
+  "1970": {
+    "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1970/tn70qa0024.pdf",
+    "table": "東京都統計年鑑 第16表(2)（90～93頁）",
+    "status": "provisional",
+    "wards": {
+      "birth": 169664,
+      "death": 44527,
+      "marriage": 108141,
+      "divorce": 10381
+    },
+    "tama": {
+      "birth": 57252,
+      "death": 11347,
+      "marriage": 25953,
+      "divorce": 1956
+    },
+    "islands": {
+      "birth": 464,
+      "death": 319,
+      "marriage": 264,
+      "divorce": 28
+    }
+  }
+}
