@@ -1,0 +1,589 @@
+[
+  {
+    "year": 2010,
+    "area": "wards",
+    "group": "japanese",
+    "population": 8500358,
+    "male": 4197392,
+    "female": 4302966,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第3-2表 年齢（各歳）、男女別人口（日本人）",
+      "sourcePeriod": "2010-10",
+      "publishedAt": "2011-10-26",
+      "retrievedAt": "2026-10-04T14:11:44.514970+00:00",
+      "url": "https://www.e-stat.go.jp/stat-search/files?stat_infid=000012461332",
+      "status": "final",
+      "scope": "同年・同じ国籍区分の市区町村別公表値を集計。国籍不詳を日本人人口に含めない。"
+    }
+  },
+  {
+    "year": 2010,
+    "area": "tama",
+    "group": "japanese",
+    "population": 4095652,
+    "male": 2041459,
+    "female": 2054193,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第3-2表 年齢（各歳）、男女別人口（日本人）",
+      "sourcePeriod": "2010-10",
+      "publishedAt": "2011-10-26",
+      "retrievedAt": "2026-10-04T14:11:44.514970+00:00",
+      "url": "https://www.e-stat.go.jp/stat-search/files?stat_infid=000012461332",
+      "status": "final",
+      "scope": "同年・同じ国籍区分の市区町村別公表値を集計。国籍不詳を日本人人口に含めない。"
+    }
+  },
+  {
+    "year": 2010,
+    "area": "islands",
+    "group": "japanese",
+    "population": 27609,
+    "male": 14387,
+    "female": 13222,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第3-2表 年齢（各歳）、男女別人口（日本人）",
+      "sourcePeriod": "2010-10",
+      "publishedAt": "2011-10-26",
+      "retrievedAt": "2026-10-04T14:11:44.514970+00:00",
+      "url": "https://www.e-stat.go.jp/stat-search/files?stat_infid=000012461332",
+      "status": "final",
+      "scope": "同年・同じ国籍区分の市区町村別公表値を集計。国籍不詳を日本人人口に含めない。"
+    }
+  },
+  {
+    "year": 1980,
+    "area": "wards",
+    "group": "foreign",
+    "population": 74381,
+    "male": 38951,
+    "female": 35430,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "男女・年齢・国籍別人口 / 0000030133",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T14:06:57.891Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000030133",
+      "status": "final",
+      "scope": "市区町村別の外国人数を区部・多摩・島部へ集計。外国人数のない市町村は原表に表章されない。全域のみを使用し人口集中地区との二重計上を除外。",
+      "sourcePeriod": "1980-10"
+    }
+  },
+  {
+    "year": 1980,
+    "area": "tama",
+    "group": "foreign",
+    "population": 15854,
+    "male": 8644,
+    "female": 7210,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "男女・年齢・国籍別人口 / 0000030133",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T14:06:57.891Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000030133",
+      "status": "final",
+      "scope": "市区町村別の外国人数を区部・多摩・島部へ集計。外国人数のない市町村は原表に表章されない。全域のみを使用し人口集中地区との二重計上を除外。",
+      "sourcePeriod": "1980-10"
+    }
+  },
+  {
+    "year": 1980,
+    "area": "islands",
+    "group": "foreign",
+    "population": 32,
+    "male": 16,
+    "female": 16,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "男女・年齢・国籍別人口 / 0000030133",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T14:06:57.891Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000030133",
+      "status": "final",
+      "scope": "市区町村別の外国人数を区部・多摩・島部へ集計。外国人数のない市町村は原表に表章されない。全域のみを使用し人口集中地区との二重計上を除外。",
+      "sourcePeriod": "1980-10"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "wards",
+    "group": "foreign",
+    "population": 133203,
+    "male": 67089,
+    "female": 66114,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "男女・年齢・国籍別人口 / 0000031513",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T14:07:29.702Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031513",
+      "status": "final",
+      "scope": "市区町村別の外国人数を区部・多摩・島部へ集計。外国人数のない市町村は原表に表章されない。全域のみを使用し人口集中地区との二重計上を除外。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "tama",
+    "group": "foreign",
+    "population": 25781,
+    "male": 13965,
+    "female": 11816,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "男女・年齢・国籍別人口 / 0000031513",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T14:07:29.702Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031513",
+      "status": "final",
+      "scope": "市区町村別の外国人数を区部・多摩・島部へ集計。外国人数のない市町村は原表に表章されない。全域のみを使用し人口集中地区との二重計上を除外。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "islands",
+    "group": "foreign",
+    "population": 89,
+    "male": 30,
+    "female": 59,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "男女・年齢・国籍別人口 / 0000031513",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T14:07:29.702Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031513",
+      "status": "final",
+      "scope": "市区町村別の外国人数を区部・多摩・島部へ集計。外国人数のない市町村は原表に表章されない。全域のみを使用し人口集中地区との二重計上を除外。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "wards",
+    "group": "japanese",
+    "population": 7965950,
+    "male": 3970407,
+    "female": 3995543,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "男女・年齢・国籍別人口 / 0000031405",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T14:10:12.309Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031405",
+      "status": "final",
+      "scope": "日本人人口の市区町村別公表値を集計。国籍不詳を含まない。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "tama",
+    "group": "japanese",
+    "population": 3604771,
+    "male": 1836720,
+    "female": 1768051,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "男女・年齢・国籍別人口 / 0000031405",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T14:10:12.309Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031405",
+      "status": "final",
+      "scope": "日本人人口の市区町村別公表値を集計。国籍不詳を含まない。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "islands",
+    "group": "japanese",
+    "population": 32236,
+    "male": 16367,
+    "female": 15869,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "男女・年齢・国籍別人口 / 0000031405",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T14:10:12.309Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031405",
+      "status": "final",
+      "scope": "日本人人口の市区町村別公表値を集計。国籍不詳を含まない。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 1920,
+    "area": "wards",
+    "group": "foreign",
+    "population": 8554,
+    "male": 6811,
+    "female": 1743,
+    "reference": true,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "市町村要覧表 6 殖民地人・7 外国人（34～37頁）",
+      "sourcePeriod": "1920-10",
+      "publishedAt": "1929",
+      "retrievedAt": "2026-10-04T14:17:07.802402+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1464719/1/51",
+      "status": "final",
+      "scope": "1920年の原表「殖民地人」と「外国人」の合計。全国の歴史的国籍区分に合わせた集計で、現在の国籍定義とは異なる。区部は後の編入郡部を含む。多摩は八王子市＋西・南・北多摩郡から砧村・千歳村を除く（両村の当該人数は0）。島部は大島・八丈島・小笠原島。府全体の男6,924人・女1,755人と一致。"
+    }
+  },
+  {
+    "year": 1920,
+    "area": "wards",
+    "group": "japanese",
+    "population": 3349632,
+    "male": 1777836,
+    "female": 1571796,
+    "reference": true,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "市町村要覧表（男女別総人口から歴史的外国人区分を控除）",
+      "sourcePeriod": "1920-10",
+      "publishedAt": "1929",
+      "retrievedAt": "2026-10-04T14:17:07.802461+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1464719/1/51",
+      "status": "final",
+      "scope": "1920年の原表「殖民地人」と「外国人」の合計。全国の歴史的国籍区分に合わせた集計で、現在の国籍定義とは異なる。区部は後の編入郡部を含む。多摩は八王子市＋西・南・北多摩郡から砧村・千歳村を除く（両村の当該人数は0）。島部は大島・八丈島・小笠原島。府全体の男6,924人・女1,755人と一致。 日本人人口は男女それぞれの総人口から上記区分を差し引いた参考値。"
+    }
+  },
+  {
+    "year": 1920,
+    "area": "tama",
+    "group": "foreign",
+    "population": 123,
+    "male": 111,
+    "female": 12,
+    "reference": true,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "市町村要覧表 6 殖民地人・7 外国人（34～37頁）",
+      "sourcePeriod": "1920-10",
+      "publishedAt": "1929",
+      "retrievedAt": "2026-10-04T14:17:07.802464+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1464719/1/51",
+      "status": "final",
+      "scope": "1920年の原表「殖民地人」と「外国人」の合計。全国の歴史的国籍区分に合わせた集計で、現在の国籍定義とは異なる。区部は後の編入郡部を含む。多摩は八王子市＋西・南・北多摩郡から砧村・千歳村を除く（両村の当該人数は0）。島部は大島・八丈島・小笠原島。府全体の男6,924人・女1,755人と一致。"
+    }
+  },
+  {
+    "year": 1920,
+    "area": "tama",
+    "group": "japanese",
+    "population": 308013,
+    "male": 151983,
+    "female": 156030,
+    "reference": true,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "市町村要覧表（男女別総人口から歴史的外国人区分を控除）",
+      "sourcePeriod": "1920-10",
+      "publishedAt": "1929",
+      "retrievedAt": "2026-10-04T14:17:07.802465+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1464719/1/51",
+      "status": "final",
+      "scope": "1920年の原表「殖民地人」と「外国人」の合計。全国の歴史的国籍区分に合わせた集計で、現在の国籍定義とは異なる。区部は後の編入郡部を含む。多摩は八王子市＋西・南・北多摩郡から砧村・千歳村を除く（両村の当該人数は0）。島部は大島・八丈島・小笠原島。府全体の男6,924人・女1,755人と一致。 日本人人口は男女それぞれの総人口から上記区分を差し引いた参考値。"
+    }
+  },
+  {
+    "year": 1920,
+    "area": "islands",
+    "group": "foreign",
+    "population": 2,
+    "male": 2,
+    "female": 0,
+    "reference": true,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "市町村要覧表 6 殖民地人・7 外国人（34～37頁）",
+      "sourcePeriod": "1920-10",
+      "publishedAt": "1929",
+      "retrievedAt": "2026-10-04T14:17:07.802467+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1464719/1/51",
+      "status": "final",
+      "scope": "1920年の原表「殖民地人」と「外国人」の合計。全国の歴史的国籍区分に合わせた集計で、現在の国籍定義とは異なる。区部は後の編入郡部を含む。多摩は八王子市＋西・南・北多摩郡から砧村・千歳村を除く（両村の当該人数は0）。島部は大島・八丈島・小笠原島。府全体の男6,924人・女1,755人と一致。"
+    }
+  },
+  {
+    "year": 1920,
+    "area": "islands",
+    "group": "japanese",
+    "population": 33104,
+    "male": 16246,
+    "female": 16858,
+    "reference": true,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "市町村要覧表（男女別総人口から歴史的外国人区分を控除）",
+      "sourcePeriod": "1920-10",
+      "publishedAt": "1929",
+      "retrievedAt": "2026-10-04T14:17:07.802468+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1464719/1/51",
+      "status": "final",
+      "scope": "1920年の原表「殖民地人」と「外国人」の合計。全国の歴史的国籍区分に合わせた集計で、現在の国籍定義とは異なる。区部は後の編入郡部を含む。多摩は八王子市＋西・南・北多摩郡から砧村・千歳村を除く（両村の当該人数は0）。島部は大島・八丈島・小笠原島。府全体の男6,924人・女1,755人と一致。 日本人人口は男女それぞれの総人口から上記区分を差し引いた参考値。"
+    }
+  },
+  {
+    "year": 1950,
+    "area": "wards",
+    "group": "japanese",
+    "population": 5346132,
+    "male": 2697481,
+    "female": 2648651,
+    "reference": false,
+    "source": {
+      "publisher": "総理府統計局",
+      "statistics": "国勢調査",
+      "table": "第6表 国籍又は出身地及び男女別人口（74～75頁）",
+      "sourcePeriod": "1950-10",
+      "publishedAt": "1953",
+      "retrievedAt": "2026-10-04T14:17:07.802470+00:00",
+      "url": "https://dl.ndl.go.jp/pid/9528391/1/45",
+      "status": "final",
+      "scope": "第6表の区の存する区域。日本人は本邦在籍者＋樺太及び千島在籍者＋沖縄・鹿児島県大島郡及び小笠原在籍者。外国人区分は朝鮮在籍者＋中国及び台湾在籍者＋その他の外国人。1950年当時の国籍又は出身地区分で、現在の国籍定義とは異なる。不詳264人（男156・女108）はどちらにも配分しない。"
+    }
+  },
+  {
+    "year": 1950,
+    "area": "wards",
+    "group": "foreign",
+    "population": 38675,
+    "male": 23157,
+    "female": 15518,
+    "reference": false,
+    "source": {
+      "publisher": "総理府統計局",
+      "statistics": "国勢調査",
+      "table": "第6表 国籍又は出身地及び男女別人口（74～75頁）",
+      "sourcePeriod": "1950-10",
+      "publishedAt": "1953",
+      "retrievedAt": "2026-10-04T14:17:07.802471+00:00",
+      "url": "https://dl.ndl.go.jp/pid/9528391/1/45",
+      "status": "final",
+      "scope": "第6表の区の存する区域。日本人は本邦在籍者＋樺太及び千島在籍者＋沖縄・鹿児島県大島郡及び小笠原在籍者。外国人区分は朝鮮在籍者＋中国及び台湾在籍者＋その他の外国人。1950年当時の国籍又は出身地区分で、現在の国籍定義とは異なる。不詳264人（男156・女108）はどちらにも配分しない。"
+    }
+  },
+  {
+    "year": 1980,
+    "area": "wards",
+    "group": "japanese",
+    "population": 8261922,
+    "male": 4140165,
+    "female": 4121757,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "年齢・国籍別人口の差引集計（0000030129・0000030133・0000030005、東京都統計年鑑第16表）",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T15:24:12.425Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000030129",
+      "status": "final",
+      "scope": "1980年10月1日。年齢不詳を除く日本人人口。都の年齢判明人口＝日本人＋外国人が男女とも一致し、外国人の年齢階級合計も外国人総数と一致することを照合。各地域の総人口から同地域の公表年齢不詳数と外国人数を控除した厳密な差引集計。比率配分・国籍不詳の仮定による補完は行わない。年齢不詳の国籍は復元しない。地域・年齢原表：https://www.toukei.metro.tokyo.lg.jp/tnenkan/1981/tn81qa0022.pdf ／地域別外国人：https://www.e-stat.go.jp/dbview?sid=0000030133 ／外国人年齢別：https://www.e-stat.go.jp/dbview?sid=0000030005",
+      "sourcePeriod": "1980-10"
+    },
+    "reference": false
+  },
+  {
+    "year": 1930,
+    "area": "wards",
+    "group": "foreign",
+    "population": 48064,
+    "male": 37113,
+    "female": 10951,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "第10表 外地人外国人－市区町村（40～41頁）",
+      "sourcePeriod": "1930-10",
+      "publishedAt": "1935",
+      "retrievedAt": "2026-10-04T14:19:39.204555+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1447420/1/52",
+      "status": "final",
+      "scope": "原表の外地人＋外国人を全国の歴史的国籍区分に合わせて集計。現在の国籍定義とは異なる。多摩は八王子市＋西・南・北多摩郡から砧村（男203・女91）と千歳村（男100・女18）を除く。区部は編入前の郡部を含む。島部は大島・八丈島・小笠原島。府全体の男39,159・女11,775と一致。日本人人口は同性の総人口から差し引いた参考値。"
+    },
+    "reference": true
+  },
+  {
+    "year": 1930,
+    "area": "wards",
+    "group": "japanese",
+    "population": 4938849,
+    "male": 2605746,
+    "female": 2333103,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "第10表 外地人外国人－市区町村（40～41頁）",
+      "sourcePeriod": "1930-10",
+      "publishedAt": "1935",
+      "retrievedAt": "2026-10-04T14:19:39.204555+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1447420/1/52",
+      "status": "final",
+      "scope": "原表の外地人＋外国人を全国の歴史的国籍区分に合わせて集計。現在の国籍定義とは異なる。多摩は八王子市＋西・南・北多摩郡から砧村（男203・女91）と千歳村（男100・女18）を除く。区部は編入前の郡部を含む。島部は大島・八丈島・小笠原島。府全体の男39,159・女11,775と一致。日本人人口は同性の総人口から差し引いた参考値。"
+    },
+    "reference": true
+  },
+  {
+    "year": 1930,
+    "area": "tama",
+    "group": "foreign",
+    "population": 2745,
+    "male": 1963,
+    "female": 782,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "第10表 外地人外国人－市区町村（40～41頁）",
+      "sourcePeriod": "1930-10",
+      "publishedAt": "1935",
+      "retrievedAt": "2026-10-04T14:19:39.204649+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1447420/1/52",
+      "status": "final",
+      "scope": "原表の外地人＋外国人を全国の歴史的国籍区分に合わせて集計。現在の国籍定義とは異なる。多摩は八王子市＋西・南・北多摩郡から砧村（男203・女91）と千歳村（男100・女18）を除く。区部は編入前の郡部を含む。島部は大島・八丈島・小笠原島。府全体の男39,159・女11,775と一致。日本人人口は同性の総人口から差し引いた参考値。"
+    },
+    "reference": true
+  },
+  {
+    "year": 1930,
+    "area": "tama",
+    "group": "japanese",
+    "population": 383904,
+    "male": 192833,
+    "female": 191071,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "第10表 外地人外国人－市区町村（40～41頁）",
+      "sourcePeriod": "1930-10",
+      "publishedAt": "1935",
+      "retrievedAt": "2026-10-04T14:19:39.204649+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1447420/1/52",
+      "status": "final",
+      "scope": "原表の外地人＋外国人を全国の歴史的国籍区分に合わせて集計。現在の国籍定義とは異なる。多摩は八王子市＋西・南・北多摩郡から砧村（男203・女91）と千歳村（男100・女18）を除く。区部は編入前の郡部を含む。島部は大島・八丈島・小笠原島。府全体の男39,159・女11,775と一致。日本人人口は同性の総人口から差し引いた参考値。"
+    },
+    "reference": true
+  },
+  {
+    "year": 1930,
+    "area": "islands",
+    "group": "foreign",
+    "population": 125,
+    "male": 83,
+    "female": 42,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "第10表 外地人外国人－市区町村（40～41頁）",
+      "sourcePeriod": "1930-10",
+      "publishedAt": "1935",
+      "retrievedAt": "2026-10-04T14:19:39.204652+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1447420/1/52",
+      "status": "final",
+      "scope": "原表の外地人＋外国人を全国の歴史的国籍区分に合わせて集計。現在の国籍定義とは異なる。多摩は八王子市＋西・南・北多摩郡から砧村（男203・女91）と千歳村（男100・女18）を除く。区部は編入前の郡部を含む。島部は大島・八丈島・小笠原島。府全体の男39,159・女11,775と一致。日本人人口は同性の総人口から差し引いた参考値。"
+    },
+    "reference": true
+  },
+  {
+    "year": 1930,
+    "area": "islands",
+    "group": "japanese",
+    "population": 34991,
+    "male": 17585,
+    "female": 17406,
+    "source": {
+      "publisher": "内閣統計局",
+      "statistics": "国勢調査",
+      "table": "第10表 外地人外国人－市区町村（40～41頁）",
+      "sourcePeriod": "1930-10",
+      "publishedAt": "1935",
+      "retrievedAt": "2026-10-04T14:19:39.204652+00:00",
+      "url": "https://dl.ndl.go.jp/pid/1447420/1/52",
+      "status": "final",
+      "scope": "原表の外地人＋外国人を全国の歴史的国籍区分に合わせて集計。現在の国籍定義とは異なる。多摩は八王子市＋西・南・北多摩郡から砧村（男203・女91）と千歳村（男100・女18）を除く。区部は編入前の郡部を含む。島部は大島・八丈島・小笠原島。府全体の男39,159・女11,775と一致。日本人人口は同性の総人口から差し引いた参考値。"
+    },
+    "reference": true
+  },
+  {
+    "year": 1970,
+    "area": "wards",
+    "group": "foreign",
+    "population": 69383,
+    "male": 37179,
+    "female": 32204,
+    "source": {
+      "publisher": "総理府統計局",
+      "statistics": "国勢調査",
+      "table": "第5表 国籍・年齢・男女別外国人数（90頁・特別区部）",
+      "sourcePeriod": "1970-10",
+      "publishedAt": "2014-06-10",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000007914971",
+      "status": "final",
+      "scope": "1970年10月1日の特別区部の外国人公表値。総数69,383人、男37,179人、女32,204人。"
+    }
+  },
+  {
+    "year": 1980,
+    "area": "tama",
+    "group": "japanese",
+    "population": 3211380,
+    "male": 1636824,
+    "female": 1574556,
+    "reference": false,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "年齢・国籍別人口の差引集計（0000030129・0000030133・0000030005、東京都統計年鑑第16表）",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T15:24:12.425Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000030129",
+      "status": "final",
+      "scope": "1980年10月1日。年齢不詳を除く日本人人口。都の年齢判明人口＝日本人＋外国人が男女とも一致し、外国人の年齢階級合計も外国人総数と一致することを照合。各地域の総人口から同地域の公表年齢不詳数と外国人数を控除した厳密な差引集計。比率配分・国籍不詳の仮定による補完は行わない。年齢不詳の国籍は復元しない。地域・年齢原表：https://www.toukei.metro.tokyo.lg.jp/tnenkan/1981/tn81qa0022.pdf ／地域別外国人：https://www.e-stat.go.jp/dbview?sid=0000030133 ／外国人年齢別：https://www.e-stat.go.jp/dbview?sid=0000030005",
+      "sourcePeriod": "1980-10"
+    }
+  },
+  {
+    "year": 1980,
+    "area": "islands",
+    "group": "japanese",
+    "population": 33642,
+    "male": 16938,
+    "female": 16704,
+    "reference": false,
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "年齢・国籍別人口の差引集計（0000030129・0000030133・0000030005、東京都統計年鑑第16表）",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T15:24:12.425Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000030129",
+      "status": "final",
+      "scope": "1980年10月1日。年齢不詳を除く日本人人口。都の年齢判明人口＝日本人＋外国人が男女とも一致し、外国人の年齢階級合計も外国人総数と一致することを照合。各地域の総人口から同地域の公表年齢不詳数と外国人数を控除した厳密な差引集計。比率配分・国籍不詳の仮定による補完は行わない。年齢不詳の国籍は復元しない。地域・年齢原表：https://www.toukei.metro.tokyo.lg.jp/tnenkan/1981/tn81qa0022.pdf ／地域別外国人：https://www.e-stat.go.jp/dbview?sid=0000030133 ／外国人年齢別：https://www.e-stat.go.jp/dbview?sid=0000030005",
+      "sourcePeriod": "1980-10"
+    }
+  }
+]

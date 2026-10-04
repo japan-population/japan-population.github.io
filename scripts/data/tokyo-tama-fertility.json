@@ -1,0 +1,70 @@
+[
+  {
+    "year": 2020,
+    "value": 1.18,
+    "source": {
+      "publisher": "東京都保健医療局",
+      "statistics": "人口動態統計",
+      "table": "付表 人口動態総覧（率）、区市町村別",
+      "sourcePeriod": "2020-12",
+      "publishedAt": "2023-11-28",
+      "retrievedAt": "2026-10-04T13:38:25.028183Z",
+      "url": "https://www.hokeniryo.metro.tokyo.lg.jp/documents/d/hokeniryo/nr0257",
+      "status": "final",
+      "scope": "日本人の合計特殊出生率。多摩（市部と郡部）の公表集計値。市部・郡部の率の加算や単純平均ではない。"
+    }
+  },
+  {
+    "year": 2024,
+    "value": 1.03,
+    "source": {
+      "publisher": "東京都保健医療局",
+      "statistics": "人口動態統計",
+      "table": "付表 人口動態総覧（率）、区市町村別",
+      "sourcePeriod": "2024-12",
+      "publishedAt": "2026-09-09",
+      "retrievedAt": "2026-10-04T13:38:25.028239Z",
+      "url": "https://www.hokeniryo.metro.tokyo.lg.jp/documents/d/hokeniryo/r06fuhyo1souran-xlsx",
+      "status": "final",
+      "scope": "日本人の合計特殊出生率。多摩（市部と郡部）の公表集計値。市部・郡部の率の加算や単純平均ではない。"
+    }
+  },
+  {
+    "year": 2000,
+    "reference": true,
+    "cityRate": 1.18,
+    "countyRate": 1.23,
+    "cityWomen": 917745,
+    "countyWomen": 12658,
+    "source": {
+      "publisher": "東京都保健医療局",
+      "statistics": "人口動態統計",
+      "table": "年次推移（区市町村別）合計特殊出生率・同年の日本人女性人口による参考算出",
+      "sourcePeriod": "2000-12",
+      "publishedAt": "2025-11-11",
+      "retrievedAt": "2026-10-04T13:38:25.028239Z",
+      "url": "https://www.hokeniryo.metro.tokyo.lg.jp/documents/d/hokeniryo/02goukei-1-csv",
+      "status": "final",
+      "scope": "多摩の参考値。市部・郡部の公表合計特殊出生率を、同年10月1日国勢調査の15～49歳日本人女性人口で加重平均。市部917,745人・率1.18、郡部12,658人・率1.23。女性人口出典：https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/kt00tv3001.csv。市部と郡部で年齢別出生率及び女性の年齢構成が異なるため、年齢別出生数と女性人口から計算する厳密な合計特殊出生率とは一致しない。公表済みの多摩全体の値ではない。"
+    }
+  },
+  {
+    "year": 2010,
+    "reference": true,
+    "cityRate": 1.24,
+    "countyRate": 1.19,
+    "cityWomen": 909999,
+    "countyWomen": 10987,
+    "source": {
+      "publisher": "東京都保健医療局",
+      "statistics": "人口動態統計",
+      "table": "年次推移（区市町村別）合計特殊出生率・同年の日本人女性人口による参考算出",
+      "sourcePeriod": "2010-12",
+      "publishedAt": "2025-11-11",
+      "retrievedAt": "2026-10-04T13:38:25.028239Z",
+      "url": "https://www.hokeniryo.metro.tokyo.lg.jp/documents/d/hokeniryo/02goukei-1-csv",
+      "status": "final",
+      "scope": "多摩の参考値。市部・郡部の公表合計特殊出生率を、同年1月1日住民基本台帳の15～49歳日本人女性人口で加重平均。市部909,999人・率1.24、郡部10,987人・率1.19。女性人口出典：https://www.toukei.metro.tokyo.lg.jp/juukiy/2010/jy10qv0600.csv。市部と郡部で年齢別出生率及び女性の年齢構成が異なるため、年齢別出生数と女性人口から計算する厳密な合計特殊出生率とは一致しない。公表済みの多摩全体の値ではない。"
+    }
+  }
+]

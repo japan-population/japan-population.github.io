@@ -1,0 +1,356 @@
+[
+  {
+    "year": 1920,
+    "kind": "sex",
+    "values": {
+      "wards": [
+        1784647,
+        1573539
+      ]
+    },
+    "source": {
+      "publisher": "東京都",
+      "statistics": "国勢調査",
+      "table": "第6表 東京都と全国の人口推移（9頁）",
+      "sourcePeriod": "1920-10",
+      "publishedAt": "1954",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1953/tn53qa0020.pdf",
+      "status": "final",
+      "scope": "区部は東京市と後の編入地域（周辺5郡・千歳村・砧村）。多摩は八王子市と三多摩郡から千歳村・砧村を除いた範囲。後年の再掲表の男女別数値を採用。"
+    },
+    "reference": false
+  },
+  {
+    "year": 1930,
+    "kind": "sex",
+    "values": {
+      "wards": [
+        2642859,
+        2344054
+      ],
+      "tama": [
+        194796,
+        191853
+      ],
+      "islands": [
+        17668,
+        17448
+      ]
+    },
+    "source": {
+      "publisher": "東京府",
+      "statistics": "国勢調査",
+      "table": "東京府統計書 昭和5年 第1・2表（67・76頁）",
+      "sourcePeriod": "1930-10",
+      "publishedAt": "1932",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://dl.ndl.go.jp/pid/1448245/1/84",
+      "status": "final",
+      "scope": "区部は東京市と後の編入地域（周辺5郡・千歳村・砧村）。多摩は八王子市と三多摩郡から千歳村・砧村を除いた範囲。多摩の男＝25,678＋49,087＋44,181＋84,177−4,219−4,108、女＝26,210＋50,045＋43,854＋79,491−3,891−3,856。島部は大島・八丈・小笠原の合算。区部の男女別値は後年の再掲表とも一致。"
+    },
+    "reference": false
+  },
+  {
+    "year": 1940,
+    "kind": "sex",
+    "values": {
+      "wards": [
+        3494890,
+        3283914
+      ],
+      "tama": [
+        280899,
+        255940
+      ],
+      "islands": [
+        20086,
+        19242
+      ]
+    },
+    "source": {
+      "publisher": "東京府",
+      "statistics": "国勢調査",
+      "table": "東京府統計書 昭和15年 第1表（37頁）",
+      "sourcePeriod": "1940-10",
+      "publishedAt": "1942",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://dl.ndl.go.jp/pid/1461317/1/49",
+      "status": "final",
+      "scope": "東京市＝区部、郡部（八王子・立川を含む）＝多摩。小笠原を含む当時の国勢調査の総人口。年齢表の対象人口とは調査範囲が異なるため年齢内訳の配分には用いない。"
+    },
+    "reference": false
+  },
+  {
+    "year": 1950,
+    "kind": "sex",
+    "values": {
+      "wards": [
+        2720794,
+        2664277
+      ]
+    },
+    "source": {
+      "publisher": "東京都",
+      "statistics": "国勢調査",
+      "table": "第6表 東京都と全国の人口推移（9頁）",
+      "sourcePeriod": "1950-10",
+      "publishedAt": "1954",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1953/tn53qa0020.pdf",
+      "status": "final",
+      "scope": "1950年10月1日国勢調査。区部の男女別人口。"
+    },
+    "reference": false
+  },
+  {
+    "year": 1920,
+    "kind": "area",
+    "values": {
+      "wards": 570.4216542148761,
+      "tama": 1170.1633269421488,
+      "islands": 401.81226842975207
+    },
+    "source": {
+      "publisher": "東京府",
+      "statistics": "地域別土地面積",
+      "table": "東京府統計書 大正10年 第2・3表（1–3頁）",
+      "sourcePeriod": "1921-12",
+      "publishedAt": "1924",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://dl.ndl.go.jp/pid/972681/1/42",
+      "status": "reference",
+      "scope": "区部は東京市と後の編入地域（周辺5郡・千歳村・砧村）。多摩は八王子市と三多摩郡から千歳村・砧村を除いた範囲。1921年版に掲載された面積を1920年の参考値として使用。平方里を平方kmへ換算（1里＝216/55km）。当該年の面積の実測値ではない。 sourcePeriodの12月は資料年の識別用で、測量日の特定を意味しない。"
+    },
+    "reference": true
+  },
+  {
+    "year": 1930,
+    "kind": "area",
+    "values": {
+      "wards": 572.207,
+      "tama": 1169.931,
+      "islands": 401.73
+    },
+    "source": {
+      "publisher": "東京府",
+      "statistics": "地域別土地面積",
+      "table": "東京府統計書 昭和5年 第2・3表（1–3頁）",
+      "sourcePeriod": "1930-12",
+      "publishedAt": "1932",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://dl.ndl.go.jp/pid/1448245/1/51",
+      "status": "final",
+      "scope": "区部は東京市と後の編入地域（周辺5郡・千歳村・砧村）。多摩は八王子市と三多摩郡から千歳村・砧村を除いた範囲。公表面積の合算。区部＝81.219＋114.682＋74.789＋125.508＋53.509＋100.541＋12.136＋9.823km²。多摩＝7.294＋575.736＋321.284＋287.576−12.136−9.823km²。 sourcePeriodの12月は資料年の識別用で、測量日の特定を意味しない。"
+    },
+    "reference": false
+  },
+  {
+    "year": 1940,
+    "kind": "area",
+    "values": {
+      "wards": 572.81,
+      "tama": 1170.17,
+      "islands": 401.82
+    },
+    "source": {
+      "publisher": "東京府",
+      "statistics": "地域別土地面積",
+      "table": "東京府統計書 昭和15年 国勢調査 第1表（37頁）",
+      "sourcePeriod": "1940-10",
+      "publishedAt": "1942",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://dl.ndl.go.jp/pid/1461317/1/49",
+      "status": "final",
+      "scope": "国勢調査人口と同じ地域区分の公表面積。小笠原を含む。"
+    },
+    "reference": false
+  },
+  {
+    "year": 1950,
+    "kind": "area",
+    "values": {
+      "wards": 578.65,
+      "tama": 1153.26,
+      "islands": 299.26
+    },
+    "source": {
+      "publisher": "東京都",
+      "statistics": "地域別土地面積",
+      "table": "第1表 地域別土地面積（1953年1月1日、1頁）",
+      "sourcePeriod": "1953-01",
+      "publishedAt": "1954",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1952/tn52qa0001.pdf",
+      "status": "reference",
+      "scope": "1953年1月1日の公表面積を1950年の参考値として使用。多摩＝市部89.07＋郡部1,064.19km²。島部は小笠原を除く。人口密度は1950年人口をこの面積で除した参考値。"
+    },
+    "reference": true
+  },
+  {
+    "year": 1960,
+    "kind": "area",
+    "values": {
+      "wards": 569.51,
+      "tama": 1156.91,
+      "islands": 296.94
+    },
+    "source": {
+      "publisher": "東京都",
+      "statistics": "地域別土地面積",
+      "table": "第3表 地域別土地面積（1961年4月1日、11頁）",
+      "sourcePeriod": "1961-04",
+      "publishedAt": "1961",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1960/tn60qa0001.pdf",
+      "status": "reference",
+      "scope": "1961年4月1日の公表面積を1960年の参考値として使用。原表は1955年測量、1959年3月31日までの境界変更を反映。多摩＝市部460.85＋郡部696.06km²。島部は小笠原を除く。"
+    },
+    "reference": true
+  },
+  {
+    "year": 1970,
+    "kind": "area",
+    "values": {
+      "wards": 577.09,
+      "tama": 1160.94,
+      "islands": 403.08
+    },
+    "source": {
+      "publisher": "東京都",
+      "statistics": "地域別土地面積",
+      "table": "第1表 地域別土地面積（1頁）",
+      "sourcePeriod": "1970-10",
+      "publishedAt": "1972",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1970/tn70qa0001.pdf",
+      "status": "final",
+      "scope": "各年10月1日の公表面積。多摩＝市部＋郡部。区部は境界未定地域を含む区部計、島部は小笠原を含む。"
+    },
+    "reference": false
+  },
+  {
+    "year": 1980,
+    "kind": "area",
+    "values": {
+      "wards": 591.94,
+      "tama": 1161.3000000000002,
+      "islands": 403.11
+    },
+    "source": {
+      "publisher": "東京都",
+      "statistics": "地域別土地面積",
+      "table": "第1表 地域別土地面積（1頁）",
+      "sourcePeriod": "1980-10",
+      "publishedAt": "1982",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1980/tn80qa0001.pdf",
+      "status": "final",
+      "scope": "各年10月1日の公表面積。多摩＝市部＋郡部。区部は境界未定地域を含む区部計、島部は小笠原を含む。"
+    },
+    "reference": false
+  },
+  {
+    "year": 1990,
+    "kind": "area",
+    "values": {
+      "wards": 617.81,
+      "tama": 1159.8899999999999,
+      "islands": 405.72
+    },
+    "source": {
+      "publisher": "東京都",
+      "statistics": "地域別土地面積",
+      "table": "第1表 地域別土地面積（1頁）",
+      "sourcePeriod": "1990-10",
+      "publishedAt": "1992",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1990/tn90qa0001.pdf",
+      "status": "final",
+      "scope": "各年10月1日の公表面積。多摩＝市部＋郡部。区部は境界未定地域を含む区部計、島部は小笠原を含む。"
+    },
+    "reference": false
+  },
+  {
+    "kind": "sex",
+    "year": 1920,
+    "reference": false,
+    "values": {
+      "tama": [
+        152094,
+        156042
+      ],
+      "islands": [
+        16248,
+        16858
+      ]
+    },
+    "source": {
+      "publisher": "内閣統計局・東京都",
+      "statistics": "国勢調査",
+      "table": "大正9年国勢調査報告 府県の部 第1巻 東京府 第1表（2〜5頁）・東京都統計年鑑 昭和28年 第6表",
+      "sourcePeriod": "1920-10",
+      "publishedAt": "1954",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://dl.ndl.go.jp/pid/1464719/1/36",
+      "status": "final",
+      "scope": "1920年10月1日。島部は大島・八丈・小笠原の公表男女別人口を合算（男8,949＋4,347＋2,952、女9,764＋4,621＋2,473）。多摩は東京府総数（男1,952,989・女1,746,439）から区部（男1,784,647・女1,573,539）と島部を控除。区部は後の編入地域を含む。区部出典：https://www.toukei.metro.tokyo.lg.jp/tnenkan/1953/tn53qa0020.pdf 。公表値の加減算であり比率配分ではない。"
+    }
+  },
+  {
+    "kind": "sex",
+    "year": 1960,
+    "reference": false,
+    "values": {
+      "wards": [
+        4304609,
+        4005418
+      ],
+      "tama": [
+        673415,
+        661679
+      ],
+      "islands": [
+        18999,
+        19682
+      ]
+    },
+    "source": {
+      "publisher": "東京都（原資料：総理府統計局）",
+      "statistics": "国勢調査",
+      "table": "東京都統計年鑑 昭和38年 第15表(1) 世帯数、人口および人口密度（38〜39頁）",
+      "sourcePeriod": "1960-10",
+      "publishedAt": "1965",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1963/tn63qa0022.pdf",
+      "status": "final",
+      "scope": "1960年10月1日国勢調査の全数集計。区部・島部は公表値、多摩は市部と郡部の合算。男466,534＋206,881、女457,962＋203,717。小笠原諸島等の当時の調査対象外地域は含まない。速報値や1％抽出値は使用していない。"
+    }
+  },
+  {
+    "kind": "sex",
+    "year": 1950,
+    "source": {
+      "publisher": "総理府統計局",
+      "statistics": "国勢調査",
+      "table": "昭和25年国勢調査報告 第7巻その13 東京都 第1表（28～32頁）",
+      "sourcePeriod": "1950-10",
+      "publishedAt": "1953",
+      "retrievedAt": "2026-10-04T00:00:00+09:00",
+      "url": "https://dl.ndl.go.jp/pid/9528391/1/24",
+      "status": "final",
+      "scope": "1950年10月1日。島部は大島・三宅島・八丈島の合計（男性10,350＋3,421＋6,558、女性10,590＋3,488＋6,723）。多摩は東京都から区部と島部を控除。小笠原諸島を含まない。全数集計。"
+    },
+    "reference": false,
+    "values": {
+      "tama": [
+        428266,
+        423033
+      ],
+      "islands": [
+        20329,
+        20801
+      ]
+    }
+  }
+]

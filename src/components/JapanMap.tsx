@@ -1,4 +1,4 @@
-import {tokyoAreasSchema,TOKYO_AREA_LABELS,type TokyoAreas,type TokyoArea} from '../types/tokyo-areas';
+import {tokyoAreasSchema,tokyoAvailablePastYears,TOKYO_AREA_LABELS,type TokyoAreas,type TokyoArea} from '../types/tokyo-areas';
 import {RegionalYearSlider} from './RegionalYearSlider';
 import {regionalIndexSchema,regionalYearSchema,REGIONAL_PAST_YEARS,REGIONAL_FUTURE_YEARS,type RegionalTimeline} from '../types/regional-timeline';
 import {RegionalSnapshotDetail,RegionalSnapshotIndicators} from './RegionalSnapshotDetail';
@@ -29,7 +29,7 @@ export function JapanMap({data,group}:{data:SiteData;group:PopulationGroup}) {
   const [pastYear,setPastYear]=useState(2020),[futureYear,setFutureYear]=useState(2030);
   const [timeline,setTimeline]=useState<{generationId:string;data:RegionalTimeline}>();
   const [timelineError,setTimelineError]=useState('');
-  const availablePast=(availability?.generationId===data.manifest.generationId?availability.availablePast[group]:[]).filter(y=>!subarea||!tokyoData||tokyoData.past[y]?.[subarea].groups[group]?.population!==undefined);
+  const availablePast=subarea&&tokyoData?tokyoAvailablePastYears(tokyoData,subarea,group):(availability?.generationId===data.manifest.generationId?availability.availablePast[group]:[]);
   useEffect(()=>{if(requestedPeriod==='past'&&subarea&&tokyoData&&!availablePast.length)setPeriod('latest');},[requestedPeriod,subarea,tokyoData,availablePast.length]);
   const validPastYear=availablePast.includes(pastYear)?pastYear:availablePast.at(-1)??2020;
   const year=period==='past'?validPastYear:futureYear;

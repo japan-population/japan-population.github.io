@@ -1,0 +1,83 @@
+{
+  "1940": {
+    "japaneseCensus": {
+      "male": 3711862,
+      "female": 3518220
+    },
+    "regionalKoreanTaiwaneseYearEnd": {
+      "wards": [
+        62816,
+        26532
+      ],
+      "tama": [
+        4056,
+        2483
+      ],
+      "islands": [
+        96,
+        49
+      ]
+    },
+    "censusUrl": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000007914037",
+    "distributionUrl": "https://dl.ndl.go.jp/pid/1461317/1/60"
+  },
+  "1950": {
+    "tokyoForeign": [
+      26383,
+      17554
+    ],
+    "wardsForeign": [
+      23157,
+      15518
+    ],
+    "tokyoUnknown": [
+      161,
+      112
+    ],
+    "wardsUnknown": [
+      156,
+      108
+    ],
+    "countyForeign": [
+      2669,
+      1694
+    ],
+    "countyUnknown": [
+      4,
+      4
+    ],
+    "islandsForeign": 127,
+    "islandsUnknown": 2,
+    "censusUrl": "https://dl.ndl.go.jp/pid/9528391/1/45",
+    "distributionUrl": "https://dl.ndl.go.jp/pid/9528391/1/47"
+  },
+  "1960": {
+    "foreignCensus": [
+      39764,
+      31226
+    ],
+    "registeredForeignYearEnd": {
+      "wards": 76180,
+      "tama": 9571,
+      "islands": 77
+    },
+    "censusUrl": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000008196552",
+    "distributionUrl": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1960/tn60qa0023.pdf"
+  },
+  "1970": {
+    "foreignCensus": [
+      45194,
+      37883
+    ],
+    "wardsForeignCensus": [
+      37179,
+      32204
+    ],
+    "registeredForeignYearEnd": {
+      "tama": 16407,
+      "islands": 38
+    },
+    "censusUrl": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000007914971",
+    "distributionUrl": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1970/tn70qa0021.pdf"
+  }
+}
