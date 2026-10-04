@@ -173,3 +173,9 @@
 .japan-map{--map-vertical-padding:24px;padding-block:var(--map-vertical-padding)}
 .map-selection{top:calc(var(--map-vertical-padding) + 4%)}
 @media(max-width:600px){.map-selection{top:calc(var(--map-vertical-padding) + 2%)}}
+.map-card-heading{display:flex;align-items:start;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.map-card-heading h3{flex-shrink:0}
+.tokyo-area-switch{pointer-events:auto;margin-left:auto;padding:2px;gap:0;flex-shrink:0}
+.tokyo-area-switch button{font-size:clamp(9px,1.2cqw,12px);padding:4px 5px;min-height:26px;white-space:nowrap}
+@media(min-width:1024px){.tokyo-area-switch button{font-size:12px;padding:5px 8px}}
+@media(max-width:420px){.map-card-heading{gap:2px}.tokyo-area-switch button{font-size:9px;padding:3px;min-height:24px}}

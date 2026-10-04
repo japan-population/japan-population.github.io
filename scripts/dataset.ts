@@ -1,3 +1,4 @@
+import {tokyoAreasSchema,type TokyoAreas} from '../src/types/tokyo-areas';
 import {availableRegionalPastYears} from '../src/lib/regional-view';
 import {regionalTimelineSchema,regionalYearSchema,type RegionalTimeline} from '../src/types/regional-timeline';
 import type {EventBreakdowns} from '../src/types/statistics';
@@ -22,7 +23,7 @@ import { migrationModel, referenceModel } from './models/reference-model';
 import { populationModel } from './models/population-model';
 import { eventModel } from './models/event-model';
 import { validateDataset, validateChange, validatePublication } from './validation';
-export type Dataset = DashboardData & { regionalTimeline?:RegionalTimeline; history: { population: PopulationObservation[]; vital: VitalObservation[] } };
+export type Dataset = DashboardData & { tokyoAreas?:TokyoAreas; regionalTimeline?:RegionalTimeline; history: { population: PopulationObservation[]; vital: VitalObservation[] } };
 // Retrieval timestamps alone must not create a daily data commit.
 export function semanticJSON(value: unknown): string {
   return JSON.stringify(value, (key, v: unknown) => {
@@ -106,6 +107,7 @@ export async function readDataset(directory: string): Promise<Dataset> {
     }
     result.regionalTimeline=regionalTimelineSchema.parse(timeline);
   }
+  if(result.manifest.tokyoAreas){const page=await read('tokyo-areas.json') as {generationId:string};if(page.generationId!==result.manifest.generationId)throw Error('東京都地域データの世代が不一致です');result.tokyoAreas=tokyoAreasSchema.parse(page);}
   validateDataset(result);
   try {
     const regions = mapRegionsSchema.parse(await read('regions.json'));
@@ -130,6 +132,7 @@ export async function publishDataset(data: Dataset, directory = resolve('public/
   const id = data.manifest.generationId;
   const files: Record<string, unknown> = {
     ...(data.regionalTimeline?{'regional-timeline.json':{generationId:id,past:Object.keys(data.regionalTimeline.past).map(Number),future:Object.keys(data.regionalTimeline.future).map(Number),availablePast:Object.fromEntries(populationGroups.map(group=>[group,availableRegionalPastYears(data.regionalTimeline!.past,group)]))},...Object.fromEntries((['past','future']as const).flatMap(period=>Object.entries(data.regionalTimeline![period]).map(([year,regions])=>[`regional/${period}-${year}.json`,{generationId:id,period,year:Number(year),regions}])))}:{}),
+    ...(data.tokyoAreas?{'tokyo-areas.json':{generationId:id,...tokyoAreasSchema.parse(data.tokyoAreas)}}:{}),
     'manifest.json': data.manifest, 'national.json': data.national,
     'regions.json': mapRegionsSchema.parse({generationId:id,prefectures:Object.fromEntries(Object.values(data.prefectures).map(p=>[p.code,{code:p.code,name:p.name,officialPopulation:p.officialPopulation??(p.population?{total:{value:p.population.officialBase,source:p.population.source}}:undefined)}]))}),
     'region-details.json': {generationId:id,regions:Object.fromEntries(Object.values(data.prefectures).filter(p=>p.detail).map(p=>[p.code,p.detail]))},
