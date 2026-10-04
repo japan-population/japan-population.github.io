@@ -1,3 +1,4 @@
+import {tokyoAreasSchema,validateTokyoTotals} from '../src/types/tokyo-areas';
 import {regionalTimelineSchema,REGIONAL_PAST_YEARS} from '../src/types/regional-timeline';
 import { z } from 'zod';
 import { type YearTotal, EVENTS, MIGRATIONS, populationGroups, manifestSchema, nationalSchema, prefecturesSchema, sourceSchema, monthSchema, type Source } from '../src/types/statistics';
@@ -29,6 +30,8 @@ function validateYear(year: Record<string, YearTotal> | undefined, month: string
   }
 }
 export function validateDataset(data: Dataset): void {
+  if(Boolean(data.manifest.tokyoAreas)!==Boolean(data.tokyoAreas))throw Error('東京都地域データの有無が不一致です');
+  if(data.tokyoAreas)validateTokyoTotals(tokyoAreasSchema.parse(data.tokyoAreas));
   if(Boolean(data.manifest.regionalTimeline)!==Boolean(data.regionalTimeline))throw Error('地域時系列の有無が不一致です');
   if(data.regionalTimeline){
     const t=regionalTimelineSchema.parse(data.regionalTimeline);

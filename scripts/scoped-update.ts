@@ -1,3 +1,4 @@
+import {fetchTokyoLatest} from './sources/tokyo-areas';
 import {createHash} from 'node:crypto';
 import {buildDataset,semanticJSON,type Dataset} from './dataset';
 import {populationModel} from './models/population-model';
@@ -12,7 +13,7 @@ import {fetchCensusRegions} from './sources/census-regions';
 import {fetchRegionalDetails} from './sources/regional-details';
 
 export const monthlySources={fetchPopulation,fetchVital,fetchBreakdown,fetchExactPopulation,fetchMigration,fetchNationalEvents};
-export const regionalSources={fetchCensusRegions,fetchRegionalDetails};
+export const regionalSources={fetchCensusRegions,fetchRegionalDetails,fetchTokyoLatest};
 export function finalizeDataset(data:Dataset,now:number){
  data.manifest.generatedAt=new Date(now).toISOString();
  const id=createHash('sha256').update(semanticJSON(data)).digest('hex').slice(0,16);
@@ -43,6 +44,7 @@ export async function updateMonthly(previous:Dataset,appId:string,now:number,sou
   officialRegions:Object.fromEntries(Object.entries(previous.prefectures).filter(([,p])=>p.officialPopulation).map(([c,p])=>[c,p.officialPopulation!])),
   regionalTimeline:previous.regionalTimeline,archive:old.archive,projections:old.projections,populationTrend:old.populationTrend,
   nationalities:old.nationalities,eventBreakdowns:old.eventBreakdowns,distribution:old.distribution});
+ data.tokyoAreas=previous.tokyoAreas;data.manifest.tokyoAreas=previous.manifest.tokyoAreas;
  return finalizeDataset(data,now);
 }
 export async function updateRegional(previous:Dataset,now:number,sources=regionalSources):Promise<Dataset>{
@@ -52,6 +54,7 @@ export async function updateRegional(previous:Dataset,now:number,sources=regiona
   if(!official[code]||!details[code])throw Error('地域データが不足しています');
   p.officialPopulation=official[code];p.detail=details[code];
  }
+ if(data.tokyoAreas)data.tokyoAreas.latest=await sources.fetchTokyoLatest(now);
  // Historical census snapshots and all projections are deliberately left untouched.
  return finalizeDataset(data,now);
 }

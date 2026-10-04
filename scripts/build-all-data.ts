@@ -1,3 +1,8 @@
+import tokyoHistory from './data/tokyo-history.json';
+import {tokyoAreasSchema} from '../src/types/tokyo-areas';
+import {fetchTokyoLatest} from './sources/tokyo-areas';
+import {projectTokyoTimeline} from './models/tokyo-projections';
+import {finalizeDataset} from './scoped-update';
 import {extendRegionalProjections} from './models/regional-projection';
 import {fetchRegionalTimeline} from './sources/regional-timeline';
 import {fetchRegionalDetails} from './sources/regional-details';
@@ -52,7 +57,9 @@ try {
   const projections = await fetchProjections(now);
   extendRegionalProjections(regionalTimeline,projections,regionalDetails,now);
   const data = buildDataset(population, vital, 'official', now, { regionalTimeline, regionalDetails, eventBreakdowns, breakdown, bases, migration, japaneseBases, officialRegions, nationalities, distribution, archive, populationTrend, projections, nationalEvents, migrationsByGroup: {total:migration,japanese:japaneseMigration,foreign:foreignMigration} });
-  console.log(await publishDataset(data) ? 'すべての検証に成功し、JSONを更新しました。' : '統計・推計モデルの変更はありません。');
+  const latest=await fetchTokyoLatest(now),past=tokyoAreasSchema.shape.past.parse(tokyoHistory);
+  data.tokyoAreas=tokyoAreasSchema.parse({latest,past,future:projectTokyoTimeline(regionalTimeline.future,past['2020'],latest)});data.manifest.tokyoAreas=true;
+  console.log(await publishDataset(finalizeDataset(data,now)) ? 'すべての検証に成功し、JSONを更新しました。' : '統計・推計モデルの変更はありません。');
 } catch (error) {
   // Only local controlled errors are printed. Zod diagnostics can include source input; avoid dumping them.
   const message = error instanceof Error ? error.message : 'データ更新に失敗しました';

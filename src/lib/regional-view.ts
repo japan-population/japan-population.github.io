@@ -4,7 +4,7 @@ export function availableRegionalPastYears(past:RegionalTimeline['past'],group:P
  return Object.entries(past).filter(([,regions])=>Object.values(regions).some(r=>Boolean(r.groups[group]?.population))).map(([year])=>Number(year)).sort((a,b)=>a-b);
 }
 export function regionalSources(snapshot:RegionalSnapshot|undefined,group:PopulationGroup):Source[]{
- if(!snapshot)return[];const g=snapshot.groups[group];const metrics=[g?.population,g?.averageAge,g?.fertilityRate,snapshot.area,snapshot.density,...Object.values(g?.events??{}),g?.naturalChange,g?.migrationChange];
+ if(!snapshot)return[];const g=snapshot.groups[group];const metrics=[g?.population,g?.male,g?.female,g?.averageAge,g?.fertilityRate,snapshot.area,snapshot.density,...Object.values(g?.events??{}),g?.naturalChange,g?.migrationChange];
  const sources=[...(g?.pyramidSource?[g.pyramidSource]:[]),...metrics.filter((m):m is RegionalMetric=>Boolean(m)).map(m=>m.source)];
  return sources.filter((s,i)=>sources.findIndex(v=>v.url===s.url&&v.sourcePeriod===s.sourcePeriod&&v.scope===s.scope)===i);
 }

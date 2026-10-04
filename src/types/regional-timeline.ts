@@ -2,7 +2,7 @@ import {z} from 'zod';
 import {sourceSchema,breakdownSchema,populationGroups} from './statistics';
 export const REGIONAL_PAST_YEARS=Array.from({length:11},(_,i)=>1920+i*10);
 export const REGIONAL_FUTURE_YEARS=Array.from({length:8},(_,i)=>2030+i*10);
-const metric=z.object({value:z.number().finite(),source:sourceSchema,reference:z.boolean().optional(),migrationCoverage:z.literal('domestic-japanese').optional(),estimateKind:z.literal('residual').optional(),calculation:z.object({method:z.enum(['single-year','multi-year']).optional(),startDate:z.iso.date().optional(),endDate:z.iso.date().optional(),startYear:z.number().int(),endYear:z.number().int(),populationStart:z.number().positive(),populationEnd:z.number().positive(),annualPopulationChange:z.number().finite(),naturalChange:z.number().finite(),naturalBasis:z.enum(['regional-japanese','national-rate','official-count','official-rate'])}).optional()});
+const metric=z.object({value:z.number().finite(),source:sourceSchema,reference:z.boolean().optional(),migrationCoverage:z.enum(['domestic-japanese','domestic']).optional(),estimateKind:z.literal('residual').optional(),calculation:z.object({method:z.enum(['single-year','multi-year']).optional(),startDate:z.iso.date().optional(),endDate:z.iso.date().optional(),startYear:z.number().int(),endYear:z.number().int(),populationStart:z.number().positive(),populationEnd:z.number().positive(),annualPopulationChange:z.number().finite(),naturalChange:z.number().finite(),naturalBasis:z.enum(['regional-japanese','national-rate','official-count','official-rate'])}).optional()});
 export const regionalSnapshotSchema=z.object({
   year:z.number().int(),status:z.enum(['final','projection','reference']),
   groups:z.partialRecord(z.enum(populationGroups),z.object({
