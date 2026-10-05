@@ -1,0 +1,4426 @@
+[
+  {
+    "year": 2000,
+    "area": "wards",
+    "group": "total",
+    "method": "published",
+    "components": [
+      {
+        "code": "13100",
+        "knownPopulation": 8092268,
+        "mean": 41.8,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AV.xls"
+      }
+    ],
+    "source": {
+      "publisher": "東京都",
+      "statistics": "国勢調査",
+      "table": "第3表 年齢各歳・平均年齢（総数及び日本人）",
+      "sourcePeriod": "2000-10",
+      "publishedAt": "2001",
+      "retrievedAt": "2026-10-05T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AV.xls",
+      "status": "final",
+      "scope": "年齢不詳を除く。"
+    }
+  },
+  {
+    "year": 2000,
+    "area": "tama",
+    "group": "total",
+    "method": "published",
+    "components": [
+      {
+        "code": "13201",
+        "knownPopulation": 535473,
+        "mean": 39.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AW.xls"
+      },
+      {
+        "code": "13202",
+        "knownPopulation": 163987,
+        "mean": 40.0,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AW.xls"
+      },
+      {
+        "code": "13203",
+        "knownPopulation": 135730,
+        "mean": 40.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AW.xls"
+      },
+      {
+        "code": "13204",
+        "knownPopulation": 171346,
+        "mean": 40.9,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AW.xls"
+      },
+      {
+        "code": "13205",
+        "knownPopulation": 141352,
+        "mean": 40.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AW.xls"
+      },
+      {
+        "code": "13206",
+        "knownPopulation": 226647,
+        "mean": 39.4,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AW.xls"
+      },
+      {
+        "code": "13207",
+        "knownPopulation": 106485,
+        "mean": 40.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AW.xls"
+      },
+      {
+        "code": "13208",
+        "knownPopulation": 204752,
+        "mean": 39.8,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AW.xls"
+      },
+      {
+        "code": "13209",
+        "knownPopulation": 376808,
+        "mean": 40.6,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AW.xls"
+      },
+      {
+        "code": "13210",
+        "knownPopulation": 111670,
+        "mean": 39.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13211",
+        "knownPopulation": 178597,
+        "mean": 39.3,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13212",
+        "knownPopulation": 167933,
+        "mean": 39.6,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13213",
+        "knownPopulation": 141635,
+        "mean": 41.2,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13214",
+        "knownPopulation": 111244,
+        "mean": 39.6,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13215",
+        "knownPopulation": 72183,
+        "mean": 39.4,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13216",
+        "knownPopulation": 78162,
+        "mean": 40.3,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13217",
+        "knownPopulation": 102695,
+        "mean": 40.8,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13218",
+        "knownPopulation": 61425,
+        "mean": 39.3,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13219",
+        "knownPopulation": 75705,
+        "mean": 40.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13220",
+        "knownPopulation": 77193,
+        "mean": 40.0,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13221",
+        "knownPopulation": 68020,
+        "mean": 42.1,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13222",
+        "knownPopulation": 112862,
+        "mean": 40.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13223",
+        "knownPopulation": 66015,
+        "mean": 39.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13224",
+        "knownPopulation": 145857,
+        "mean": 38.8,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13225",
+        "knownPopulation": 69209,
+        "mean": 38.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13227",
+        "knownPopulation": 55868,
+        "mean": 38.6,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13228",
+        "knownPopulation": 78240,
+        "mean": 41.1,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AX.xls"
+      },
+      {
+        "code": "13303",
+        "knownPopulation": 32790,
+        "mean": 39.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      },
+      {
+        "code": "13305",
+        "knownPopulation": 16631,
+        "mean": 44.6,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      },
+      {
+        "code": "13307",
+        "knownPopulation": 3256,
+        "mean": 51.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      },
+      {
+        "code": "13308",
+        "knownPopulation": 7575,
+        "mean": 49.9,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      }
+    ],
+    "source": {
+      "publisher": "東京都",
+      "statistics": "国勢調査",
+      "table": "第3表 年齢各歳・平均年齢（総数及び日本人）",
+      "sourcePeriod": "2000-10",
+      "publishedAt": "2001",
+      "retrievedAt": "2026-10-05T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AW.xls",
+      "status": "final",
+      "scope": "年齢不詳を除く。"
+    }
+  },
+  {
+    "year": 2000,
+    "area": "islands",
+    "group": "total",
+    "method": "published",
+    "components": [
+      {
+        "code": "13361",
+        "knownPopulation": 9224,
+        "mean": 47.0,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      },
+      {
+        "code": "13362",
+        "knownPopulation": 302,
+        "mean": 46.8,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      },
+      {
+        "code": "13363",
+        "knownPopulation": 3147,
+        "mean": 49.3,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      },
+      {
+        "code": "13364",
+        "knownPopulation": 2144,
+        "mean": 44.0,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      },
+      {
+        "code": "13382",
+        "knownPopulation": 308,
+        "mean": 42.4,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      },
+      {
+        "code": "13401",
+        "knownPopulation": 9488,
+        "mean": 46.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      },
+      {
+        "code": "13402",
+        "knownPopulation": 203,
+        "mean": 39.0,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      },
+      {
+        "code": "13421",
+        "knownPopulation": 2824,
+        "mean": 38.1,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls"
+      }
+    ],
+    "source": {
+      "publisher": "東京都",
+      "statistics": "国勢調査",
+      "table": "第3表 年齢各歳・平均年齢（総数及び日本人）",
+      "sourcePeriod": "2000-10",
+      "publishedAt": "2001",
+      "retrievedAt": "2026-10-05T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AY.xls",
+      "status": "final",
+      "scope": "年齢不詳を除く。"
+    }
+  },
+  {
+    "year": 2000,
+    "area": "wards",
+    "group": "japanese",
+    "method": "published",
+    "components": [
+      {
+        "code": "13100",
+        "knownPopulation": 7918653,
+        "mean": 41.9,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AZ.xls"
+      }
+    ],
+    "source": {
+      "publisher": "東京都",
+      "statistics": "国勢調査",
+      "table": "第3表 年齢各歳・平均年齢（総数及び日本人）",
+      "sourcePeriod": "2000-10",
+      "publishedAt": "2001",
+      "retrievedAt": "2026-10-05T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB81AZ.xls",
+      "status": "final",
+      "scope": "年齢不詳を除く。"
+    }
+  },
+  {
+    "year": 2000,
+    "area": "tama",
+    "group": "japanese",
+    "method": "published",
+    "components": [
+      {
+        "code": "13201",
+        "knownPopulation": 531002,
+        "mean": 39.6,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AA.xls"
+      },
+      {
+        "code": "13202",
+        "knownPopulation": 161873,
+        "mean": 40.1,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AA.xls"
+      },
+      {
+        "code": "13203",
+        "knownPopulation": 134144,
+        "mean": 40.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AA.xls"
+      },
+      {
+        "code": "13204",
+        "knownPopulation": 169416,
+        "mean": 41.0,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AA.xls"
+      },
+      {
+        "code": "13205",
+        "knownPopulation": 140463,
+        "mean": 40.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AA.xls"
+      },
+      {
+        "code": "13206",
+        "knownPopulation": 223610,
+        "mean": 39.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AA.xls"
+      },
+      {
+        "code": "13207",
+        "knownPopulation": 104857,
+        "mean": 40.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AA.xls"
+      },
+      {
+        "code": "13208",
+        "knownPopulation": 202266,
+        "mean": 39.8,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AA.xls"
+      },
+      {
+        "code": "13209",
+        "knownPopulation": 374131,
+        "mean": 40.6,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AA.xls"
+      },
+      {
+        "code": "13210",
+        "knownPopulation": 110409,
+        "mean": 39.6,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13211",
+        "knownPopulation": 175852,
+        "mean": 39.4,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13212",
+        "knownPopulation": 166755,
+        "mean": 39.6,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13213",
+        "knownPopulation": 140619,
+        "mean": 41.3,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13214",
+        "knownPopulation": 110275,
+        "mean": 39.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13215",
+        "knownPopulation": 71249,
+        "mean": 39.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13216",
+        "knownPopulation": 77461,
+        "mean": 40.4,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13217",
+        "knownPopulation": 101666,
+        "mean": 40.8,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13218",
+        "knownPopulation": 59766,
+        "mean": 39.4,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13219",
+        "knownPopulation": 75158,
+        "mean": 40.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13220",
+        "knownPopulation": 76611,
+        "mean": 40.1,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13221",
+        "knownPopulation": 67480,
+        "mean": 42.2,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13222",
+        "knownPopulation": 112086,
+        "mean": 40.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13223",
+        "knownPopulation": 65269,
+        "mean": 39.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13224",
+        "knownPopulation": 144619,
+        "mean": 38.9,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13225",
+        "knownPopulation": 68609,
+        "mean": 38.8,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13227",
+        "knownPopulation": 54781,
+        "mean": 38.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13228",
+        "knownPopulation": 77819,
+        "mean": 41.1,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AB.xls"
+      },
+      {
+        "code": "13303",
+        "knownPopulation": 32524,
+        "mean": 39.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      },
+      {
+        "code": "13305",
+        "knownPopulation": 16564,
+        "mean": 44.7,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      },
+      {
+        "code": "13307",
+        "knownPopulation": 3246,
+        "mean": 51.5,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      },
+      {
+        "code": "13308",
+        "knownPopulation": 7555,
+        "mean": 49.9,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      }
+    ],
+    "source": {
+      "publisher": "東京都",
+      "statistics": "国勢調査",
+      "table": "第3表 年齢各歳・平均年齢（総数及び日本人）",
+      "sourcePeriod": "2000-10",
+      "publishedAt": "2001",
+      "retrievedAt": "2026-10-05T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AA.xls",
+      "status": "final",
+      "scope": "年齢不詳を除く。"
+    }
+  },
+  {
+    "year": 2000,
+    "area": "islands",
+    "group": "japanese",
+    "method": "published",
+    "components": [
+      {
+        "code": "13361",
+        "knownPopulation": 9213,
+        "mean": 47.0,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      },
+      {
+        "code": "13362",
+        "knownPopulation": 302,
+        "mean": 46.8,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      },
+      {
+        "code": "13363",
+        "knownPopulation": 3142,
+        "mean": 49.3,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      },
+      {
+        "code": "13364",
+        "knownPopulation": 2143,
+        "mean": 44.0,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      },
+      {
+        "code": "13382",
+        "knownPopulation": 307,
+        "mean": 42.4,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      },
+      {
+        "code": "13401",
+        "knownPopulation": 9371,
+        "mean": 46.6,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      },
+      {
+        "code": "13402",
+        "knownPopulation": 202,
+        "mean": 39.0,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      },
+      {
+        "code": "13421",
+        "knownPopulation": 2810,
+        "mean": 38.1,
+        "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls"
+      }
+    ],
+    "source": {
+      "publisher": "東京都",
+      "statistics": "国勢調査",
+      "table": "第3表 年齢各歳・平均年齢（総数及び日本人）",
+      "sourcePeriod": "2000-10",
+      "publishedAt": "2001",
+      "retrievedAt": "2026-10-05T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/TOBB82AC.xls",
+      "status": "final",
+      "scope": "年齢不詳を除く。"
+    }
+  },
+  {
+    "year": 2010,
+    "area": "wards",
+    "group": "total",
+    "method": "published",
+    "components": [
+      {
+        "code": "13100",
+        "knownPopulation": 8780073,
+        "mean": 43.90411
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003041389",
+      "publishedAt": "2011-10-26",
+      "retrievedAt": "2026-10-04T16:03:32.315Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003041389",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2010-10"
+    }
+  },
+  {
+    "year": 2010,
+    "area": "tama",
+    "group": "total",
+    "method": "published",
+    "components": [
+      {
+        "code": "13201",
+        "knownPopulation": 574726,
+        "mean": 43.30109
+      },
+      {
+        "code": "13202",
+        "knownPopulation": 178339,
+        "mean": 44.04278
+      },
+      {
+        "code": "13203",
+        "knownPopulation": 137721,
+        "mean": 43.52941
+      },
+      {
+        "code": "13204",
+        "knownPopulation": 185917,
+        "mean": 42.73292
+      },
+      {
+        "code": "13205",
+        "knownPopulation": 139175,
+        "mean": 45.34086
+      },
+      {
+        "code": "13206",
+        "knownPopulation": 254081,
+        "mean": 42.02757
+      },
+      {
+        "code": "13207",
+        "knownPopulation": 112012,
+        "mean": 43.8964
+      },
+      {
+        "code": "13208",
+        "knownPopulation": 221058,
+        "mean": 42.61357
+      },
+      {
+        "code": "13209",
+        "knownPopulation": 424588,
+        "mean": 43.76724
+      },
+      {
+        "code": "13210",
+        "knownPopulation": 117487,
+        "mean": 42.65385
+      },
+      {
+        "code": "13211",
+        "knownPopulation": 185500,
+        "mean": 42.85096
+      },
+      {
+        "code": "13212",
+        "knownPopulation": 178890,
+        "mean": 43.08414
+      },
+      {
+        "code": "13213",
+        "knownPopulation": 152987,
+        "mean": 44.31527
+      },
+      {
+        "code": "13214",
+        "knownPopulation": 119400,
+        "mean": 42.72771
+      },
+      {
+        "code": "13215",
+        "knownPopulation": 74776,
+        "mean": 43.16333
+      },
+      {
+        "code": "13218",
+        "knownPopulation": 59521,
+        "mean": 44.12979
+      },
+      {
+        "code": "13219",
+        "knownPopulation": 77946,
+        "mean": 44.2732
+      },
+      {
+        "code": "13220",
+        "knownPopulation": 82902,
+        "mean": 43.76231
+      },
+      {
+        "code": "13221",
+        "knownPopulation": 73844,
+        "mean": 45.42095
+      },
+      {
+        "code": "13222",
+        "knownPopulation": 116235,
+        "mean": 44.83091
+      },
+      {
+        "code": "13223",
+        "knownPopulation": 70048,
+        "mean": 42.70486
+      },
+      {
+        "code": "13224",
+        "knownPopulation": 147637,
+        "mean": 43.9884
+      },
+      {
+        "code": "13225",
+        "knownPopulation": 84398,
+        "mean": 41.44556
+      },
+      {
+        "code": "13227",
+        "knownPopulation": 56858,
+        "mean": 42.77702
+      },
+      {
+        "code": "13228",
+        "knownPopulation": 80695,
+        "mean": 44.88206
+      },
+      {
+        "code": "13229",
+        "knownPopulation": 196508,
+        "mean": 43.44641
+      },
+      {
+        "code": "13303",
+        "knownPopulation": 33453,
+        "mean": 44.04728
+      },
+      {
+        "code": "13305",
+        "knownPopulation": 16650,
+        "mean": 48.50138
+      },
+      {
+        "code": "13307",
+        "knownPopulation": 2558,
+        "mean": 57.24629
+      },
+      {
+        "code": "13308",
+        "knownPopulation": 6045,
+        "mean": 56.18999
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003041389",
+      "publishedAt": "2011-10-26",
+      "retrievedAt": "2026-10-04T16:03:32.315Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003041389",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2010-10"
+    }
+  },
+  {
+    "year": 2010,
+    "area": "islands",
+    "group": "total",
+    "method": "published",
+    "components": [
+      {
+        "code": "13361",
+        "knownPopulation": 8461,
+        "mean": 50.26811
+      },
+      {
+        "code": "13362",
+        "knownPopulation": 340,
+        "mean": 46.27941
+      },
+      {
+        "code": "13363",
+        "knownPopulation": 2883,
+        "mean": 52.27107
+      },
+      {
+        "code": "13364",
+        "knownPopulation": 1889,
+        "mean": 48.85627
+      },
+      {
+        "code": "13381",
+        "knownPopulation": 2664,
+        "mean": 53.93881
+      },
+      {
+        "code": "13382",
+        "knownPopulation": 348,
+        "mean": 40.75575
+      },
+      {
+        "code": "13401",
+        "knownPopulation": 8229,
+        "mean": 51.35174
+      },
+      {
+        "code": "13402",
+        "knownPopulation": 200,
+        "mean": 41.16
+      },
+      {
+        "code": "13421",
+        "knownPopulation": 2785,
+        "mean": 40.16607
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003041389",
+      "publishedAt": "2011-10-26",
+      "retrievedAt": "2026-10-04T16:03:32.315Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003041389",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2010-10"
+    }
+  },
+  {
+    "year": 2010,
+    "area": "wards",
+    "group": "japanese",
+    "method": "published",
+    "components": [
+      {
+        "code": "13100",
+        "knownPopulation": 8406490,
+        "mean": 44.16381
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003041389",
+      "publishedAt": "2011-10-26",
+      "retrievedAt": "2026-10-04T16:03:32.315Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003041389",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2010-10"
+    }
+  },
+  {
+    "year": 2010,
+    "area": "tama",
+    "group": "japanese",
+    "method": "published",
+    "components": [
+      {
+        "code": "13201",
+        "knownPopulation": 564624,
+        "mean": 43.38701
+      },
+      {
+        "code": "13202",
+        "knownPopulation": 175575,
+        "mean": 44.14076
+      },
+      {
+        "code": "13203",
+        "knownPopulation": 134539,
+        "mean": 43.62436
+      },
+      {
+        "code": "13204",
+        "knownPopulation": 179206,
+        "mean": 43.02104
+      },
+      {
+        "code": "13205",
+        "knownPopulation": 138194,
+        "mean": 45.38082
+      },
+      {
+        "code": "13206",
+        "knownPopulation": 247550,
+        "mean": 42.12029
+      },
+      {
+        "code": "13207",
+        "knownPopulation": 110094,
+        "mean": 43.96693
+      },
+      {
+        "code": "13208",
+        "knownPopulation": 214862,
+        "mean": 42.63176
+      },
+      {
+        "code": "13209",
+        "knownPopulation": 417671,
+        "mean": 43.84962
+      },
+      {
+        "code": "13210",
+        "knownPopulation": 114357,
+        "mean": 42.72411
+      },
+      {
+        "code": "13211",
+        "knownPopulation": 181025,
+        "mean": 43.04521
+      },
+      {
+        "code": "13212",
+        "knownPopulation": 176658,
+        "mean": 43.134
+      },
+      {
+        "code": "13213",
+        "knownPopulation": 150068,
+        "mean": 44.41022
+      },
+      {
+        "code": "13214",
+        "knownPopulation": 116822,
+        "mean": 42.84222
+      },
+      {
+        "code": "13215",
+        "knownPopulation": 72766,
+        "mean": 43.28403
+      },
+      {
+        "code": "13218",
+        "knownPopulation": 56974,
+        "mean": 44.33326
+      },
+      {
+        "code": "13219",
+        "knownPopulation": 76406,
+        "mean": 44.323
+      },
+      {
+        "code": "13220",
+        "knownPopulation": 81768,
+        "mean": 43.80805
+      },
+      {
+        "code": "13221",
+        "knownPopulation": 73031,
+        "mean": 45.49884
+      },
+      {
+        "code": "13222",
+        "knownPopulation": 115203,
+        "mean": 44.90419
+      },
+      {
+        "code": "13223",
+        "knownPopulation": 69047,
+        "mean": 42.79024
+      },
+      {
+        "code": "13224",
+        "knownPopulation": 146501,
+        "mean": 44.03812
+      },
+      {
+        "code": "13225",
+        "knownPopulation": 82970,
+        "mean": 41.48272
+      },
+      {
+        "code": "13227",
+        "knownPopulation": 55353,
+        "mean": 42.88152
+      },
+      {
+        "code": "13228",
+        "knownPopulation": 80113,
+        "mean": 44.92232
+      },
+      {
+        "code": "13229",
+        "knownPopulation": 192814,
+        "mean": 43.60945
+      },
+      {
+        "code": "13303",
+        "knownPopulation": 32956,
+        "mean": 44.13108
+      },
+      {
+        "code": "13305",
+        "knownPopulation": 16591,
+        "mean": 48.54068
+      },
+      {
+        "code": "13307",
+        "knownPopulation": 2549,
+        "mean": 57.24696
+      },
+      {
+        "code": "13308",
+        "knownPopulation": 6026,
+        "mean": 56.21971
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003041389",
+      "publishedAt": "2011-10-26",
+      "retrievedAt": "2026-10-04T16:03:32.315Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003041389",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2010-10"
+    }
+  },
+  {
+    "year": 2010,
+    "area": "islands",
+    "group": "japanese",
+    "method": "published",
+    "components": [
+      {
+        "code": "13361",
+        "knownPopulation": 8425,
+        "mean": 50.31246
+      },
+      {
+        "code": "13362",
+        "knownPopulation": 338,
+        "mean": 46.22485
+      },
+      {
+        "code": "13363",
+        "knownPopulation": 2878,
+        "mean": 52.28978
+      },
+      {
+        "code": "13364",
+        "knownPopulation": 1886,
+        "mean": 48.87805
+      },
+      {
+        "code": "13381",
+        "knownPopulation": 2620,
+        "mean": 54.10153
+      },
+      {
+        "code": "13382",
+        "knownPopulation": 346,
+        "mean": 40.7948
+      },
+      {
+        "code": "13401",
+        "knownPopulation": 8133,
+        "mean": 51.44
+      },
+      {
+        "code": "13402",
+        "knownPopulation": 197,
+        "mean": 41.33756
+      },
+      {
+        "code": "13421",
+        "knownPopulation": 2770,
+        "mean": 40.15126
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003041389",
+      "publishedAt": "2011-10-26",
+      "retrievedAt": "2026-10-04T16:03:32.315Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003041389",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2010-10"
+    }
+  },
+  {
+    "year": 2020,
+    "area": "wards",
+    "group": "total",
+    "method": "published",
+    "components": [
+      {
+        "code": "13100",
+        "knownPopulation": 9414419,
+        "mean": 44.76519
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003445160",
+      "publishedAt": "2021-11-30",
+      "retrievedAt": "2026-10-04T16:03:28.512Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003445160",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2020-10"
+    }
+  },
+  {
+    "year": 2020,
+    "area": "tama",
+    "group": "total",
+    "method": "published",
+    "components": [
+      {
+        "code": "13201",
+        "knownPopulation": 561264,
+        "mean": 46.89823
+      },
+      {
+        "code": "13202",
+        "knownPopulation": 183323,
+        "mean": 45.9125
+      },
+      {
+        "code": "13203",
+        "knownPopulation": 144258,
+        "mean": 44.89838
+      },
+      {
+        "code": "13204",
+        "knownPopulation": 188130,
+        "mean": 44.8052
+      },
+      {
+        "code": "13205",
+        "knownPopulation": 132959,
+        "mean": 49.89911
+      },
+      {
+        "code": "13206",
+        "knownPopulation": 255336,
+        "mean": 44.76652
+      },
+      {
+        "code": "13207",
+        "knownPopulation": 112730,
+        "mean": 46.74678
+      },
+      {
+        "code": "13208",
+        "knownPopulation": 232343,
+        "mean": 44.59878
+      },
+      {
+        "code": "13209",
+        "knownPopulation": 420774,
+        "mean": 47.35388
+      },
+      {
+        "code": "13210",
+        "knownPopulation": 120968,
+        "mean": 44.09465
+      },
+      {
+        "code": "13211",
+        "knownPopulation": 191780,
+        "mean": 45.0779
+      },
+      {
+        "code": "13212",
+        "knownPopulation": 183561,
+        "mean": 45.6613
+      },
+      {
+        "code": "13213",
+        "knownPopulation": 148754,
+        "mean": 47.53231
+      },
+      {
+        "code": "13214",
+        "knownPopulation": 123697,
+        "mean": 44.71069
+      },
+      {
+        "code": "13215",
+        "knownPopulation": 74707,
+        "mean": 45.99487
+      },
+      {
+        "code": "13218",
+        "knownPopulation": 55645,
+        "mean": 47.73842
+      },
+      {
+        "code": "13219",
+        "knownPopulation": 82396,
+        "mean": 45.90484
+      },
+      {
+        "code": "13220",
+        "knownPopulation": 83591,
+        "mean": 47.13855
+      },
+      {
+        "code": "13221",
+        "knownPopulation": 74298,
+        "mean": 47.97657
+      },
+      {
+        "code": "13222",
+        "knownPopulation": 113877,
+        "mean": 47.95522
+      },
+      {
+        "code": "13223",
+        "knownPopulation": 69885,
+        "mean": 46.34487
+      },
+      {
+        "code": "13224",
+        "knownPopulation": 146766,
+        "mean": 47.89197
+      },
+      {
+        "code": "13225",
+        "knownPopulation": 91403,
+        "mean": 44.12443
+      },
+      {
+        "code": "13227",
+        "knownPopulation": 54108,
+        "mean": 47.22766
+      },
+      {
+        "code": "13228",
+        "knownPopulation": 76176,
+        "mean": 48.85633
+      },
+      {
+        "code": "13229",
+        "knownPopulation": 202100,
+        "mean": 45.81433
+      },
+      {
+        "code": "13303",
+        "knownPopulation": 31569,
+        "mean": 48.59744
+      },
+      {
+        "code": "13305",
+        "knownPopulation": 16868,
+        "mean": 51.43111
+      },
+      {
+        "code": "13307",
+        "knownPopulation": 1995,
+        "mean": 61.19774
+      },
+      {
+        "code": "13308",
+        "knownPopulation": 4745,
+        "mean": 59.42181
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003445160",
+      "publishedAt": "2021-11-30",
+      "retrievedAt": "2026-10-04T16:03:28.512Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003445160",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2020-10"
+    }
+  },
+  {
+    "year": 2020,
+    "area": "islands",
+    "group": "total",
+    "method": "published",
+    "components": [
+      {
+        "code": "13361",
+        "knownPopulation": 7102,
+        "mean": 52.49324
+      },
+      {
+        "code": "13362",
+        "knownPopulation": 327,
+        "mean": 45.49083
+      },
+      {
+        "code": "13363",
+        "knownPopulation": 2441,
+        "mean": 53.39267
+      },
+      {
+        "code": "13364",
+        "knownPopulation": 1855,
+        "mean": 48.38733
+      },
+      {
+        "code": "13381",
+        "knownPopulation": 2270,
+        "mean": 53.89912
+      },
+      {
+        "code": "13382",
+        "knownPopulation": 323,
+        "mean": 40.887
+      },
+      {
+        "code": "13401",
+        "knownPopulation": 7015,
+        "mean": 53.19722
+      },
+      {
+        "code": "13402",
+        "knownPopulation": 169,
+        "mean": 44.47633
+      },
+      {
+        "code": "13421",
+        "knownPopulation": 2928,
+        "mean": 42.45902
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003445160",
+      "publishedAt": "2021-11-30",
+      "retrievedAt": "2026-10-04T16:03:28.512Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003445160",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2020-10"
+    }
+  },
+  {
+    "year": 2020,
+    "area": "wards",
+    "group": "japanese",
+    "method": "published",
+    "components": [
+      {
+        "code": "13100",
+        "knownPopulation": 9009115,
+        "mean": 45.18333
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003445160",
+      "publishedAt": "2021-11-30",
+      "retrievedAt": "2026-10-04T16:03:28.512Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003445160",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2020-10"
+    }
+  },
+  {
+    "year": 2020,
+    "area": "tama",
+    "group": "japanese",
+    "method": "published",
+    "components": [
+      {
+        "code": "13201",
+        "knownPopulation": 548289,
+        "mean": 47.18265
+      },
+      {
+        "code": "13202",
+        "knownPopulation": 179092,
+        "mean": 46.10676
+      },
+      {
+        "code": "13203",
+        "knownPopulation": 141352,
+        "mean": 45.09252
+      },
+      {
+        "code": "13204",
+        "knownPopulation": 184723,
+        "mean": 44.9503
+      },
+      {
+        "code": "13205",
+        "knownPopulation": 131091,
+        "mean": 50.04576
+      },
+      {
+        "code": "13206",
+        "knownPopulation": 250377,
+        "mean": 44.92724
+      },
+      {
+        "code": "13207",
+        "knownPopulation": 110069,
+        "mean": 46.93183
+      },
+      {
+        "code": "13208",
+        "knownPopulation": 228292,
+        "mean": 44.72132
+      },
+      {
+        "code": "13209",
+        "knownPopulation": 414456,
+        "mean": 47.51575
+      },
+      {
+        "code": "13210",
+        "knownPopulation": 118511,
+        "mean": 44.3034
+      },
+      {
+        "code": "13211",
+        "knownPopulation": 187199,
+        "mean": 45.36711
+      },
+      {
+        "code": "13212",
+        "knownPopulation": 180359,
+        "mean": 45.87051
+      },
+      {
+        "code": "13213",
+        "knownPopulation": 146036,
+        "mean": 47.73704
+      },
+      {
+        "code": "13214",
+        "knownPopulation": 121412,
+        "mean": 44.90779
+      },
+      {
+        "code": "13215",
+        "knownPopulation": 73135,
+        "mean": 46.20989
+      },
+      {
+        "code": "13218",
+        "knownPopulation": 52542,
+        "mean": 48.48565
+      },
+      {
+        "code": "13219",
+        "knownPopulation": 81149,
+        "mean": 46.05741
+      },
+      {
+        "code": "13220",
+        "knownPopulation": 82514,
+        "mean": 47.20673
+      },
+      {
+        "code": "13221",
+        "knownPopulation": 73080,
+        "mean": 48.13736
+      },
+      {
+        "code": "13222",
+        "knownPopulation": 111842,
+        "mean": 48.14902
+      },
+      {
+        "code": "13223",
+        "knownPopulation": 68381,
+        "mean": 46.55899
+      },
+      {
+        "code": "13224",
+        "knownPopulation": 144243,
+        "mean": 48.09236
+      },
+      {
+        "code": "13225",
+        "knownPopulation": 90038,
+        "mean": 44.21198
+      },
+      {
+        "code": "13227",
+        "knownPopulation": 52800,
+        "mean": 47.44013
+      },
+      {
+        "code": "13228",
+        "knownPopulation": 75356,
+        "mean": 48.96329
+      },
+      {
+        "code": "13229",
+        "knownPopulation": 197025,
+        "mean": 46.05519
+      },
+      {
+        "code": "13303",
+        "knownPopulation": 30867,
+        "mean": 48.85034
+      },
+      {
+        "code": "13305",
+        "knownPopulation": 16784,
+        "mean": 51.47408
+      },
+      {
+        "code": "13307",
+        "knownPopulation": 1990,
+        "mean": 61.21658
+      },
+      {
+        "code": "13308",
+        "knownPopulation": 4693,
+        "mean": 59.689
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003445160",
+      "publishedAt": "2021-11-30",
+      "retrievedAt": "2026-10-04T16:03:28.512Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003445160",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2020-10"
+    }
+  },
+  {
+    "year": 2020,
+    "area": "islands",
+    "group": "japanese",
+    "method": "published",
+    "components": [
+      {
+        "code": "13361",
+        "knownPopulation": 7016,
+        "mean": 52.60348
+      },
+      {
+        "code": "13362",
+        "knownPopulation": 322,
+        "mean": 45.65839
+      },
+      {
+        "code": "13363",
+        "knownPopulation": 2430,
+        "mean": 53.43498
+      },
+      {
+        "code": "13364",
+        "knownPopulation": 1850,
+        "mean": 48.44054
+      },
+      {
+        "code": "13381",
+        "knownPopulation": 2239,
+        "mean": 53.94663
+      },
+      {
+        "code": "13382",
+        "knownPopulation": 313,
+        "mean": 40.86422
+      },
+      {
+        "code": "13401",
+        "knownPopulation": 6933,
+        "mean": 53.22552
+      },
+      {
+        "code": "13402",
+        "knownPopulation": 169,
+        "mean": 44.47633
+      },
+      {
+        "code": "13421",
+        "knownPopulation": 2905,
+        "mean": 42.45491
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "公表平均年齢 / 0003445160",
+      "publishedAt": "2021-11-30",
+      "retrievedAt": "2026-10-04T16:03:28.512Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0003445160",
+      "status": "final",
+      "scope": "年齢不詳を除く。",
+      "sourcePeriod": "2020-10"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "wards",
+    "group": "japanese",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 5,
+        "count": 335134
+      },
+      {
+        "lower": 5,
+        "width": 5,
+        "count": 360713
+      },
+      {
+        "lower": 10,
+        "width": 5,
+        "count": 405935
+      },
+      {
+        "lower": 15,
+        "width": 5,
+        "count": 612772
+      },
+      {
+        "lower": 20,
+        "width": 5,
+        "count": 804089
+      },
+      {
+        "lower": 25,
+        "width": 5,
+        "count": 677910
+      },
+      {
+        "lower": 30,
+        "width": 5,
+        "count": 544881
+      },
+      {
+        "lower": 35,
+        "width": 5,
+        "count": 552006
+      },
+      {
+        "lower": 40,
+        "width": 5,
+        "count": 677562
+      },
+      {
+        "lower": 45,
+        "width": 5,
+        "count": 605434
+      },
+      {
+        "lower": 50,
+        "width": 5,
+        "count": 552150
+      },
+      {
+        "lower": 55,
+        "width": 5,
+        "count": 516279
+      },
+      {
+        "lower": 60,
+        "width": 5,
+        "count": 416686
+      },
+      {
+        "lower": 65,
+        "width": 5,
+        "count": 313871
+      },
+      {
+        "lower": 70,
+        "width": 5,
+        "count": 232088
+      },
+      {
+        "lower": 75,
+        "width": 5,
+        "count": 182158
+      },
+      {
+        "lower": 80,
+        "width": 5,
+        "count": 108840
+      },
+      {
+        "lower": 85,
+        "width": 5,
+        "count": 50425
+      },
+      {
+        "lower": 90,
+        "width": 5,
+        "count": 14618
+      },
+      {
+        "lower": 95,
+        "width": 5,
+        "count": 2216
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 183
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第6表 男女・年齢5歳階級別日本人人口",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T16:03:36.027Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031405",
+      "status": "final",
+      "scope": "年齢不詳を除く日本人人口。100歳以上の代表年齢は102.5歳。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "tama",
+    "group": "japanese",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 5,
+        "count": 178040
+      },
+      {
+        "lower": 5,
+        "width": 5,
+        "count": 196221
+      },
+      {
+        "lower": 10,
+        "width": 5,
+        "count": 225232
+      },
+      {
+        "lower": 15,
+        "width": 5,
+        "count": 324842
+      },
+      {
+        "lower": 20,
+        "width": 5,
+        "count": 370116
+      },
+      {
+        "lower": 25,
+        "width": 5,
+        "count": 286417
+      },
+      {
+        "lower": 30,
+        "width": 5,
+        "count": 234871
+      },
+      {
+        "lower": 35,
+        "width": 5,
+        "count": 251459
+      },
+      {
+        "lower": 40,
+        "width": 5,
+        "count": 308276
+      },
+      {
+        "lower": 45,
+        "width": 5,
+        "count": 278457
+      },
+      {
+        "lower": 50,
+        "width": 5,
+        "count": 244295
+      },
+      {
+        "lower": 55,
+        "width": 5,
+        "count": 214893
+      },
+      {
+        "lower": 60,
+        "width": 5,
+        "count": 165381
+      },
+      {
+        "lower": 65,
+        "width": 5,
+        "count": 114740
+      },
+      {
+        "lower": 70,
+        "width": 5,
+        "count": 82888
+      },
+      {
+        "lower": 75,
+        "width": 5,
+        "count": 64713
+      },
+      {
+        "lower": 80,
+        "width": 5,
+        "count": 39115
+      },
+      {
+        "lower": 85,
+        "width": 5,
+        "count": 18119
+      },
+      {
+        "lower": 90,
+        "width": 5,
+        "count": 5661
+      },
+      {
+        "lower": 95,
+        "width": 5,
+        "count": 945
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 90
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第6表 男女・年齢5歳階級別日本人人口",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T16:03:36.027Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031405",
+      "status": "final",
+      "scope": "年齢不詳を除く日本人人口。100歳以上の代表年齢は102.5歳。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "islands",
+    "group": "japanese",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 5,
+        "count": 1681
+      },
+      {
+        "lower": 5,
+        "width": 5,
+        "count": 2069
+      },
+      {
+        "lower": 10,
+        "width": 5,
+        "count": 2152
+      },
+      {
+        "lower": 15,
+        "width": 5,
+        "count": 1727
+      },
+      {
+        "lower": 20,
+        "width": 5,
+        "count": 916
+      },
+      {
+        "lower": 25,
+        "width": 5,
+        "count": 1664
+      },
+      {
+        "lower": 30,
+        "width": 5,
+        "count": 1917
+      },
+      {
+        "lower": 35,
+        "width": 5,
+        "count": 2419
+      },
+      {
+        "lower": 40,
+        "width": 5,
+        "count": 2814
+      },
+      {
+        "lower": 45,
+        "width": 5,
+        "count": 2191
+      },
+      {
+        "lower": 50,
+        "width": 5,
+        "count": 2012
+      },
+      {
+        "lower": 55,
+        "width": 5,
+        "count": 2396
+      },
+      {
+        "lower": 60,
+        "width": 5,
+        "count": 2350
+      },
+      {
+        "lower": 65,
+        "width": 5,
+        "count": 1947
+      },
+      {
+        "lower": 70,
+        "width": 5,
+        "count": 1566
+      },
+      {
+        "lower": 75,
+        "width": 5,
+        "count": 1157
+      },
+      {
+        "lower": 80,
+        "width": 5,
+        "count": 730
+      },
+      {
+        "lower": 85,
+        "width": 5,
+        "count": 376
+      },
+      {
+        "lower": 90,
+        "width": 5,
+        "count": 128
+      },
+      {
+        "lower": 95,
+        "width": 5,
+        "count": 24
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 0
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第6表 男女・年齢5歳階級別日本人人口",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T16:03:36.027Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031405",
+      "status": "final",
+      "scope": "年齢不詳を除く日本人人口。100歳以上の代表年齢は102.5歳。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 1960,
+    "area": "wards",
+    "group": "total",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 5,
+        "count": 575082
+      },
+      {
+        "lower": 5,
+        "width": 5,
+        "count": 554931
+      },
+      {
+        "lower": 10,
+        "width": 5,
+        "count": 738018
+      },
+      {
+        "lower": 15,
+        "width": 5,
+        "count": 1104224
+      },
+      {
+        "lower": 20,
+        "width": 5,
+        "count": 1167109
+      },
+      {
+        "lower": 25,
+        "width": 5,
+        "count": 956107
+      },
+      {
+        "lower": 30,
+        "width": 5,
+        "count": 710488
+      },
+      {
+        "lower": 35,
+        "width": 5,
+        "count": 537854
+      },
+      {
+        "lower": 40,
+        "width": 5,
+        "count": 433346
+      },
+      {
+        "lower": 45,
+        "width": 5,
+        "count": 403224
+      },
+      {
+        "lower": 50,
+        "width": 5,
+        "count": 334025
+      },
+      {
+        "lower": 55,
+        "width": 5,
+        "count": 280116
+      },
+      {
+        "lower": 60,
+        "width": 5,
+        "count": 208524
+      },
+      {
+        "lower": 65,
+        "width": 5,
+        "count": 140395
+      },
+      {
+        "lower": 70,
+        "width": 5,
+        "count": 91479
+      },
+      {
+        "lower": 75,
+        "width": 5,
+        "count": 47938
+      },
+      {
+        "lower": 80,
+        "width": 5,
+        "count": 20361
+      },
+      {
+        "lower": 85,
+        "width": 5,
+        "count": 5675
+      },
+      {
+        "lower": 90,
+        "width": 5,
+        "count": 1131
+      }
+    ],
+    "source": {
+      "publisher": "東京都",
+      "statistics": "国勢調査",
+      "table": "昭和35年国勢調査結果 第15表(2)、40頁 区部",
+      "sourcePeriod": "1960-10",
+      "publishedAt": "1964",
+      "retrievedAt": "2026-10-05T00:00:00+09:00",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/tnenkan/1963/tn63qa0022.pdf",
+      "status": "final",
+      "scope": "年齢不詳を除く。"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "wards",
+    "group": "foreign",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 5,
+        "count": 5747
+      },
+      {
+        "lower": 5,
+        "width": 5,
+        "count": 5845
+      },
+      {
+        "lower": 10,
+        "width": 5,
+        "count": 5607
+      },
+      {
+        "lower": 15,
+        "width": 5,
+        "count": 6850
+      },
+      {
+        "lower": 20,
+        "width": 5,
+        "count": 16465
+      },
+      {
+        "lower": 25,
+        "width": 5,
+        "count": 25202
+      },
+      {
+        "lower": 30,
+        "width": 5,
+        "count": 19862
+      },
+      {
+        "lower": 35,
+        "width": 5,
+        "count": 14040
+      },
+      {
+        "lower": 40,
+        "width": 5,
+        "count": 9570
+      },
+      {
+        "lower": 45,
+        "width": 5,
+        "count": 6268
+      },
+      {
+        "lower": 50,
+        "width": 5,
+        "count": 4642
+      },
+      {
+        "lower": 55,
+        "width": 5,
+        "count": 3673
+      },
+      {
+        "lower": 60,
+        "width": 5,
+        "count": 3324
+      },
+      {
+        "lower": 65,
+        "width": 5,
+        "count": 2772
+      },
+      {
+        "lower": 70,
+        "width": 5,
+        "count": 1691
+      },
+      {
+        "lower": 75,
+        "width": 5,
+        "count": 990
+      },
+      {
+        "lower": 80,
+        "width": 5,
+        "count": 423
+      },
+      {
+        "lower": 85,
+        "width": 5,
+        "count": 177
+      },
+      {
+        "lower": 90,
+        "width": 5,
+        "count": 52
+      },
+      {
+        "lower": 95,
+        "width": 5,
+        "count": 2
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 1
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第6表 男女・年齢5歳階級別日本人人口",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T16:03:36.027Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031405",
+      "status": "final",
+      "scope": "年齢既知総人口8099153人－日本人人口7965950人＝公表外国人人口133203人を照合。各年齢階級でも総人口から日本人を差し引く。年齢不詳・国籍不詳を外国人に配分しない。総人口年齢表：https://www.toukei.metro.tokyo.lg.jp/tnenkan/1991/tn91qa0022.pdf。外国人総数：https://www.e-stat.go.jp/dbview?sid=0000031513。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "tama",
+    "group": "foreign",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 5,
+        "count": 1002
+      },
+      {
+        "lower": 5,
+        "width": 5,
+        "count": 1012
+      },
+      {
+        "lower": 10,
+        "width": 5,
+        "count": 1085
+      },
+      {
+        "lower": 15,
+        "width": 5,
+        "count": 2166
+      },
+      {
+        "lower": 20,
+        "width": 5,
+        "count": 4057
+      },
+      {
+        "lower": 25,
+        "width": 5,
+        "count": 4182
+      },
+      {
+        "lower": 30,
+        "width": 5,
+        "count": 3130
+      },
+      {
+        "lower": 35,
+        "width": 5,
+        "count": 2347
+      },
+      {
+        "lower": 40,
+        "width": 5,
+        "count": 1782
+      },
+      {
+        "lower": 45,
+        "width": 5,
+        "count": 1235
+      },
+      {
+        "lower": 50,
+        "width": 5,
+        "count": 980
+      },
+      {
+        "lower": 55,
+        "width": 5,
+        "count": 749
+      },
+      {
+        "lower": 60,
+        "width": 5,
+        "count": 742
+      },
+      {
+        "lower": 65,
+        "width": 5,
+        "count": 651
+      },
+      {
+        "lower": 70,
+        "width": 5,
+        "count": 355
+      },
+      {
+        "lower": 75,
+        "width": 5,
+        "count": 176
+      },
+      {
+        "lower": 80,
+        "width": 5,
+        "count": 78
+      },
+      {
+        "lower": 85,
+        "width": 5,
+        "count": 37
+      },
+      {
+        "lower": 90,
+        "width": 5,
+        "count": 13
+      },
+      {
+        "lower": 95,
+        "width": 5,
+        "count": 2
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 0
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第6表 男女・年齢5歳階級別日本人人口",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T16:03:36.027Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031405",
+      "status": "final",
+      "scope": "年齢既知総人口3630552人－日本人人口3604771人＝公表外国人人口25781人を照合。各年齢階級でも総人口から日本人を差し引く。年齢不詳・国籍不詳を外国人に配分しない。総人口年齢表：https://www.toukei.metro.tokyo.lg.jp/tnenkan/1991/tn91qa0022.pdf。外国人総数：https://www.e-stat.go.jp/dbview?sid=0000031513。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 1990,
+    "area": "islands",
+    "group": "foreign",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 5,
+        "count": 1
+      },
+      {
+        "lower": 5,
+        "width": 5,
+        "count": 2
+      },
+      {
+        "lower": 10,
+        "width": 5,
+        "count": 1
+      },
+      {
+        "lower": 15,
+        "width": 5,
+        "count": 2
+      },
+      {
+        "lower": 20,
+        "width": 5,
+        "count": 21
+      },
+      {
+        "lower": 25,
+        "width": 5,
+        "count": 16
+      },
+      {
+        "lower": 30,
+        "width": 5,
+        "count": 12
+      },
+      {
+        "lower": 35,
+        "width": 5,
+        "count": 8
+      },
+      {
+        "lower": 40,
+        "width": 5,
+        "count": 7
+      },
+      {
+        "lower": 45,
+        "width": 5,
+        "count": 6
+      },
+      {
+        "lower": 50,
+        "width": 5,
+        "count": 3
+      },
+      {
+        "lower": 55,
+        "width": 5,
+        "count": 0
+      },
+      {
+        "lower": 60,
+        "width": 5,
+        "count": 2
+      },
+      {
+        "lower": 65,
+        "width": 5,
+        "count": 4
+      },
+      {
+        "lower": 70,
+        "width": 5,
+        "count": 3
+      },
+      {
+        "lower": 75,
+        "width": 5,
+        "count": 1
+      },
+      {
+        "lower": 80,
+        "width": 5,
+        "count": 0
+      },
+      {
+        "lower": 85,
+        "width": 5,
+        "count": 0
+      },
+      {
+        "lower": 90,
+        "width": 5,
+        "count": 0
+      },
+      {
+        "lower": 95,
+        "width": 5,
+        "count": 0
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 0
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第6表 男女・年齢5歳階級別日本人人口",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T16:03:36.027Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000031405",
+      "status": "final",
+      "scope": "年齢既知総人口32325人－日本人人口32236人＝公表外国人人口89人を照合。各年齢階級でも総人口から日本人を差し引く。年齢不詳・国籍不詳を外国人に配分しない。総人口年齢表：https://www.toukei.metro.tokyo.lg.jp/tnenkan/1991/tn91qa0022.pdf。外国人総数：https://www.e-stat.go.jp/dbview?sid=0000031513。",
+      "sourcePeriod": "1990-10"
+    }
+  },
+  {
+    "year": 2000,
+    "area": "wards",
+    "group": "foreign",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 5,
+        "count": 6399
+      },
+      {
+        "lower": 5,
+        "width": 5,
+        "count": 5823
+      },
+      {
+        "lower": 10,
+        "width": 5,
+        "count": 5537
+      },
+      {
+        "lower": 15,
+        "width": 5,
+        "count": 6879
+      },
+      {
+        "lower": 20,
+        "width": 5,
+        "count": 16370
+      },
+      {
+        "lower": 25,
+        "width": 5,
+        "count": 25571
+      },
+      {
+        "lower": 30,
+        "width": 5,
+        "count": 27750
+      },
+      {
+        "lower": 35,
+        "width": 5,
+        "count": 23944
+      },
+      {
+        "lower": 40,
+        "width": 5,
+        "count": 16519
+      },
+      {
+        "lower": 45,
+        "width": 5,
+        "count": 11476
+      },
+      {
+        "lower": 50,
+        "width": 5,
+        "count": 8026
+      },
+      {
+        "lower": 55,
+        "width": 5,
+        "count": 5528
+      },
+      {
+        "lower": 60,
+        "width": 5,
+        "count": 4122
+      },
+      {
+        "lower": 65,
+        "width": 5,
+        "count": 3160
+      },
+      {
+        "lower": 70,
+        "width": 5,
+        "count": 2597
+      },
+      {
+        "lower": 75,
+        "width": 5,
+        "count": 2163
+      },
+      {
+        "lower": 80,
+        "width": 5,
+        "count": 1105
+      },
+      {
+        "lower": 85,
+        "width": 5,
+        "count": 476
+      },
+      {
+        "lower": 90,
+        "width": 5,
+        "count": 136
+      },
+      {
+        "lower": 95,
+        "width": 5,
+        "count": 29
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 5
+      }
+    ],
+    "source": {
+      "publisher": "東京都",
+      "statistics": "東京都地域統計",
+      "table": "国勢調査 第3表 年齢・男女別人口",
+      "sourcePeriod": "2000-10",
+      "publishedAt": "2001",
+      "retrievedAt": "2026-10-04T09:58:23.918Z",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/kt00tv3001.csv",
+      "status": "final",
+      "scope": "年齢既知総人口8092268人－日本人人口7918653人＝公表外国人人口173615人を照合。各年齢階級でも総人口から日本人を差し引く。年齢不詳・国籍不詳を外国人に配分しない。総人口年齢表：https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/kt00tv3001.csv。外国人総数：https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/kt00tv44001.csv。"
+    }
+  },
+  {
+    "year": 2000,
+    "area": "tama",
+    "group": "foreign",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 5,
+        "count": 1574
+      },
+      {
+        "lower": 5,
+        "width": 5,
+        "count": 1373
+      },
+      {
+        "lower": 10,
+        "width": 5,
+        "count": 1322
+      },
+      {
+        "lower": 15,
+        "width": 5,
+        "count": 2057
+      },
+      {
+        "lower": 20,
+        "width": 5,
+        "count": 4298
+      },
+      {
+        "lower": 25,
+        "width": 5,
+        "count": 5629
+      },
+      {
+        "lower": 30,
+        "width": 5,
+        "count": 6295
+      },
+      {
+        "lower": 35,
+        "width": 5,
+        "count": 5214
+      },
+      {
+        "lower": 40,
+        "width": 5,
+        "count": 3365
+      },
+      {
+        "lower": 45,
+        "width": 5,
+        "count": 2295
+      },
+      {
+        "lower": 50,
+        "width": 5,
+        "count": 1672
+      },
+      {
+        "lower": 55,
+        "width": 5,
+        "count": 1198
+      },
+      {
+        "lower": 60,
+        "width": 5,
+        "count": 872
+      },
+      {
+        "lower": 65,
+        "width": 5,
+        "count": 649
+      },
+      {
+        "lower": 70,
+        "width": 5,
+        "count": 581
+      },
+      {
+        "lower": 75,
+        "width": 5,
+        "count": 489
+      },
+      {
+        "lower": 80,
+        "width": 5,
+        "count": 203
+      },
+      {
+        "lower": 85,
+        "width": 5,
+        "count": 86
+      },
+      {
+        "lower": 90,
+        "width": 5,
+        "count": 32
+      },
+      {
+        "lower": 95,
+        "width": 5,
+        "count": 5
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 1
+      }
+    ],
+    "source": {
+      "publisher": "東京都",
+      "statistics": "東京都地域統計",
+      "table": "国勢調査 第3表 年齢・男女別人口",
+      "sourcePeriod": "2000-10",
+      "publishedAt": "2001",
+      "retrievedAt": "2026-10-04T09:58:23.918Z",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/kt00tv3001.csv",
+      "status": "final",
+      "scope": "年齢既知総人口3897345人－日本人人口3858135人＝公表外国人人口39210人を照合。各年齢階級でも総人口から日本人を差し引く。年齢不詳・国籍不詳を外国人に配分しない。総人口年齢表：https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/kt00tv3001.csv。外国人総数：https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/kt00tv44001.csv。"
+    }
+  },
+  {
+    "year": 2000,
+    "area": "islands",
+    "group": "foreign",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 5,
+        "count": 2
+      },
+      {
+        "lower": 5,
+        "width": 5,
+        "count": 2
+      },
+      {
+        "lower": 10,
+        "width": 5,
+        "count": 1
+      },
+      {
+        "lower": 15,
+        "width": 5,
+        "count": 2
+      },
+      {
+        "lower": 20,
+        "width": 5,
+        "count": 20
+      },
+      {
+        "lower": 25,
+        "width": 5,
+        "count": 30
+      },
+      {
+        "lower": 30,
+        "width": 5,
+        "count": 24
+      },
+      {
+        "lower": 35,
+        "width": 5,
+        "count": 14
+      },
+      {
+        "lower": 40,
+        "width": 5,
+        "count": 22
+      },
+      {
+        "lower": 45,
+        "width": 5,
+        "count": 15
+      },
+      {
+        "lower": 50,
+        "width": 5,
+        "count": 9
+      },
+      {
+        "lower": 55,
+        "width": 5,
+        "count": 3
+      },
+      {
+        "lower": 60,
+        "width": 5,
+        "count": 2
+      },
+      {
+        "lower": 65,
+        "width": 5,
+        "count": 1
+      },
+      {
+        "lower": 70,
+        "width": 5,
+        "count": 0
+      },
+      {
+        "lower": 75,
+        "width": 5,
+        "count": 3
+      },
+      {
+        "lower": 80,
+        "width": 5,
+        "count": 0
+      },
+      {
+        "lower": 85,
+        "width": 5,
+        "count": 0
+      },
+      {
+        "lower": 90,
+        "width": 5,
+        "count": 0
+      },
+      {
+        "lower": 95,
+        "width": 5,
+        "count": 0
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 0
+      }
+    ],
+    "source": {
+      "publisher": "東京都",
+      "statistics": "東京都地域統計",
+      "table": "国勢調査 第3表 年齢・男女別人口",
+      "sourcePeriod": "2000-10",
+      "publishedAt": "2001",
+      "retrievedAt": "2026-10-04T09:58:23.918Z",
+      "url": "https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/kt00tv3001.csv",
+      "status": "final",
+      "scope": "年齢既知総人口27640人－日本人人口27490人＝公表外国人人口150人を照合。各年齢階級でも総人口から日本人を差し引く。年齢不詳・国籍不詳を外国人に配分しない。総人口年齢表：https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/kt00tv3001.csv。外国人総数：https://www.toukei.metro.tokyo.lg.jp/kokutyo/2000/kt00tv44001.csv。"
+    }
+  },
+  {
+    "year": 1980,
+    "area": "wards",
+    "group": "total",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 1,
+        "count": 94136
+      },
+      {
+        "lower": 1,
+        "width": 1,
+        "count": 94017
+      },
+      {
+        "lower": 2,
+        "width": 1,
+        "count": 96146
+      },
+      {
+        "lower": 3,
+        "width": 1,
+        "count": 95938
+      },
+      {
+        "lower": 4,
+        "width": 1,
+        "count": 99832
+      },
+      {
+        "lower": 5,
+        "width": 1,
+        "count": 106023
+      },
+      {
+        "lower": 6,
+        "width": 1,
+        "count": 114080
+      },
+      {
+        "lower": 7,
+        "width": 1,
+        "count": 119214
+      },
+      {
+        "lower": 8,
+        "width": 1,
+        "count": 117844
+      },
+      {
+        "lower": 9,
+        "width": 1,
+        "count": 117809
+      },
+      {
+        "lower": 10,
+        "width": 1,
+        "count": 114840
+      },
+      {
+        "lower": 11,
+        "width": 1,
+        "count": 115129
+      },
+      {
+        "lower": 12,
+        "width": 1,
+        "count": 113106
+      },
+      {
+        "lower": 13,
+        "width": 1,
+        "count": 114243
+      },
+      {
+        "lower": 14,
+        "width": 1,
+        "count": 94352
+      },
+      {
+        "lower": 15,
+        "width": 1,
+        "count": 112925
+      },
+      {
+        "lower": 16,
+        "width": 1,
+        "count": 105842
+      },
+      {
+        "lower": 17,
+        "width": 1,
+        "count": 102635
+      },
+      {
+        "lower": 18,
+        "width": 1,
+        "count": 131702
+      },
+      {
+        "lower": 19,
+        "width": 1,
+        "count": 170986
+      },
+      {
+        "lower": 20,
+        "width": 1,
+        "count": 181788
+      },
+      {
+        "lower": 21,
+        "width": 1,
+        "count": 184519
+      },
+      {
+        "lower": 22,
+        "width": 1,
+        "count": 172384
+      },
+      {
+        "lower": 23,
+        "width": 1,
+        "count": 154538
+      },
+      {
+        "lower": 24,
+        "width": 1,
+        "count": 150139
+      },
+      {
+        "lower": 25,
+        "width": 1,
+        "count": 149869
+      },
+      {
+        "lower": 26,
+        "width": 1,
+        "count": 144146
+      },
+      {
+        "lower": 27,
+        "width": 1,
+        "count": 146819
+      },
+      {
+        "lower": 28,
+        "width": 1,
+        "count": 150904
+      },
+      {
+        "lower": 29,
+        "width": 1,
+        "count": 155427
+      },
+      {
+        "lower": 30,
+        "width": 1,
+        "count": 166857
+      },
+      {
+        "lower": 31,
+        "width": 1,
+        "count": 179342
+      },
+      {
+        "lower": 32,
+        "width": 1,
+        "count": 180091
+      },
+      {
+        "lower": 33,
+        "width": 1,
+        "count": 173028
+      },
+      {
+        "lower": 34,
+        "width": 1,
+        "count": 107896
+      },
+      {
+        "lower": 35,
+        "width": 1,
+        "count": 115340
+      },
+      {
+        "lower": 36,
+        "width": 1,
+        "count": 140344
+      },
+      {
+        "lower": 37,
+        "width": 1,
+        "count": 138645
+      },
+      {
+        "lower": 38,
+        "width": 1,
+        "count": 138721
+      },
+      {
+        "lower": 39,
+        "width": 1,
+        "count": 135778
+      },
+      {
+        "lower": 40,
+        "width": 1,
+        "count": 125509
+      },
+      {
+        "lower": 41,
+        "width": 1,
+        "count": 108412
+      },
+      {
+        "lower": 42,
+        "width": 1,
+        "count": 117316
+      },
+      {
+        "lower": 43,
+        "width": 1,
+        "count": 122091
+      },
+      {
+        "lower": 44,
+        "width": 1,
+        "count": 127548
+      },
+      {
+        "lower": 45,
+        "width": 1,
+        "count": 124393
+      },
+      {
+        "lower": 46,
+        "width": 1,
+        "count": 115083
+      },
+      {
+        "lower": 47,
+        "width": 1,
+        "count": 117604
+      },
+      {
+        "lower": 48,
+        "width": 1,
+        "count": 112685
+      },
+      {
+        "lower": 49,
+        "width": 1,
+        "count": 108484
+      },
+      {
+        "lower": 50,
+        "width": 1,
+        "count": 104197
+      },
+      {
+        "lower": 51,
+        "width": 1,
+        "count": 99180
+      },
+      {
+        "lower": 52,
+        "width": 1,
+        "count": 97983
+      },
+      {
+        "lower": 53,
+        "width": 1,
+        "count": 95879
+      },
+      {
+        "lower": 54,
+        "width": 1,
+        "count": 92036
+      },
+      {
+        "lower": 55,
+        "width": 1,
+        "count": 88992
+      },
+      {
+        "lower": 56,
+        "width": 1,
+        "count": 78458
+      },
+      {
+        "lower": 57,
+        "width": 1,
+        "count": 74375
+      },
+      {
+        "lower": 58,
+        "width": 1,
+        "count": 71992
+      },
+      {
+        "lower": 59,
+        "width": 1,
+        "count": 69233
+      },
+      {
+        "lower": 60,
+        "width": 1,
+        "count": 69939
+      },
+      {
+        "lower": 61,
+        "width": 1,
+        "count": 58224
+      },
+      {
+        "lower": 62,
+        "width": 1,
+        "count": 57960
+      },
+      {
+        "lower": 63,
+        "width": 1,
+        "count": 57504
+      },
+      {
+        "lower": 64,
+        "width": 1,
+        "count": 57414
+      },
+      {
+        "lower": 65,
+        "width": 1,
+        "count": 56643
+      },
+      {
+        "lower": 66,
+        "width": 1,
+        "count": 56044
+      },
+      {
+        "lower": 67,
+        "width": 1,
+        "count": 52228
+      },
+      {
+        "lower": 68,
+        "width": 1,
+        "count": 50476
+      },
+      {
+        "lower": 69,
+        "width": 1,
+        "count": 47293
+      },
+      {
+        "lower": 70,
+        "width": 1,
+        "count": 45388
+      },
+      {
+        "lower": 71,
+        "width": 1,
+        "count": 42186
+      },
+      {
+        "lower": 72,
+        "width": 1,
+        "count": 39317
+      },
+      {
+        "lower": 73,
+        "width": 1,
+        "count": 37444
+      },
+      {
+        "lower": 74,
+        "width": 1,
+        "count": 30742
+      },
+      {
+        "lower": 75,
+        "width": 1,
+        "count": 30738
+      },
+      {
+        "lower": 76,
+        "width": 1,
+        "count": 27718
+      },
+      {
+        "lower": 77,
+        "width": 1,
+        "count": 26464
+      },
+      {
+        "lower": 78,
+        "width": 1,
+        "count": 24024
+      },
+      {
+        "lower": 79,
+        "width": 1,
+        "count": 21878
+      },
+      {
+        "lower": 80,
+        "width": 1,
+        "count": 18478
+      },
+      {
+        "lower": 81,
+        "width": 1,
+        "count": 15439
+      },
+      {
+        "lower": 82,
+        "width": 1,
+        "count": 13599
+      },
+      {
+        "lower": 83,
+        "width": 1,
+        "count": 11222
+      },
+      {
+        "lower": 84,
+        "width": 1,
+        "count": 8911
+      },
+      {
+        "lower": 85,
+        "width": 1,
+        "count": 7256
+      },
+      {
+        "lower": 86,
+        "width": 1,
+        "count": 5807
+      },
+      {
+        "lower": 87,
+        "width": 1,
+        "count": 4437
+      },
+      {
+        "lower": 88,
+        "width": 1,
+        "count": 3525
+      },
+      {
+        "lower": 89,
+        "width": 1,
+        "count": 2575
+      },
+      {
+        "lower": 90,
+        "width": 1,
+        "count": 2082
+      },
+      {
+        "lower": 91,
+        "width": 1,
+        "count": 1515
+      },
+      {
+        "lower": 92,
+        "width": 1,
+        "count": 1061
+      },
+      {
+        "lower": 93,
+        "width": 1,
+        "count": 734
+      },
+      {
+        "lower": 94,
+        "width": 1,
+        "count": 468
+      },
+      {
+        "lower": 95,
+        "width": 1,
+        "count": 298
+      },
+      {
+        "lower": 96,
+        "width": 1,
+        "count": 186
+      },
+      {
+        "lower": 97,
+        "width": 1,
+        "count": 109
+      },
+      {
+        "lower": 98,
+        "width": 1,
+        "count": 66
+      },
+      {
+        "lower": 99,
+        "width": 1,
+        "count": 33
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 54
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第4表 総人口・日本人・各歳別人口",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T16:12:58.455Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000030129",
+      "status": "final",
+      "scope": "区部。年齢既知総人口8336303人＝日本人8261922人＋公表外国人人口74381人を照合。外国人は各歳で総人口から日本人を差し引く。年齢不詳を含めず、国籍不詳を外国人に配分しない。外国人総数：https://www.e-stat.go.jp/dbview?sid=0000030133。",
+      "sourcePeriod": "1980-10"
+    }
+  },
+  {
+    "year": 1980,
+    "area": "wards",
+    "group": "japanese",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 1,
+        "count": 93023
+      },
+      {
+        "lower": 1,
+        "width": 1,
+        "count": 92894
+      },
+      {
+        "lower": 2,
+        "width": 1,
+        "count": 95022
+      },
+      {
+        "lower": 3,
+        "width": 1,
+        "count": 94830
+      },
+      {
+        "lower": 4,
+        "width": 1,
+        "count": 98670
+      },
+      {
+        "lower": 5,
+        "width": 1,
+        "count": 104802
+      },
+      {
+        "lower": 6,
+        "width": 1,
+        "count": 112776
+      },
+      {
+        "lower": 7,
+        "width": 1,
+        "count": 117994
+      },
+      {
+        "lower": 8,
+        "width": 1,
+        "count": 116639
+      },
+      {
+        "lower": 9,
+        "width": 1,
+        "count": 116564
+      },
+      {
+        "lower": 10,
+        "width": 1,
+        "count": 113660
+      },
+      {
+        "lower": 11,
+        "width": 1,
+        "count": 113980
+      },
+      {
+        "lower": 12,
+        "width": 1,
+        "count": 111980
+      },
+      {
+        "lower": 13,
+        "width": 1,
+        "count": 113120
+      },
+      {
+        "lower": 14,
+        "width": 1,
+        "count": 93343
+      },
+      {
+        "lower": 15,
+        "width": 1,
+        "count": 111800
+      },
+      {
+        "lower": 16,
+        "width": 1,
+        "count": 104701
+      },
+      {
+        "lower": 17,
+        "width": 1,
+        "count": 101538
+      },
+      {
+        "lower": 18,
+        "width": 1,
+        "count": 130672
+      },
+      {
+        "lower": 19,
+        "width": 1,
+        "count": 169838
+      },
+      {
+        "lower": 20,
+        "width": 1,
+        "count": 180564
+      },
+      {
+        "lower": 21,
+        "width": 1,
+        "count": 183167
+      },
+      {
+        "lower": 22,
+        "width": 1,
+        "count": 170925
+      },
+      {
+        "lower": 23,
+        "width": 1,
+        "count": 152995
+      },
+      {
+        "lower": 24,
+        "width": 1,
+        "count": 148583
+      },
+      {
+        "lower": 25,
+        "width": 1,
+        "count": 148126
+      },
+      {
+        "lower": 26,
+        "width": 1,
+        "count": 142395
+      },
+      {
+        "lower": 27,
+        "width": 1,
+        "count": 145053
+      },
+      {
+        "lower": 28,
+        "width": 1,
+        "count": 149115
+      },
+      {
+        "lower": 29,
+        "width": 1,
+        "count": 153687
+      },
+      {
+        "lower": 30,
+        "width": 1,
+        "count": 165117
+      },
+      {
+        "lower": 31,
+        "width": 1,
+        "count": 177681
+      },
+      {
+        "lower": 32,
+        "width": 1,
+        "count": 178505
+      },
+      {
+        "lower": 33,
+        "width": 1,
+        "count": 171434
+      },
+      {
+        "lower": 34,
+        "width": 1,
+        "count": 106619
+      },
+      {
+        "lower": 35,
+        "width": 1,
+        "count": 114123
+      },
+      {
+        "lower": 36,
+        "width": 1,
+        "count": 139173
+      },
+      {
+        "lower": 37,
+        "width": 1,
+        "count": 137494
+      },
+      {
+        "lower": 38,
+        "width": 1,
+        "count": 137662
+      },
+      {
+        "lower": 39,
+        "width": 1,
+        "count": 134666
+      },
+      {
+        "lower": 40,
+        "width": 1,
+        "count": 124553
+      },
+      {
+        "lower": 41,
+        "width": 1,
+        "count": 107491
+      },
+      {
+        "lower": 42,
+        "width": 1,
+        "count": 116433
+      },
+      {
+        "lower": 43,
+        "width": 1,
+        "count": 121263
+      },
+      {
+        "lower": 44,
+        "width": 1,
+        "count": 126665
+      },
+      {
+        "lower": 45,
+        "width": 1,
+        "count": 123575
+      },
+      {
+        "lower": 46,
+        "width": 1,
+        "count": 114366
+      },
+      {
+        "lower": 47,
+        "width": 1,
+        "count": 116828
+      },
+      {
+        "lower": 48,
+        "width": 1,
+        "count": 111936
+      },
+      {
+        "lower": 49,
+        "width": 1,
+        "count": 107758
+      },
+      {
+        "lower": 50,
+        "width": 1,
+        "count": 103436
+      },
+      {
+        "lower": 51,
+        "width": 1,
+        "count": 98419
+      },
+      {
+        "lower": 52,
+        "width": 1,
+        "count": 97184
+      },
+      {
+        "lower": 53,
+        "width": 1,
+        "count": 94917
+      },
+      {
+        "lower": 54,
+        "width": 1,
+        "count": 91313
+      },
+      {
+        "lower": 55,
+        "width": 1,
+        "count": 88232
+      },
+      {
+        "lower": 56,
+        "width": 1,
+        "count": 77667
+      },
+      {
+        "lower": 57,
+        "width": 1,
+        "count": 73552
+      },
+      {
+        "lower": 58,
+        "width": 1,
+        "count": 71265
+      },
+      {
+        "lower": 59,
+        "width": 1,
+        "count": 68508
+      },
+      {
+        "lower": 60,
+        "width": 1,
+        "count": 69348
+      },
+      {
+        "lower": 61,
+        "width": 1,
+        "count": 57743
+      },
+      {
+        "lower": 62,
+        "width": 1,
+        "count": 57479
+      },
+      {
+        "lower": 63,
+        "width": 1,
+        "count": 57055
+      },
+      {
+        "lower": 64,
+        "width": 1,
+        "count": 57005
+      },
+      {
+        "lower": 65,
+        "width": 1,
+        "count": 56278
+      },
+      {
+        "lower": 66,
+        "width": 1,
+        "count": 55633
+      },
+      {
+        "lower": 67,
+        "width": 1,
+        "count": 51868
+      },
+      {
+        "lower": 68,
+        "width": 1,
+        "count": 50178
+      },
+      {
+        "lower": 69,
+        "width": 1,
+        "count": 47029
+      },
+      {
+        "lower": 70,
+        "width": 1,
+        "count": 45169
+      },
+      {
+        "lower": 71,
+        "width": 1,
+        "count": 41974
+      },
+      {
+        "lower": 72,
+        "width": 1,
+        "count": 39162
+      },
+      {
+        "lower": 73,
+        "width": 1,
+        "count": 37278
+      },
+      {
+        "lower": 74,
+        "width": 1,
+        "count": 30581
+      },
+      {
+        "lower": 75,
+        "width": 1,
+        "count": 30612
+      },
+      {
+        "lower": 76,
+        "width": 1,
+        "count": 27617
+      },
+      {
+        "lower": 77,
+        "width": 1,
+        "count": 26375
+      },
+      {
+        "lower": 78,
+        "width": 1,
+        "count": 23936
+      },
+      {
+        "lower": 79,
+        "width": 1,
+        "count": 21791
+      },
+      {
+        "lower": 80,
+        "width": 1,
+        "count": 18413
+      },
+      {
+        "lower": 81,
+        "width": 1,
+        "count": 15387
+      },
+      {
+        "lower": 82,
+        "width": 1,
+        "count": 13561
+      },
+      {
+        "lower": 83,
+        "width": 1,
+        "count": 11178
+      },
+      {
+        "lower": 84,
+        "width": 1,
+        "count": 8885
+      },
+      {
+        "lower": 85,
+        "width": 1,
+        "count": 7231
+      },
+      {
+        "lower": 86,
+        "width": 1,
+        "count": 5789
+      },
+      {
+        "lower": 87,
+        "width": 1,
+        "count": 4424
+      },
+      {
+        "lower": 88,
+        "width": 1,
+        "count": 3506
+      },
+      {
+        "lower": 89,
+        "width": 1,
+        "count": 2565
+      },
+      {
+        "lower": 90,
+        "width": 1,
+        "count": 2073
+      },
+      {
+        "lower": 91,
+        "width": 1,
+        "count": 1512
+      },
+      {
+        "lower": 92,
+        "width": 1,
+        "count": 1057
+      },
+      {
+        "lower": 93,
+        "width": 1,
+        "count": 731
+      },
+      {
+        "lower": 94,
+        "width": 1,
+        "count": 466
+      },
+      {
+        "lower": 95,
+        "width": 1,
+        "count": 295
+      },
+      {
+        "lower": 96,
+        "width": 1,
+        "count": 185
+      },
+      {
+        "lower": 97,
+        "width": 1,
+        "count": 109
+      },
+      {
+        "lower": 98,
+        "width": 1,
+        "count": 66
+      },
+      {
+        "lower": 99,
+        "width": 1,
+        "count": 33
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 54
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第4表 総人口・日本人・各歳別人口",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T16:12:58.455Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000030129",
+      "status": "final",
+      "scope": "区部。年齢既知総人口8336303人＝日本人8261922人＋公表外国人人口74381人を照合。外国人は各歳で総人口から日本人を差し引く。年齢不詳を含めず、国籍不詳を外国人に配分しない。外国人総数：https://www.e-stat.go.jp/dbview?sid=0000030133。",
+      "sourcePeriod": "1980-10"
+    }
+  },
+  {
+    "year": 1980,
+    "area": "wards",
+    "group": "foreign",
+    "method": "grouped",
+    "bins": [
+      {
+        "lower": 0,
+        "width": 1,
+        "count": 1113
+      },
+      {
+        "lower": 1,
+        "width": 1,
+        "count": 1123
+      },
+      {
+        "lower": 2,
+        "width": 1,
+        "count": 1124
+      },
+      {
+        "lower": 3,
+        "width": 1,
+        "count": 1108
+      },
+      {
+        "lower": 4,
+        "width": 1,
+        "count": 1162
+      },
+      {
+        "lower": 5,
+        "width": 1,
+        "count": 1221
+      },
+      {
+        "lower": 6,
+        "width": 1,
+        "count": 1304
+      },
+      {
+        "lower": 7,
+        "width": 1,
+        "count": 1220
+      },
+      {
+        "lower": 8,
+        "width": 1,
+        "count": 1205
+      },
+      {
+        "lower": 9,
+        "width": 1,
+        "count": 1245
+      },
+      {
+        "lower": 10,
+        "width": 1,
+        "count": 1180
+      },
+      {
+        "lower": 11,
+        "width": 1,
+        "count": 1149
+      },
+      {
+        "lower": 12,
+        "width": 1,
+        "count": 1126
+      },
+      {
+        "lower": 13,
+        "width": 1,
+        "count": 1123
+      },
+      {
+        "lower": 14,
+        "width": 1,
+        "count": 1009
+      },
+      {
+        "lower": 15,
+        "width": 1,
+        "count": 1125
+      },
+      {
+        "lower": 16,
+        "width": 1,
+        "count": 1141
+      },
+      {
+        "lower": 17,
+        "width": 1,
+        "count": 1097
+      },
+      {
+        "lower": 18,
+        "width": 1,
+        "count": 1030
+      },
+      {
+        "lower": 19,
+        "width": 1,
+        "count": 1148
+      },
+      {
+        "lower": 20,
+        "width": 1,
+        "count": 1224
+      },
+      {
+        "lower": 21,
+        "width": 1,
+        "count": 1352
+      },
+      {
+        "lower": 22,
+        "width": 1,
+        "count": 1459
+      },
+      {
+        "lower": 23,
+        "width": 1,
+        "count": 1543
+      },
+      {
+        "lower": 24,
+        "width": 1,
+        "count": 1556
+      },
+      {
+        "lower": 25,
+        "width": 1,
+        "count": 1743
+      },
+      {
+        "lower": 26,
+        "width": 1,
+        "count": 1751
+      },
+      {
+        "lower": 27,
+        "width": 1,
+        "count": 1766
+      },
+      {
+        "lower": 28,
+        "width": 1,
+        "count": 1789
+      },
+      {
+        "lower": 29,
+        "width": 1,
+        "count": 1740
+      },
+      {
+        "lower": 30,
+        "width": 1,
+        "count": 1740
+      },
+      {
+        "lower": 31,
+        "width": 1,
+        "count": 1661
+      },
+      {
+        "lower": 32,
+        "width": 1,
+        "count": 1586
+      },
+      {
+        "lower": 33,
+        "width": 1,
+        "count": 1594
+      },
+      {
+        "lower": 34,
+        "width": 1,
+        "count": 1277
+      },
+      {
+        "lower": 35,
+        "width": 1,
+        "count": 1217
+      },
+      {
+        "lower": 36,
+        "width": 1,
+        "count": 1171
+      },
+      {
+        "lower": 37,
+        "width": 1,
+        "count": 1151
+      },
+      {
+        "lower": 38,
+        "width": 1,
+        "count": 1059
+      },
+      {
+        "lower": 39,
+        "width": 1,
+        "count": 1112
+      },
+      {
+        "lower": 40,
+        "width": 1,
+        "count": 956
+      },
+      {
+        "lower": 41,
+        "width": 1,
+        "count": 921
+      },
+      {
+        "lower": 42,
+        "width": 1,
+        "count": 883
+      },
+      {
+        "lower": 43,
+        "width": 1,
+        "count": 828
+      },
+      {
+        "lower": 44,
+        "width": 1,
+        "count": 883
+      },
+      {
+        "lower": 45,
+        "width": 1,
+        "count": 818
+      },
+      {
+        "lower": 46,
+        "width": 1,
+        "count": 717
+      },
+      {
+        "lower": 47,
+        "width": 1,
+        "count": 776
+      },
+      {
+        "lower": 48,
+        "width": 1,
+        "count": 749
+      },
+      {
+        "lower": 49,
+        "width": 1,
+        "count": 726
+      },
+      {
+        "lower": 50,
+        "width": 1,
+        "count": 761
+      },
+      {
+        "lower": 51,
+        "width": 1,
+        "count": 761
+      },
+      {
+        "lower": 52,
+        "width": 1,
+        "count": 799
+      },
+      {
+        "lower": 53,
+        "width": 1,
+        "count": 962
+      },
+      {
+        "lower": 54,
+        "width": 1,
+        "count": 723
+      },
+      {
+        "lower": 55,
+        "width": 1,
+        "count": 760
+      },
+      {
+        "lower": 56,
+        "width": 1,
+        "count": 791
+      },
+      {
+        "lower": 57,
+        "width": 1,
+        "count": 823
+      },
+      {
+        "lower": 58,
+        "width": 1,
+        "count": 727
+      },
+      {
+        "lower": 59,
+        "width": 1,
+        "count": 725
+      },
+      {
+        "lower": 60,
+        "width": 1,
+        "count": 591
+      },
+      {
+        "lower": 61,
+        "width": 1,
+        "count": 481
+      },
+      {
+        "lower": 62,
+        "width": 1,
+        "count": 481
+      },
+      {
+        "lower": 63,
+        "width": 1,
+        "count": 449
+      },
+      {
+        "lower": 64,
+        "width": 1,
+        "count": 409
+      },
+      {
+        "lower": 65,
+        "width": 1,
+        "count": 365
+      },
+      {
+        "lower": 66,
+        "width": 1,
+        "count": 411
+      },
+      {
+        "lower": 67,
+        "width": 1,
+        "count": 360
+      },
+      {
+        "lower": 68,
+        "width": 1,
+        "count": 298
+      },
+      {
+        "lower": 69,
+        "width": 1,
+        "count": 264
+      },
+      {
+        "lower": 70,
+        "width": 1,
+        "count": 219
+      },
+      {
+        "lower": 71,
+        "width": 1,
+        "count": 212
+      },
+      {
+        "lower": 72,
+        "width": 1,
+        "count": 155
+      },
+      {
+        "lower": 73,
+        "width": 1,
+        "count": 166
+      },
+      {
+        "lower": 74,
+        "width": 1,
+        "count": 161
+      },
+      {
+        "lower": 75,
+        "width": 1,
+        "count": 126
+      },
+      {
+        "lower": 76,
+        "width": 1,
+        "count": 101
+      },
+      {
+        "lower": 77,
+        "width": 1,
+        "count": 89
+      },
+      {
+        "lower": 78,
+        "width": 1,
+        "count": 88
+      },
+      {
+        "lower": 79,
+        "width": 1,
+        "count": 87
+      },
+      {
+        "lower": 80,
+        "width": 1,
+        "count": 65
+      },
+      {
+        "lower": 81,
+        "width": 1,
+        "count": 52
+      },
+      {
+        "lower": 82,
+        "width": 1,
+        "count": 38
+      },
+      {
+        "lower": 83,
+        "width": 1,
+        "count": 44
+      },
+      {
+        "lower": 84,
+        "width": 1,
+        "count": 26
+      },
+      {
+        "lower": 85,
+        "width": 1,
+        "count": 25
+      },
+      {
+        "lower": 86,
+        "width": 1,
+        "count": 18
+      },
+      {
+        "lower": 87,
+        "width": 1,
+        "count": 13
+      },
+      {
+        "lower": 88,
+        "width": 1,
+        "count": 19
+      },
+      {
+        "lower": 89,
+        "width": 1,
+        "count": 10
+      },
+      {
+        "lower": 90,
+        "width": 1,
+        "count": 9
+      },
+      {
+        "lower": 91,
+        "width": 1,
+        "count": 3
+      },
+      {
+        "lower": 92,
+        "width": 1,
+        "count": 4
+      },
+      {
+        "lower": 93,
+        "width": 1,
+        "count": 3
+      },
+      {
+        "lower": 94,
+        "width": 1,
+        "count": 2
+      },
+      {
+        "lower": 95,
+        "width": 1,
+        "count": 3
+      },
+      {
+        "lower": 96,
+        "width": 1,
+        "count": 1
+      },
+      {
+        "lower": 97,
+        "width": 1,
+        "count": 0
+      },
+      {
+        "lower": 98,
+        "width": 1,
+        "count": 0
+      },
+      {
+        "lower": 99,
+        "width": 1,
+        "count": 0
+      },
+      {
+        "lower": 100,
+        "width": 5,
+        "count": 0
+      }
+    ],
+    "source": {
+      "publisher": "総務省統計局",
+      "statistics": "国勢調査",
+      "table": "第4表 総人口・日本人・各歳別人口",
+      "publishedAt": "2007-10-05",
+      "retrievedAt": "2026-10-04T16:12:58.455Z",
+      "url": "https://www.e-stat.go.jp/dbview?sid=0000030129",
+      "status": "final",
+      "scope": "区部。年齢既知総人口8336303人＝日本人8261922人＋公表外国人人口74381人を照合。外国人は各歳で総人口から日本人を差し引く。年齢不詳を含めず、国籍不詳を外国人に配分しない。外国人総数：https://www.e-stat.go.jp/dbview?sid=0000030133。",
+      "sourcePeriod": "1980-10"
+    }
+  }
+]

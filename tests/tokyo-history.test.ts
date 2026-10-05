@@ -16,7 +16,8 @@ test('過去の地域別年齢合計と男女別総人口が一致し、確認�
   if(year==='1990')censusResidual(raw1990,[...Array.from({length:20},(_,i)=>`${i*5}～${i*5+4}歳`),'100歳以上','年齢不詳'],d.past[year],source);
   for(const a of TOKYO_AREAS){const g=d.past[year][a].groups.total!;expect(g.rows).toEqual(original[a].groups.total!.rows);
    for(const sex of ['男女計','男','女'])expect(g.rows.filter(r=>r.sex===sex&&r.age!=='総数').reduce((n,r)=>n+r.value,0)).toBe(g.rows.find(r=>r.sex===sex&&r.age==='総数')!.value);
-   expect(g.averageAge!.reference).toBe(true);
+   // 2000年は原表の公表平均年齢を使用。上で再構築する3年は階級からの参考計算。
+   expect(g.averageAge!.reference).toBe(year!=='2000');
   }
  }
 });
