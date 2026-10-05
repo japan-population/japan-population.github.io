@@ -1,3 +1,4 @@
+import {enrichTokyoAverageAges} from './sources/tokyo-average-age';
 import {readFile,writeFile} from 'node:fs/promises';
 import {readDataset,publishDataset} from './dataset';
 import {finalizeDataset} from './scoped-update';
@@ -11,7 +12,7 @@ import {enrichTokyoNationalityHistory} from './sources/tokyo-nationality-history
 
 // Manual, offline rebuild. Other statistics and projections are not fetched.
 const path = new URL('./data/tokyo-history.json',import.meta.url);
-const past = enrichTokyoNationalityAllocations(enrichTokyoNationalityHistory(enrichTokyoEarlyHistory(tokyoAreasSchema.shape.past.parse(JSON.parse(await readFile(path,'utf8'))))));
+const past = enrichTokyoAverageAges(enrichTokyoNationalityAllocations(enrichTokyoNationalityHistory(enrichTokyoEarlyHistory(tokyoAreasSchema.shape.past.parse(JSON.parse(await readFile(path,'utf8')))))));
 const data = await readDataset('public/data');
 if (!data.tokyoAreas) throw Error('東京都地域データがありません');
 for(const observation of fertility){
