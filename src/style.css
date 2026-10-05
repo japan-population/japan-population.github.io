@@ -179,3 +179,6 @@
 .tokyo-area-switch button{font-size:clamp(9px,1.2cqw,12px);padding:4px 5px;min-height:26px;white-space:nowrap}
 @media(min-width:1024px){.tokyo-area-switch button{font-size:12px;padding:5px 8px}}
 @media(max-width:420px){.map-card-heading{gap:2px}.tokyo-area-switch button{font-size:9px;padding:3px;min-height:24px}}
+
+/* Keep the selection above every prefecture without intercepting map interactions. */
+.japan-map path.map-selection-outline{fill:none;stroke:#de9f5a;stroke-width:9;pointer-events:none}
