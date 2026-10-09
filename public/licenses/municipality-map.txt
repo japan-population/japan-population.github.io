@@ -1,0 +1,20 @@
+市区町村境界データの出典・加工履歴
+
+原典：国土交通省 国土数値情報「行政区域データ（2025年）」
+https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-2025.html
+利用条件：Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+
+加工データ提供：一般社団法人共同通信社 japan-choropleth
+https://github.com/kyodo-official/japan-choropleth
+取得版：eccecca8f37d0569e13b56f62d71b137c75ea2f5
+ファイル：data/geojson/municipalities.geojson
+コード部分のMITライセンスではなく、上記原典のCC BY 4.0に従って利用しています。
+
+本サイトによる加工：政令指定都市の区境界を市単位に統合、SVG座標への投影・丸め、都道府県別の分割。東京・鹿児島・沖縄は離島を縮尺の異なる別枠に配置。所属未定地および北方地域は表示対象外。
+
+人口：総務省 2026年1月1日 住民基本台帳に基づく人口、人口動態及び世帯数調査 26-03（総計）。男女計の原値を利用。
+https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040479049&fileKind=0
+面積：国土地理院 全国都道府県市区町村別面積調 2026年7月1日。境界未定部の公表参考面積を含む。
+https://www.gsi.go.jp/KOKUJYOHO/MENCHO/backnumber/R8_07_mencho.csv
+人口密度：表示人口÷公表面積。両者の基準日は異なります。
