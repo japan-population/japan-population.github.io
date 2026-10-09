@@ -15,7 +15,8 @@
     "fixture": "node --import tsx scripts/build-fixture.ts",
     "update-data": "node --import tsx scripts/build-data.ts",
     "validate-data": "node --import tsx scripts/validate-data.ts",
-    "update-tokyo": "node --import tsx scripts/update-tokyo-data.ts"
+    "update-tokyo": "node --import tsx scripts/update-tokyo-data.ts",
+    "update-municipalities": "node --import tsx scripts/update-municipalities.ts"
   },
   "dependencies": {
     "react": "^19.1.1",
