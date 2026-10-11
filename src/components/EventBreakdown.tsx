@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type {EventBreakdownData,EventKind} from '../types/statistics';
 import {BREAKDOWN_KINDS,BREAKDOWN_LABELS,breakdownCount} from '../lib/event-breakdowns';
 import {number} from '../lib/formatting';
@@ -6,18 +7,19 @@ function BreakdownLabel({label}:{label:string}){
   const text=label.replace(/[（(＜<]/g,'（').replace(/[）)＞>]/g,'）');
   return <>{text.split(/(（[^）]*）)/g).map((part,i)=>part.startsWith('（')?<small className="breakdown-parenthesis" key={i}>{part}</small>:part)}</>;
 }
-export function EventBreakdown({event,sections,total,proxy=false,referenceYear,hideHomicide=false}:{event:EventKind;sections:EventBreakdownData[];total?:number|null;proxy?:boolean;referenceYear?:number;hideHomicide?:boolean}){
+export function EventBreakdown({event,sections,total,proxy=false,referenceYear,hideHomicide=false,kinds,includeCauseSupplements=true,deferClosedContent=false,onOpen,loading=false}:{event:EventKind;sections:EventBreakdownData[];total?:number|null;proxy?:boolean;referenceYear?:number;hideHomicide?:boolean;kinds?:readonly EventBreakdownData['kind'][];includeCauseSupplements?:boolean;deferClosedContent?:boolean;onOpen?:()=>void;loading?:boolean}){
+  const [opened,setOpened]=useState<Record<string,boolean>>({});
   const realtime=total!==undefined,unit='人';
   const sources=sections.flatMap(s=>[s.source,...s.additionalSources??[]]).filter((s,i,all)=>all.findIndex(v=>v.url===s.url&&v.sourcePeriod===s.sourcePeriod)===i);
   return <div className="event-breakdown">
-    {BREAKDOWN_KINDS[event].map(kind=>{
+    {(kinds??BREAKDOWN_KINDS[event]).map(kind=>{
       const section=sections.find(s=>s.kind===kind);
-      const items=kind==='cause'&&section?[
+      const items=kind==='cause'&&section&&includeCauseSupplements?[
         ...section.items.filter(item=>!item.supplement&&item.label!=='交通事故'),
         ...['自殺','他殺'].filter(label=>!section.items.some(item=>item.label===label&&!item.supplement)).map(label=>section.items.find(item=>item.label===label)??{label,count:null}),
       ]:section?.items??[];
-      return <details className="breakdown-category" key={kind}><summary>{BREAKDOWN_LABELS[kind]}{section&&referenceYear!==undefined&&section.year<referenceYear&&<small>{section.year}年</small>}</summary>
-        {!section?<p className="breakdown-note">データなし</p>:<>
+      return <details className="breakdown-category" key={kind} onToggle={e=>{const open=e.currentTarget.open;if(deferClosedContent)setOpened(prev=>({...prev,[kind]:open}));if(open)onOpen?.();}}><summary>{BREAKDOWN_LABELS[kind]}{section&&referenceYear!==undefined&&section.year<referenceYear&&<small>{section.year}年</small>}</summary>
+        {(!deferClosedContent||opened[kind])&&(loading?<p className="breakdown-note">読み込み中…</p>:!section?<p className="breakdown-note">データなし</p>:<>
           <table className="breakdown-table"><thead><tr><th scope="col">区分</th><th scope="col">{realtime?(proxy?'参考推計':'推計'):'人数'}</th><th scope="col">全体比</th></tr></thead><tbody>
             {items.filter(item=>!(hideHomicide&&realtime&&kind==='cause'&&item.label==='他殺')).map(item=>{if(item.count===null)return <tr key={item.label}><th scope="row"><BreakdownLabel label={item.label}/></th><td colSpan={2}>データなし</td></tr>;const v=breakdownCount(section,item.count,total??undefined);
               if(item.children?.length&&(item.label==='不慮の事故'||item.label.startsWith('悪性新生物')))return <tr key={item.label} className="cause-row"><td colSpan={3}>
@@ -31,7 +33,7 @@ export function EventBreakdown({event,sections,total,proxy=false,referenceYear,h
             </tr>;})}
           </tbody></table>
 
-        </>}
+        </>)}
       </details>;
     })}
     {sources.length>0&&<SourceInfo sources={sources} showPeriod={!realtime}/>}

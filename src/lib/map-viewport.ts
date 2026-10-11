@@ -1,11 +1,14 @@
 export type MapViewport={x:number;y:number;zoom:number};
-export function clampMapViewport(v:MapViewport):MapViewport{
+export type MapDimensions={width:number;height:number};
+const municipalDimensions:MapDimensions={width:800,height:480};
+export function clampMapViewport(v:MapViewport,{width,height}:MapDimensions=municipalDimensions):MapViewport{
  const zoom=Math.max(1,Math.min(256,v.zoom));
- return {zoom,x:Math.max(0,Math.min(800-800/zoom,v.x)),y:Math.max(0,Math.min(480-480/zoom,v.y))};
+ return {zoom,x:Math.max(0,Math.min(width-width/zoom,v.x)),y:Math.max(0,Math.min(height-height/zoom,v.y))};
 }
-export function zoomMapViewport(v:MapViewport,zoom:number):MapViewport{
+export function zoomMapViewport(v:MapViewport,zoom:number,dimensions:MapDimensions=municipalDimensions):MapViewport{
+ const {width,height}=dimensions;
  zoom=Math.max(1,Math.min(256,zoom));
- return clampMapViewport({zoom,x:v.x+400/v.zoom-400/zoom,y:v.y+240/v.zoom-240/zoom});
+ return clampMapViewport({zoom,x:v.x+width/2/v.zoom-width/2/zoom,y:v.y+height/2/v.zoom-height/2/zoom},dimensions);
 }
 
 // Approximate ground distance for the locally projected map. Pick a readable 1/2/5 tick.

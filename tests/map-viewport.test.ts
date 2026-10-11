@@ -19,3 +19,12 @@ it('縮尺は倍率に追従し、km未満はmで表示する',()=>{
  expect(mapScale(1,2)).toEqual({widthPercent:12.5,label:'50 km'});
  expect(mapScale(.01,4)).toEqual({widthPercent:10,label:'200 m'});
 });
+
+it('世界地図の縦横比でも中心を保ち、移動範囲を制限して全体へ戻る',()=>{
+ const dimensions={width:1200,height:600};
+ const enlarged=zoomMapViewport({x:0,y:0,zoom:1},2,dimensions);
+ expect(enlarged).toEqual({x:300,y:150,zoom:2});
+ expect(clampMapViewport({x:10000,y:10000,zoom:2},dimensions)).toEqual({x:600,y:300,zoom:2});
+ expect(clampMapViewport({x:-100,y:-100,zoom:2},dimensions)).toEqual({x:0,y:0,zoom:2});
+ expect(zoomMapViewport({x:600,y:300,zoom:2},1,dimensions)).toEqual({x:0,y:0,zoom:1});
+});
