@@ -1,3 +1,4 @@
+import {MapStatsTooltip} from './MapStatsTooltip';
 import {clampMapViewport,zoomMapViewport,mapScale,type MapViewport} from '../lib/map-viewport';
 import {memo,useEffect,useState,useRef} from 'react';
 import {municipalityMapSchema,type MunicipalityMapData} from '../types/municipalities';
@@ -19,7 +20,6 @@ function MunicipalityMap({code,name}:{code:string;name:string}){
  return <div className="municipal-section" aria-label={`${name}の市区町村地図`}>
   <div className="municipal-heading"><h3>{name}の市区町村</h3><span className="badge">総人口</span></div>
   {!page?<p className="small-note" role="status">{error?<>地図を読み込めませんでした。<button type="button" onClick={()=>setRetry(n=>n+1)}>再読み込み</button></>:'地図を読み込み中…'}</p>:<>
-   <p className="small-note municipal-date">人口：{page.populationDate.replaceAll('-','/')}現在</p>
    <div className={`municipal-panels ${page.panels.length>1?'has-islands':''}`}>
     {page.panels.map(panel=><MunicipalPanel key={`${code}-${panel.id}`} panel={panel} data={page}/>)}
    </div>
@@ -80,7 +80,7 @@ function MunicipalPanel({panel,data}:{panel:MunicipalityMapData['panels'][number
     </svg>
    </div>
    <div className="municipal-scale" style={{width:`${scale.widthPercent}%`}} aria-label={`縮尺 約${scale.label}`}><span>約{scale.label}</span><i aria-hidden="true"/></div>
-   {chosen&&<div className="municipal-tooltip" role="status" style={{left:anchor.x,top:anchor.y}}><button type="button" aria-label="市区町村の情報を閉じる" onClick={()=>setSelected(undefined)}>×</button><h4>{chosen.name}</h4><p className="municipal-population">{number(chosen.population)}<small>人</small></p><dl><div><dt>面積</dt><dd>{chosen.areaKm2.toLocaleString('ja-JP',{minimumFractionDigits:2,maximumFractionDigits:2})}<small>km²</small>{chosen.areaReference&&<small>（参考値）</small>}</dd></div><div><dt>人口密度</dt><dd>{(chosen.population/chosen.areaKm2).toLocaleString('ja-JP',{maximumFractionDigits:1})}<small>人/km²</small></dd></div></dl><p className="municipal-tooltip-date">人口 {data.populationDate.replaceAll('-','/')}<br/>面積 {data.areaDate.replaceAll('-','/')}</p></div>}
+   {chosen&&<MapStatsTooltip name={chosen.name} population={chosen.population} areaKm2={chosen.areaKm2} areaReference={chosen.areaReference} populationDate={data.populationDate} areaDate={data.areaDate} closeLabel="市区町村の情報を閉じる" onClose={()=>setSelected(undefined)} style={{left:anchor.x,top:anchor.y}}/>}
   </div>
  </div>;
 }

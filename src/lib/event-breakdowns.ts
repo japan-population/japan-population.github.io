@@ -14,7 +14,7 @@ export function breakdownCount(section:EventBreakdownData,count:number,total?:nu
   // rounding differences are not assigned to an unrelated category.
   return {count:total===undefined?count:Math.floor(Math.max(0,total)*ratio),percent:ratio*100};
 }
-export const BREAKDOWN_LABELS={motherAge:'出産年齢（母）',birthOrder:'出生順位',deathAge:'死亡年齢',cause:'死因',husbandAge:'夫の年齢',wifeAge:'妻の年齢'};
+export const BREAKDOWN_LABELS={birthCountry:'出生国',motherAge:'出産年齢（母）',birthOrder:'出生順位',deathAge:'死亡年齢',cause:'死因',husbandAge:'夫の年齢',wifeAge:'妻の年齢'};
 export const BREAKDOWN_KINDS={birth:['birthOrder','motherAge'],death:['cause','deathAge'],marriage:['husbandAge','wifeAge'],divorce:['husbandAge','wifeAge']} as const;
 export function realtimeEventBreakdowns(data:EventBreakdowns|undefined,event:EventKind,group:PopulationGroup){
   // Foreign breakdowns must use foreign statistics; never substitute Japanese proportions.

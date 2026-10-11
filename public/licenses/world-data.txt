@@ -1,0 +1,56 @@
+World population: United Nations, Department of Economic and Social Affairs,
+Population Division (2024). World Population Prospects 2024, Online Edition.
+https://population.un.org/wpp/
+CC BY 3.0 IGO: https://creativecommons.org/licenses/by/3.0/igo/
+World (location 900), medium variant, population on 1 July, 2024–2100.
+Original values in thousands converted to persons; the site linearly interpolates
+between annual values, using 00:00 JST as the annual reference instant.
+This display is an independent transformation, not endorsed by the United Nations.
+
+Map: Natural Earth 1:110m Admin 0 Countries, version 5.1.2. Public domain.
+https://www.naturalearthdata.com/about/terms-of-use/
+https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_110m_admin_0_countries.geojson
+Reprojected as a Pacific-centred equirectangular map (central meridian 150°E).
+Boundaries follow the Natural Earth source dataset.
+
+Map fill: UN WPP2024 medium-variant country/area population on 1 July 2026.
+Logarithmic colour scale, brighter green for larger populations.
+Unmatched territories are neutral grey, not assigned another territory's total.
+
+World birth/death counters: WPP2024 annual Births and Deaths, medium variant,
+2024–2100. Values converted from thousands to persons and distributed uniformly
+across each calendar year (JST), accounting for leap years.
+
+World birth-country and maternal-age distributions and deaths by age:
+United Nations WPP2024 medium variant, annual 2024–2100 (CC BY 3.0 IGO).
+FERT/04: births by five-year age group of mother.
+MORT/01-1: deaths by single age, both sexes; aggregated to five-year ages here.
+Country/area births represent population statistics, not individual delivery locations.
+Shares are normalized to the sum of the published category counts to remove rounding differences.
+
+Cause-of-death distribution: Global Health Estimates 2023: Deaths by Cause,
+Age, Sex, by Country and by Region, 2000-2023. Geneva, World Health Organization; 2026.
+https://www.who.int/data/global-health-estimates/
+Source: deaths_global_2026-09-30.xlsx, sheets Top20 and Global 2023.
+Japanese labels translated for this site. The 2023 cause shares are applied to
+current UN-based mortality projections as independent reference estimates.
+WHO data policy: https://www.who.int/about/policies/publishing/data-policy
+
+Country tooltip areas: World Bank WDI, Surface area (AG.SRF.TOTL.K2),
+FAO source data, CC BY 4.0. Latest non-null observations retrieved 2026-10-11.
+https://data.worldbank.org/indicator/AG.SRF.TOTL.K2
+API: https://api.worldbank.org/v2/country/all/indicator/AG.SRF.TOTL.K2?format=json&per_page=400&mrnev=1
+Where absent, or for France to match the UN population scope, reference
+area is population divided by published WPP population density (rounded km²).
+French Guiana is separated from the Natural Earth country geometry
+to match UN statistical areas. Missing populations remain unavailable.
+
+Country tooltip GDP: World Bank WDI, GDP (current US$), NY.GDP.MKTP.CD.
+CC BY 4.0. Latest non-null observations retrieved 2026-10-11.
+https://data.worldbank.org/indicator/NY.GDP.MKTP.CD
+API: https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.CD?format=json&per_page=400&mrnev=1
+World totals: https://api.worldbank.org/v2/country/WLD/indicator/NY.GDP.MKTP.CD?format=json&per_page=100
+Shares use the WLD total for each country's observation year. Amounts are
+rounded for display only. Territorial scope follows World Bank definitions;
+it may differ from the map and UN population scope. Missing values are not imputed.
+Manual update only; no scheduled or browser-side government/statistics API requests.

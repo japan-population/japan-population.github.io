@@ -14,7 +14,7 @@ export const sourceSchema = z.object({
 // Annual demographic compositions; shares are always relative to the full event total.
 export const eventBreakdownSchema = z.object({
   event: z.enum(EVENTS), year: z.number().int(), group: z.enum(['total','japanese','foreign']),
-  kind: z.enum(['motherAge','birthOrder','deathAge','cause','husbandAge','wifeAge']),
+  kind: z.enum(['birthCountry','motherAge','birthOrder','deathAge','cause','husbandAge','wifeAge']),
   source: sourceSchema, additionalSources:z.array(sourceSchema).optional(), total: z.number().int().nonnegative(),
   coverage: z.enum(['complete','partial']), note: z.string().optional(), ageGrouping: z.enum(['five-year','published']).optional(),
   items: z.array(z.object({label:z.string().min(1),count:z.number().finite().nonnegative(),rank:z.number().int().positive().optional(),supplement:z.boolean().optional(),approximate:z.boolean().optional(),children:z.array(z.object({label:z.string().min(1),count:z.number().int().nonnegative()})).min(1).optional()})).min(1),
